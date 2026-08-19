@@ -1,1 +1,281 @@
 @import "tailwindcss";
+
+@theme {
+  --color-night: #161009;
+  --color-coal: #201710;
+  --color-bark: #2a1d12;
+  --color-husk: #3b2b1b;
+  --color-bone: #f4ead9;
+  --color-dune: #b3a186;
+  --color-gold: #f0a41c;
+  --color-flame: #e2472e;
+  --color-forest: #1e8a5a;
+  --color-chong: #3a72e0;
+
+  --font-display: "Anton", "Arial Narrow", sans-serif;
+  --font-body: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-night);
+  color: var(--color-bone);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-night);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #161009;
+}
+::-webkit-scrollbar-thumb {
+  background: #3b2b1b;
+  border: 2px solid #161009;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f0a41c;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ————— Bande kente (motif signature) ————— */
+.kente {
+  background: repeating-linear-gradient(
+    90deg,
+    #f0a41c 0 26px,
+    #161009 26px 30px,
+    #e2472e 30px 56px,
+    #161009 56px 60px,
+    #1e8a5a 60px 86px,
+    #161009 86px 90px,
+    #f4ead9 90px 100px,
+    #161009 100px 104px
+  );
+}
+.kente-vert {
+  background: repeating-linear-gradient(
+    180deg,
+    #f0a41c 0 26px,
+    #161009 26px 30px,
+    #e2472e 30px 56px,
+    #161009 56px 60px,
+    #1e8a5a 60px 86px,
+    #161009 86px 90px,
+    #f4ead9 90px 100px,
+    #161009 100px 104px
+  );
+}
+
+/* ————— Motif "bogolan" zigzag en fond ————— */
+.mud-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='56' height='56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 56L28 28L56 56' stroke='%23f0a41c' stroke-opacity='.07' fill='none'/%3E%3Cpath d='M0 28L28 0L56 28' stroke='%23f0a41c' stroke-opacity='.04' fill='none'/%3E%3Ccircle cx='28' cy='28' r='1' fill='%23f0a41c' fill-opacity='.1'/%3E%3C/svg%3E");
+}
+
+/* ————— Grain / bruit ————— */
+.noise-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ————— Révélations au scroll ————— */
+.rv {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 0.7, 0.25, 1),
+    transform 0.85s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.rv.on {
+  opacity: 1;
+  transform: none;
+}
+
+/* ————— Titre : lignes masquées ————— */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.mask-line > span {
+  display: block;
+  transform: translateY(115%);
+  transition: transform 1.05s cubic-bezier(0.19, 0.8, 0.22, 1);
+}
+.masks-on .mask-line > span {
+  transform: translateY(0);
+}
+
+/* ————— Marquee ————— */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ————— Diverses animations ————— */
+@keyframes fadeup {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.ev-in {
+  animation: fadeup 0.55s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+}
+
+@keyframes scoreflash {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.4);
+    color: var(--color-gold);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.flash {
+  animation: scoreflash 0.55s ease;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+.img-breathe {
+  animation: breathe 16s ease-in-out infinite;
+}
+
+@keyframes pulsedot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(226, 71, 46, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(226, 71, 46, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(226, 71, 46, 0);
+  }
+}
+.dot-live {
+  animation: pulsedot 1.7s ease-out infinite;
+}
+
+@keyframes pulsesoft {
+  50% {
+    opacity: 0.3;
+  }
+}
+.dot-soft {
+  animation: pulsesoft 2.2s ease-in-out infinite;
+}
+
+@keyframes barshine {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.bar-shine {
+  background-image: linear-gradient(
+    100deg,
+    rgba(244, 234, 217, 0) 30%,
+    rgba(244, 234, 217, 0.35) 50%,
+    rgba(244, 234, 217, 0) 70%
+  );
+  background-size: 200% 100%;
+  animation: barshine 2.6s linear infinite;
+}
+
+/* ————— Lien de navigation, soulignement glissant ————— */
+.navlink {
+  position: relative;
+}
+.navlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.navlink:hover::after,
+.navlink:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.outline-gold {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(240, 164, 28, 0.35);
+}
+
+/* ————— Accessibilité : mouvement réduit ————— */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rv,
+  .mask-line > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .marquee-track,
+  .ev-in,
+  .img-breathe,
+  .dot-live,
+  .dot-soft,
+  .flash,
+  .bar-shine {
+    animation: none !important;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
