@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { LogoMark } from "./Icons";
+import { LogoMark, ArrowRight } from "./Icons";
 
 const LINKS = [
   { href: "#fonctionnalites", label: "Fonctionnalités" },
   { href: "#evenements", label: "Événements" },
+  { href: "#parcours", label: "Parcours" },
   { href: "#modules", label: "Modules" },
   { href: "#plateforme", label: "La Plateforme" },
 ];
@@ -11,9 +12,13 @@ const LINKS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [barHidden, setBarHidden] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30);
+      setBarHidden(window.scrollY > 140);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -27,6 +32,18 @@ export default function Header() {
           : "border-b border-transparent bg-transparent"
       }`}
     >
+      {/* Bandeau d'annonce saison */}
+      <a
+        href="#evenements"
+        className={`flex items-center justify-center gap-2.5 overflow-hidden bg-gold px-4 text-center font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-night transition-all duration-500 hover:bg-bone sm:text-[11px] ${
+          barHidden ? "max-h-0 opacity-0" : "max-h-10 py-2 opacity-100"
+        }`}
+      >
+        <span className="dot-live inline-block h-2 w-2 shrink-0 rounded-full bg-flame" aria-hidden="true" />
+        Saison 2025–2026 — Inscriptions au Championnat National ouvertes
+        <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+      </a>
+
       {/* Liseré kente signature */}
       <div className="kente h-1.5 w-full" aria-hidden="true" />
 

@@ -191,7 +191,57 @@ export function IconPlug({ className = "w-7 h-7" }: IconProps) {
   );
 }
 
+export function IconTrophy({ className = "w-7 h-7" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M7 4h10v5a5 5 0 0 1-10 0Z" />
+      <path d="M7 5.5H4V7a3.5 3.5 0 0 0 3.2 3.5M17 5.5h3V7a3.5 3.5 0 0 1-3.2 3.5" />
+      <path d="M12 14v3.5M8.5 20.5h7M10 17.5h4l.7 3h-5.4Z" />
+    </svg>
+  );
+}
+
+export function IconMedal({ className = "w-7 h-7" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <circle cx="12" cy="15" r="4.5" />
+      <path d="M9.8 11.2 5.5 3.5h4.6L12 7l1.9-3.5h4.6l-4.3 7.7M12 13.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 15.3l2-.3Z" />
+    </svg>
+  );
+}
+
+export function IconGear({ className = "w-7 h-7" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 3.5v2.4M12 18.1v2.4M3.5 12h2.4M18.1 12h2.4M6 6l1.7 1.7M16.3 16.3 18 18M18 6l-1.7 1.7M7.7 16.3 6 18" />
+    </svg>
+  );
+}
+
+export function IconBelt({ className = "w-7 h-7" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M2.5 8.5h7.7l1.8 1.8 1.8-1.8h7.7" />
+      <path d="M2.5 11.5h6.2M15.3 11.5h6.2" />
+      <rect x="9.8" y="8.3" width="4.4" height="4.6" />
+      <path d="m10.4 12.9-2.6 7.6M13.6 12.9l2.6 7.6" />
+    </svg>
+  );
+}
+
+export function IconCheck({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden="true">
+      <path d="m4.5 12.5 5 5L19.5 7" />
+    </svg>
+  );
+}
+
 export const MODULE_ICONS: Record<string, (p: IconProps) => React.ReactElement> = {
+  trophy: IconTrophy,
+  medal: IconMedal,
+  gear: IconGear,
   qr: IconQr,
   badge: IconBadge,
   scale: IconScale,

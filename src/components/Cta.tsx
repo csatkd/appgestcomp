@@ -1,7 +1,23 @@
+import { useState } from "react";
 import Reveal, { Eyebrow } from "./Reveal";
-import { ArrowRight } from "./Icons";
+import { ArrowRight, IconCheck } from "./Icons";
+
+type FormStatus = "idle" | "error" | "success";
 
 export default function Cta() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
+      setStatus("error");
+      return;
+    }
+    setStatus("success");
+    setEmail("");
+  };
+
   return (
     <section
       id="cta"
@@ -37,7 +53,7 @@ export default function Cta() {
               pour organiser leurs compétitions, gérer leurs athlètes et
               diffuser leurs résultats en temps réel.
             </p>
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
                 href="https://tkd365.pro/sign-up-login-screen"
                 target="_blank"
@@ -56,6 +72,47 @@ export default function Cta() {
                 Page Fédération
               </a>
             </div>
+
+            {/* Formulaire de démo avec feedback immédiat */}
+            <form onSubmit={handleSubmit} noValidate className="mt-9 border border-husk bg-night/70 p-5">
+              <label
+                htmlFor="demo-email"
+                className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold"
+              >
+                Ou recevez une démo personnalisée
+              </label>
+              <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                <input
+                  id="demo-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (status !== "idle") setStatus("idle");
+                  }}
+                  placeholder="prenom@federation.tkd"
+                  className="w-full border border-husk bg-coal px-4 py-3 text-sm text-bone placeholder:text-dune/50 transition-colors focus:border-gold focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="shrink-0 cursor-pointer border border-gold bg-gold/10 px-6 py-3 text-sm font-bold text-gold transition-colors duration-300 hover:bg-gold hover:text-night"
+                >
+                  Demander
+                </button>
+              </div>
+              {status === "error" && (
+                <p className="mt-3 font-mono text-xs text-flame" role="alert">
+                  ✕ Adresse e-mail invalide — vérifiez la saisie.
+                </p>
+              )}
+              {status === "success" && (
+                <p className="mt-3 flex items-center gap-2 font-mono text-xs text-forest" role="status">
+                  <IconCheck className="h-4 w-4" />
+                  Merci ! Notre équipe vous recontacte sous 24h.
+                </p>
+              )}
+            </form>
+
             <p className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-dune">
               <span className="text-gold">48 ligues</span>·
               <span>12 847 athlètes</span>·

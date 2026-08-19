@@ -3,8 +3,12 @@ import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
 import Features from "./components/Features";
 import Events from "./components/Events";
+import Journey from "./components/Journey";
+import Roles from "./components/Roles";
 import Modules from "./components/Modules";
 import About from "./components/About";
+import Rankings from "./components/Rankings";
+import Testimonials from "./components/Testimonials";
 import Cta from "./components/Cta";
 import Footer from "./components/Footer";
 import { DISCIPLINES } from "./data";
@@ -32,8 +36,12 @@ export default function App() {
         <Marquee items={[...DISCIPLINES, "Formation"]} />
         <Features />
         <Events />
+        <Journey />
+        <Roles />
         <Modules />
         <About />
+        <Rankings />
+        <Testimonials />
         <Marquee items={CITY_ITEMS} reverse variant="dark" />
         <Cta />
       </main>

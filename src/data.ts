@@ -262,3 +262,174 @@ export const PILLARS = [
     desc: "Récupération automatique des données de combat pour un scoring en direct sans saisie manuelle.",
   },
 ];
+
+/* ——— Parcours d'un événement : de la pesée au podium ——— */
+export interface JourneyStep {
+  icon: string;
+  title: string;
+  desc: string;
+  live?: boolean;
+}
+
+export const JOURNEY: JourneyStep[] = [
+  {
+    icon: "badge",
+    title: "Inscriptions",
+    desc: "Clubs et athlètes s'inscrivent en ligne : droits, paiements et validation en quelques clics.",
+  },
+  {
+    icon: "scale",
+    title: "Pesée & Présences",
+    desc: "Scan QR des badges, pesées enregistrées et participation validée en temps réel.",
+  },
+  {
+    icon: "bracket",
+    title: "Catégories & Tirage",
+    desc: "Répartition automatique par âge, sexe et poids, puis génération instantanée des tableaux.",
+  },
+  {
+    icon: "whistle",
+    title: "Arbitrage & Live",
+    desc: "Rotations d'arbitres planifiées et scoring PSS en direct sur chaque aire de combat.",
+    live: true,
+  },
+  {
+    icon: "flag",
+    title: "Réclamations",
+    desc: "Recours encadrés, workflow de validation et historique complet des décisions.",
+  },
+  {
+    icon: "trophy",
+    title: "Podium & Archives",
+    desc: "Cérémonies en mode TV, résultats publiés et archives consultables par tous.",
+  },
+];
+
+/* ——— Espaces par rôle ——— */
+export interface RoleInfo {
+  id: string;
+  label: string;
+  icon: string;
+  tagline: string;
+  desc: string;
+  features: string[];
+}
+
+export const ROLES_INFO: RoleInfo[] = [
+  {
+    id: "athlete",
+    label: "Athlètes",
+    icon: "belt",
+    tagline: "Votre licence, toujours sur vous",
+    desc: "Chaque athlète dispose d'un profil complet : licence fédérale, grade, certificat médical et historique de compétitions — accessible partout, à tout moment.",
+    features: [
+      "Licence numérique avec QR code",
+      "Historique des combats et classements",
+      "Inscription aux événements en un clic",
+      "Certificat médical et photo ID à jour",
+    ],
+  },
+  {
+    id: "coach",
+    label: "Coaches",
+    icon: "users",
+    tagline: "Votre équipe, sous contrôle",
+    desc: "Inscrivez vos athlètes, suivez les paiements et gardez un œil sur les tirages et les horaires de passage de toute votre équipe.",
+    features: [
+      "Inscription groupée du club",
+      "Suivi des droits et paiements",
+      "Tableaux et horaires de passage",
+      "Notifications de convocation",
+    ],
+  },
+  {
+    id: "referee",
+    label: "Arbitres",
+    icon: "whistle",
+    tagline: "Vos rotations, sans conflit",
+    desc: "Consultez vos affectations par aire de combat, vos convocations et votre historique d'arbitrage sur l'ensemble des compétitions.",
+    features: [
+      "Planning des rotations par aire",
+      "Convocations et alertes en temps réel",
+      "Scoring synchronisé PSS Daedo / KPNP",
+      "Historique des matchs arbitrés",
+    ],
+  },
+  {
+    id: "official",
+    label: "Officiels",
+    icon: "flag",
+    tagline: "Décisions tracées, litiges maîtrisés",
+    desc: "Gérez les réclamations, validez les décisions et supervisez le bon déroulement des compétitions avec un historique complet.",
+    features: [
+      "File de traitement des réclamations",
+      "Validation des résultats par aire",
+      "Supervision des jurys d'appel",
+      "Rapports d'incidents et arbitrages",
+    ],
+  },
+  {
+    id: "admin",
+    label: "Administrateurs",
+    icon: "gear",
+    tagline: "Toute la fédération, un seul écran",
+    desc: "Pilotez la saison complète : licences, clubs, événements, finances et statistiques — avec des rapports exportables en un clic.",
+    features: [
+      "Gestion des licences et des clubs",
+      "Configuration des événements et catégories",
+      "Tableaux de bord et exports",
+      "Gestion des rôles et permissions",
+    ],
+  },
+];
+
+/* ——— Classements en direct ——— */
+export interface ClubRanking {
+  rank: number;
+  club: string;
+  city: string;
+  code: string;
+  g: number;
+  s: number;
+  b: number;
+  pts: number;
+}
+
+export const CLUB_RANKING: ClubRanking[] = [
+  { rank: 1, club: "Nadi El Amel Alger", city: "Alger", code: "NEA", g: 9, s: 4, b: 3, pts: 64 },
+  { rank: 2, club: "JS Oran Taekwondo", city: "Oran", code: "JSO", g: 7, s: 6, b: 5, pts: 58 },
+  { rank: 3, club: "CSC Constantine", city: "Constantine", code: "CSC", g: 6, s: 3, b: 6, pts: 49 },
+  { rank: 4, club: "USM Annaba TKD", city: "Annaba", code: "USM", g: 4, s: 5, b: 2, pts: 39 },
+  { rank: 5, club: "Espoir TKD Dakar", city: "Dakar", code: "ETD", g: 3, s: 4, b: 4, pts: 31 },
+];
+
+export const PODIUM = [
+  { place: 2, name: "D. HERVE", club: "JS Oran", code: "SEN", medal: "#c8ccd4" },
+  { place: 1, name: "S. DELI", club: "Nadi El Amel", code: "CIV", medal: "#f0a41c" },
+  { place: 3, name: "K. MANSOURI", club: "CSC Constantine", code: "ALG", medal: "#c97f4a" },
+];
+
+/* ——— Témoignages ——— */
+export const TESTIMONIALS = [
+  {
+    quote:
+      "Trois jours de championnat national, 128 combats arbitrés sans un seul litige bloquant. Le module de réclamations a tout changé.",
+    name: "K. Mansouri",
+    role: "Arbitre international",
+    org: "Fédération Nationale — Alger",
+  },
+  {
+    quote:
+      "Les parents suivent les scores de leurs enfants en direct depuis les gradins. Toute la salle vibre sur le même rythme.",
+    name: "S. Diallo",
+    role: "Entraîneur principal",
+    org: "Espoir Taekwondo Club — Dakar",
+  },
+  {
+    quote:
+      "Le mode TV a donné à nos remises de prix une dimension internationale. Nos partenaires n'en reviennent toujours pas.",
+    name: "R. Benali",
+    role: "Président",
+    org: "JS Oran Taekwondo",
+  },
+];
