@@ -15,14 +15,14 @@ export const WEIGHT_CLASSES: WeightClass[] = [
 ];
 
 export const CLUBS = [
-  "Nadi El Amel (ALG)",
-  "JS Oran (ALG)",
-  "Espoir TKD Dakar (SEN)",
-  "AC Abidjan (CIV)",
-  "Casablanca TKD (MAR)",
-  "Lagos Dragons (NGA)",
-  "Nairobi Lions (KEN)",
-  "Kigali Warriors (RWA)",
+  "Taekwondo Club d'Abidjan",
+  "INJS Abidjan",
+  "Bouaké TKD Académie",
+  "Yamoussoukro Taekwondo",
+  "Denguélé d'Odienné",
+  "Korhogo TKD",
+  "San Pedro Olympique TKD",
+  "SOA Taekwondo",
 ];
 
 /** Détermine la catégorie d'un athlète à partir de son poids. */
@@ -56,7 +56,7 @@ function ath(
     gender,
     birthYear,
     club,
-    license: `LIC-26-${String(1000 + seedId)}`,
+    license: `FITKD-26-${String(1000 + seedId)}`,
     weight,
     category: cat,
     status: weight !== null ? "pesé" : "inscrit",
@@ -67,40 +67,40 @@ function seedAthletes(): Athlete[] {
   seedId = 0;
   return [
     // Hommes −68 kg (catégorie complète, tirage généré)
-    ath("Sofiane", "DELI", "M", 2001, "Nadi El Amel (ALG)", 64.2),
-    ath("Daouda", "HERVE", "M", 1999, "AC Abidjan (CIV)", 66.8),
-    ath("Karim", "MANSOURI", "M", 2003, "JS Oran (ALG)", 62.5),
-    ath("Ibrahima", "NDIAYE", "M", 2002, "Espoir TKD Dakar (SEN)", 67.4),
-    ath("Youssef", "BENALI", "M", 2000, "Casablanca TKD (MAR)", 61.0),
-    ath("Chinedu", "OKAFOR", "M", 2004, "Lagos Dragons (NGA)", 65.7),
+    ath("Adama", "KONÉ", "M", 2001, "Taekwondo Club d'Abidjan", 64.2),
+    ath("Seydou", "TRAORÉ", "M", 1999, "INJS Abidjan", 66.8),
+    ath("Wilfried", "AKA", "M", 2003, "Bouaké TKD Académie", 62.5),
+    ath("Moussa", "DIABATÉ", "M", 2002, "Yamoussoukro Taekwondo", 67.4),
+    ath("Jean-Marc", "N'GUESSAN", "M", 2000, "Taekwondo Club d'Abidjan", 61.0),
+    ath("Ibrahim", "OUATTARA", "M", 2004, "Korhogo TKD", 65.7),
     // Hommes −58 kg
-    ath("Amine", "KOUASSI", "M", 2005, "AC Abidjan (CIV)", 55.3),
-    ath("Moussa", "TRAORÉ", "M", 2003, "Espoir TKD Dakar (SEN)", 57.1),
-    ath("Reda", "HADJ", "M", 2006, "Nadi El Amel (ALG)", 54.8),
-    ath("Kevin", "MWAPE", "M", 2004, "Nairobi Lions (KEN)", 56.2),
-    ath("Omar", "SY", "M", 2005, "Espoir TKD Dakar (SEN)", null),
+    ath("Ange", "KOUADIO", "M", 2005, "INJS Abidjan", 55.3),
+    ath("Tiémoko", "SILUÉ", "M", 2003, "Korhogo TKD", 57.1),
+    ath("Koffi", "YAO", "M", 2006, "Bouaké TKD Académie", 54.8),
+    ath("Franck", "KASSI", "M", 2004, "San Pedro Olympique TKD", 56.2),
+    ath("Issa", "BAMBA", "M", 2005, "Denguélé d'Odienné", null),
     // Hommes −80 kg
-    ath("Abdoulaye", "DIALLO", "M", 1998, "Espoir TKD Dakar (SEN)", 76.4),
-    ath("Mehdi", "CHERIF", "M", 2000, "JS Oran (ALG)", 78.9),
-    ath("Samuel", "ETOUNDI", "M", 1997, "Kigali Warriors (RWA)", 74.1),
+    ath("Abdoulaye", "CISSÉ", "M", 1998, "Denguélé d'Odienné", 76.4),
+    ath("Hermann", "KONAN", "M", 2000, "Taekwondo Club d'Abidjan", 78.9),
+    ath("Serge", "TANOH", "M", 1997, "SOA Taekwondo", 74.1),
     // Hommes +80 kg
-    ath("Babacar", "FALL", "M", 1996, "Espoir TKD Dakar (SEN)", 92.5),
-    ath("Jean-Marc", "KOUIDIO", "M", 1999, "AC Abidjan (CIV)", 88.2),
+    ath("Lacina", "DOUMBIA", "M", 1996, "Yamoussoukro Taekwondo", 92.5),
+    ath("Éric", "GNAGNE", "M", 1999, "SOA Taekwondo", 88.2),
     // Femmes −49 kg
-    ath("Awa", "CISSÉ", "F", 2004, "Espoir TKD Dakar (SEN)", 46.2),
-    ath("Lina", "BOUZID", "F", 2002, "Nadi El Amel (ALG)", 48.0),
-    ath("Fatoumata", "KANTÉ", "F", 2005, "AC Abidjan (CIV)", 47.3),
-    ath("Grace", "ADEYEMI", "F", 2003, "Lagos Dragons (NGA)", null),
+    ath("Aya", "KOUAMÉ", "F", 2004, "INJS Abidjan", 46.2),
+    ath("Salimata", "FOFANA", "F", 2002, "Korhogo TKD", 48.0),
+    ath("Adjoua", "N'ZI", "F", 2005, "Bouaké TKD Académie", 47.3),
+    ath("Grâce", "ASSAMOI", "F", 2003, "Taekwondo Club d'Abidjan", null),
     // Femmes −57 kg
-    ath("Nour", "EL AMRI", "F", 2001, "Casablanca TKD (MAR)", 53.6),
-    ath("Salimata", "OUÉDRAOGO", "F", 2000, "Espoir TKD Dakar (SEN)", 55.9),
-    ath("Mariam", "TOURE", "F", 2003, "AC Abidjan (CIV)", 52.4),
+    ath("Aminata", "SANGARÉ", "F", 2001, "Denguélé d'Odienné", 53.6),
+    ath("Mariam", "TOURE", "F", 2000, "Yamoussoukro Taekwondo", 55.9),
+    ath("Prisca", "GUEI", "F", 2003, "San Pedro Olympique TKD", 52.4),
     // Femmes −67 kg
-    ath("Kenza", "BERRAH", "F", 1999, "JS Oran (ALG)", 63.7),
-    ath("Aminata", "SOW", "F", 1998, "Espoir TKD Dakar (SEN)", 65.1),
+    ath("Bintou", "KONATÉ", "F", 1999, "SOA Taekwondo", 63.7),
+    ath("Nafissatou", "COULIBALY", "F", 1998, "Korhogo TKD", 65.1),
     // Femmes +67 kg
-    ath("Ruth", "WAMBUI", "F", 1997, "Nairobi Lions (KEN)", 71.8),
-    ath("Oumou", "DIAGNE", "F", 2000, "Espoir TKD Dakar (SEN)", 69.4),
+    ath("Ruth", "ADOU", "F", 1997, "Taekwondo Club d'Abidjan", 71.8),
+    ath("Fatoumata", "ZADI", "F", 2000, "INJS Abidjan", 69.4),
   ];
 }
 
@@ -136,12 +136,12 @@ export function buildSeed(): AppState {
   catStatus["M-68"] = "tirée";
 
   return {
-    version: 1,
+    version: 2,
     event: {
-      name: "DOJANG Cup 2026",
+      name: "Championnat National FITKD 2026",
       date: "14–16 Mars 2026",
-      venue: "Palais des Sports — Alger",
-      arenas: 2,
+      venue: "Palais des Sports — Treichville, Abidjan",
+      arenas: 3,
     },
     athletes,
     brackets: { "M-68": bracket },

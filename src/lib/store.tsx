@@ -15,7 +15,7 @@ function loadInitial(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed && parsed.version === 1 && Array.isArray(parsed.athletes)) {
+      if (parsed && parsed.version === 2 && Array.isArray(parsed.athletes)) {
         return parsed;
       }
     }

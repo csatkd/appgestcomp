@@ -61,7 +61,7 @@ export default function Athletes() {
       gender: form.gender,
       birthYear: year,
       club: form.club.trim(),
-      license: `LIC-26-${Math.floor(1000 + Math.random() * 9000)}`,
+      license: `FITKD-26-${Math.floor(1000 + Math.random() * 9000)}`,
       weight: null,
       category: null,
       status: "inscrit",
@@ -279,7 +279,7 @@ export default function Athletes() {
               list="clubs-list"
               value={form.club}
               onChange={(e) => setForm({ ...form, club: e.target.value })}
-              placeholder="Espoir TKD Dakar (SEN)"
+              placeholder="Taekwondo Club d'Abidjan"
             />
             <datalist id="clubs-list">
               {CLUBS.map((c) => (
