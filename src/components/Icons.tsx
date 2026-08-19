@@ -10,50 +10,147 @@ const S = {
   strokeLinejoin: "round" as const,
 };
 
-/* Marque TKD365 : nœud de ceinture stylisé */
-export function LogoMark({ className = "w-8 h-8" }: IconProps) {
+export function LogoMark({ className = "w-9 h-9" }: IconProps) {
   return (
     <svg viewBox="0 0 40 40" className={className} aria-hidden="true">
       <rect x="1" y="1" width="38" height="38" fill="none" stroke="currentColor" strokeWidth="2" />
       <path d="M6 10 L34 26 L30 32 L4 16 Z" fill="#e2472e" />
       <path d="M34 10 L6 26 L10 32 L36 16 Z" fill="#f0a41c" />
-      <rect x="16" y="14" width="8" height="8" fill="#161009" stroke="#f4ead9" strokeWidth="1.4" />
+      <rect x="16" y="14" width="8" height="8" fill="#14100a" stroke="#f4ead9" strokeWidth="1.4" />
     </svg>
   );
 }
 
-/* Losange kente pour les marquee */
-export function Diamond({ className = "w-4 h-4" }: IconProps) {
-  return (
-    <svg viewBox="0 0 16 16" className={className} aria-hidden="true">
-      <path d="M8 0 L16 8 L8 16 L0 8 Z" fill="currentColor" />
-      <path d="M8 4 L12 8 L8 12 L4 8 Z" fill="#161009" />
-    </svg>
-  );
-}
-
-export function ArrowRight({ className = "w-4 h-4" }: IconProps) {
+export function IconGrid({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M3 12h17M14 5.5 20.5 12 14 18.5" />
+      <rect x="3.5" y="3.5" width="7" height="7" />
+      <rect x="13.5" y="3.5" width="7" height="7" />
+      <rect x="3.5" y="13.5" width="7" height="7" />
+      <rect x="13.5" y="13.5" width="7" height="7" />
     </svg>
   );
 }
 
-export function IconPin({ className = "w-4 h-4" }: IconProps) {
+export function IconUsers({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M12 21s-6.5-5.6-6.5-10.4A6.5 6.5 0 0 1 12 4a6.5 6.5 0 0 1 6.5 6.6C18.5 15.4 12 21 12 21Z" />
-      <circle cx="12" cy="10.5" r="2.3" />
+      <circle cx="9" cy="8.5" r="3.2" />
+      <path d="M3.5 19.5c.6-3.4 2.8-5.3 5.5-5.3s4.9 1.9 5.5 5.3M15.5 5.7a3.2 3.2 0 1 1 0 5.7M17.5 14.4c1.7.6 2.7 2.3 3 5.1" />
     </svg>
   );
 }
 
-export function IconCal({ className = "w-4 h-4" }: IconProps) {
+export function IconScale({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <rect x="3.5" y="5" width="17" height="15.5" />
-      <path d="M3.5 9.5h17M8 2.8V6.5M16 2.8V6.5M7.5 13.5h3M13.5 13.5h3M7.5 17h3" />
+      <path d="M4 20h16M6 20v-2.5h12V20M12 17.5V14" />
+      <path d="M5.5 14a6.5 6.5 0 0 1 13 0Z" />
+      <path d="M12 14 15 9.5" />
+    </svg>
+  );
+}
+
+export function IconBracket({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M3.5 5h4v4h-4zM3.5 15h4v4h-4zM16.5 10h4v4h-4z" />
+      <path d="M7.5 7h3v10h-3M10.5 12h6" />
+    </svg>
+  );
+}
+
+export function IconLive({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <circle cx="12" cy="10.5" r="1.6" />
+      <path d="M12 12v8.5M8.2 6.7a5.4 5.4 0 0 0 0 7.6M15.8 6.7a5.4 5.4 0 0 1 0 7.6M5.6 4a9.2 9.2 0 0 0 0 13M18.4 4a9.2 9.2 0 0 1 0 13" />
+    </svg>
+  );
+}
+
+export function IconTrophy({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M7 4h10v5a5 5 0 0 1-10 0Z" />
+      <path d="M7 5.5H4V7a3.5 3.5 0 0 0 3.2 3.5M17 5.5h3V7a3.5 3.5 0 0 1-3.2 3.5" />
+      <path d="M12 14v3.5M8.5 20.5h7M10 17.5h4l.7 3h-5.4Z" />
+    </svg>
+  );
+}
+
+export function IconPlus({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+export function IconSearch({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6" />
+      <path d="m15.5 15.5 5 5" />
+    </svg>
+  );
+}
+
+export function IconTrash({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M4.5 6.5h15M9.5 6V4.5h5V6M6.5 6.5 7.5 20h9l1-13.5M10 10v6.5M14 10v6.5" />
+    </svg>
+  );
+}
+
+export function IconUndo({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M8 5 3.5 9.5 8 14" />
+      <path d="M3.5 9.5H15a5.5 5.5 0 1 1 0 11H9" />
+    </svg>
+  );
+}
+
+export function IconPlay({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M7 4.5v15l13-7.5Z" />
+    </svg>
+  );
+}
+
+export function IconPause({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <rect x="6" y="4.5" width="4" height="15" />
+      <rect x="14" y="4.5" width="4" height="15" />
+    </svg>
+  );
+}
+
+export function IconFlag({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M5.5 21V4" />
+      <path d="M5.5 4.5c3-1.8 6-1.8 8.5 0s5.5 1.8 6.5.9V13c-1 .9-4 .9-6.5-.9s-5.5-1.8-8.5 0" />
+    </svg>
+  );
+}
+
+export function IconCheck({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden="true">
+      <path d="m4.5 12.5 5 5L19.5 7" />
+    </svg>
+  );
+}
+
+export function IconX({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden="true">
+      <path d="M6 6l12 12M18 6 6 18" />
     </svg>
   );
 }
@@ -67,191 +164,46 @@ export function IconClock({ className = "w-4 h-4" }: IconProps) {
   );
 }
 
-export function IconUsers({ className = "w-4 h-4" }: IconProps) {
+export function IconAlert({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <circle cx="9" cy="8.5" r="3.2" />
-      <path d="M3.5 19.5c.6-3.4 2.8-5.3 5.5-5.3s4.9 1.9 5.5 5.3M15.5 5.7a3.2 3.2 0 1 1 0 5.7M17.5 14.4c1.7.6 2.7 2.3 3 5.1" />
+      <path d="M12 3.5 2.5 20h19Z" />
+      <path d="M12 9.5v5M12 17.2v.3" />
     </svg>
   );
 }
 
-/* ——— Icônes des 12 modules ——— */
-
-export function IconQr({ className = "w-7 h-7" }: IconProps) {
+export function IconChevron({ className = "w-4 h-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <rect x="3.5" y="3.5" width="6.5" height="6.5" />
-      <rect x="14" y="3.5" width="6.5" height="6.5" />
-      <rect x="3.5" y="14" width="6.5" height="6.5" />
-      <path d="M6.2 6.2h1.1v1.1H6.2zM16.7 6.2h1.1v1.1h-1.1zM6.2 16.7h1.1v1.1H6.2zM14 14h3v3M20.5 14v.01M17 20.5h3.5v-3.5M14 19v1.5" />
+      <path d="m9 5 7 7-7 7" />
     </svg>
   );
 }
 
-export function IconBadge({ className = "w-7 h-7" }: IconProps) {
+export function IconReset({ className = "w-4 h-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <rect x="4" y="6" width="16" height="14" />
-      <path d="M9 6V4h6v2M7.5 10h4v4h-4zM14 10.5h3M14 13h3M7.5 16.8h9.5" />
+      <path d="M4.5 5.5V10H9" />
+      <path d="M4.8 10a8 8 0 1 1-.8 5" />
     </svg>
   );
 }
 
-export function IconScale({ className = "w-7 h-7" }: IconProps) {
+export function IconLock({ className = "w-4 h-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M4 20h16M6 20v-2.5h12V20M12 17.5V14" />
-      <path d="M5.5 14a6.5 6.5 0 0 1 13 0Z" />
-      <path d="M12 14 15 9.5" />
+      <rect x="5" y="10.5" width="14" height="9.5" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5M12 14.5v2" />
     </svg>
   );
 }
 
-export function IconBracket({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M3.5 5h4v4h-4zM3.5 15h4v4h-4zM16.5 10h4v4h-4z" />
-      <path d="M7.5 7h3v10h-3M10.5 12h6" />
-    </svg>
-  );
-}
-
-export function IconWhistle({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M13.5 9H21v3.4l-5.6 1.3a4.9 4.9 0 1 1-1.9-4.7Z" />
-      <circle cx="10.4" cy="13.9" r="1.1" />
-      <path d="M8.5 6.5 10 8M12.5 5v2M16.5 6.5 15 8" />
-    </svg>
-  );
-}
-
-export function IconBoard({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <rect x="3.5" y="4.5" width="17" height="12" />
-      <path d="M12 4.5v12M6.5 8.5h2.5M15 8.5h2.5M6.5 12.5h1.5M16 12.5h1.5M9 20.5h6M12 16.5v4" />
-    </svg>
-  );
-}
-
-export function IconFlag({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M5.5 21V4" />
-      <path d="M5.5 4.5c3-1.8 6-1.8 8.5 0s5.5 1.8 6.5.9V13c-1 .9-4 .9-6.5-.9s-5.5-1.8-8.5 0" />
-    </svg>
-  );
-}
-
-export function IconAntenna({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <circle cx="12" cy="10.5" r="1.6" />
-      <path d="M12 12v8.5M8.5 20.5h7M8.2 6.7a5.4 5.4 0 0 0 0 7.6M15.8 6.7a5.4 5.4 0 0 1 0 7.6M5.6 4a9.2 9.2 0 0 0 0 13M18.4 4a9.2 9.2 0 0 1 0 13" />
-    </svg>
-  );
-}
-
-export function IconChart({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M3.5 3.5v17h17" />
-      <path d="M7.5 16.5v-5M12 16.5V7M16.5 16.5v-7.5" />
-      <path d="M6.5 8.5 11 5l3.5 2.5L19 4" />
-    </svg>
-  );
-}
-
-export function IconGlobe({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M3.5 12h17M12 3.5c2.5 2.4 3.7 5.3 3.7 8.5S14.5 18.1 12 20.5C9.5 18.1 8.3 15.2 8.3 12S9.5 5.9 12 3.5Z" />
-    </svg>
-  );
-}
-
-export function IconTv({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <rect x="3" y="5" width="18" height="12.5" />
-      <path d="M8.5 21h7M12 17.5V21M7 14.5l4-4 2.5 2.5L17 9.5" />
-    </svg>
-  );
-}
-
-export function IconPlug({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M9 3.5V8M15 3.5V8M7 8h10v3a5 5 0 0 1-5 5 5 5 0 0 1-5-5Z" />
-      <path d="M12 16v4.5" />
-    </svg>
-  );
-}
-
-export function IconTrophy({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M7 4h10v5a5 5 0 0 1-10 0Z" />
-      <path d="M7 5.5H4V7a3.5 3.5 0 0 0 3.2 3.5M17 5.5h3V7a3.5 3.5 0 0 1-3.2 3.5" />
-      <path d="M12 14v3.5M8.5 20.5h7M10 17.5h4l.7 3h-5.4Z" />
-    </svg>
-  );
-}
-
-export function IconMedal({ className = "w-7 h-7" }: IconProps) {
+export function IconMedal({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
       <circle cx="12" cy="15" r="4.5" />
-      <path d="M9.8 11.2 5.5 3.5h4.6L12 7l1.9-3.5h4.6l-4.3 7.7M12 13.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 15.3l2-.3Z" />
+      <path d="M9.8 11.2 5.5 3.5h4.6L12 7l1.9-3.5h4.6l-4.3 7.7" />
     </svg>
   );
 }
-
-export function IconGear({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <circle cx="12" cy="12" r="3.2" />
-      <path d="M12 3.5v2.4M12 18.1v2.4M3.5 12h2.4M18.1 12h2.4M6 6l1.7 1.7M16.3 16.3 18 18M18 6l-1.7 1.7M7.7 16.3 6 18" />
-    </svg>
-  );
-}
-
-export function IconBelt({ className = "w-7 h-7" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
-      <path d="M2.5 8.5h7.7l1.8 1.8 1.8-1.8h7.7" />
-      <path d="M2.5 11.5h6.2M15.3 11.5h6.2" />
-      <rect x="9.8" y="8.3" width="4.4" height="4.6" />
-      <path d="m10.4 12.9-2.6 7.6M13.6 12.9l2.6 7.6" />
-    </svg>
-  );
-}
-
-export function IconCheck({ className = "w-4 h-4" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden="true">
-      <path d="m4.5 12.5 5 5L19.5 7" />
-    </svg>
-  );
-}
-
-export const MODULE_ICONS: Record<string, (p: IconProps) => React.ReactElement> = {
-  trophy: IconTrophy,
-  medal: IconMedal,
-  gear: IconGear,
-  qr: IconQr,
-  badge: IconBadge,
-  scale: IconScale,
-  bracket: IconBracket,
-  whistle: IconWhistle,
-  board: IconBoard,
-  flag: IconFlag,
-  antenna: IconAntenna,
-  chart: IconChart,
-  globe: IconGlobe,
-  tv: IconTv,
-  plug: IconPlug,
-};

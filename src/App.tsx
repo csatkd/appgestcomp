@@ -1,52 +1,39 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
-import Features from "./components/Features";
-import Events from "./components/Events";
-import Journey from "./components/Journey";
-import Roles from "./components/Roles";
-import Modules from "./components/Modules";
-import About from "./components/About";
-import Rankings from "./components/Rankings";
-import Testimonials from "./components/Testimonials";
-import Cta from "./components/Cta";
-import Footer from "./components/Footer";
-import { DISCIPLINES } from "./data";
+import { HashRouter, Route, Routes, Navigate, useParams } from "react-router-dom";
+import { StoreProvider } from "./lib/store";
+import { ToastProvider } from "./components/ui";
+import Layout from "./components/Layout";
+import Dashboard from "./pages/Dashboard";
+import Athletes from "./pages/Athletes";
+import WeighIn from "./pages/WeighIn";
+import Brackets from "./pages/Brackets";
+import { LiveIndex, LiveMatch } from "./pages/Live";
+import Results from "./pages/Results";
 
-const CITY_ITEMS = [
-  "Inscriptions ouvertes",
-  "Alger",
-  "Oran",
-  "Constantine",
-  "Annaba",
-  "Sétif",
-  "320+ événements / an",
-  "Scoring en direct",
-];
+/** Remonte l'écran de combat à chaque changement d'adversaires. */
+function LiveMatchPage() {
+  const { matchId } = useParams();
+  return <LiveMatch key={matchId} />;
+}
 
 export default function App() {
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-night font-body text-bone">
-      <div className="noise-layer" aria-hidden="true" />
-
-      <Header />
-
-      <main>
-        <Hero />
-        <Marquee items={[...DISCIPLINES, "Formation"]} />
-        <Features />
-        <Events />
-        <Journey />
-        <Roles />
-        <Modules />
-        <About />
-        <Rankings />
-        <Testimonials />
-        <Marquee items={CITY_ITEMS} reverse variant="dark" />
-        <Cta />
-      </main>
-
-      <Footer />
-    </div>
+    <StoreProvider>
+      <ToastProvider>
+        <HashRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/athletes" element={<Athletes />} />
+              <Route path="/pesee" element={<WeighIn />} />
+              <Route path="/tirages" element={<Brackets />} />
+              <Route path="/live" element={<LiveIndex />} />
+              <Route path="/live/:matchId" element={<LiveMatchPage />} />
+              <Route path="/resultats" element={<Results />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Layout>
+        </HashRouter>
+      </ToastProvider>
+    </StoreProvider>
   );
 }
