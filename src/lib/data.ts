@@ -136,7 +136,7 @@ export function buildSeed(): AppState {
   catStatus["M-68"] = "tirée";
 
   return {
-    version: 2,
+    version: 3,
     event: {
       name: "Championnat National FITKD 2026",
       date: "14–16 Mars 2026",
@@ -147,6 +147,33 @@ export function buildSeed(): AppState {
     brackets: { "M-68": bracket },
     catStatus,
     results: {},
+    disabledCats: [],
+    activity: [
+      {
+        id: "seed-1",
+        time: new Date(Date.now() - 1000 * 60 * 42).toISOString(),
+        kind: "config",
+        label: "Événement configuré — Championnat National FITKD 2026",
+      },
+      {
+        id: "seed-2",
+        time: new Date(Date.now() - 1000 * 60 * 31).toISOString(),
+        kind: "athlete",
+        label: "27 athlètes inscrits depuis 8 clubs ivoiriens",
+      },
+      {
+        id: "seed-3",
+        time: new Date(Date.now() - 1000 * 60 * 18).toISOString(),
+        kind: "pesee",
+        label: "Pesée officielle terminée — 26 athlètes validés",
+      },
+      {
+        id: "seed-4",
+        time: new Date(Date.now() - 1000 * 60 * 6).toISOString(),
+        kind: "tirage",
+        label: "Tirage au sort généré — Hommes −68 kg (8 engagés)",
+      },
+    ],
   };
 }
 

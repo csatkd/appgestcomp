@@ -199,6 +199,31 @@ export function IconLock({ className = "w-4 h-4" }: IconProps) {
   );
 }
 
+export function IconGear({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <circle cx="12" cy="12" r="3.1" />
+      <path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M18.5 5.5l-1.8 1.8M7.3 16.7l-1.8 1.8" />
+    </svg>
+  );
+}
+
+export function IconDownload({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M12 3.5v11M7.5 10 12 14.5 16.5 10M4 17v3.5h16V17" />
+    </svg>
+  );
+}
+
+export function IconUpload({ className = "w-4 h-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M12 14.5v-11M7.5 8 12 3.5 16.5 8M4 17v3.5h16V17" />
+    </svg>
+  );
+}
+
 export function IconMedal({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">

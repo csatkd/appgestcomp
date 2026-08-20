@@ -64,6 +64,21 @@ export interface EventConfig {
   arenas: number;
 }
 
+export type ActivityKind =
+  | "athlete"
+  | "pesee"
+  | "tirage"
+  | "combat"
+  | "config"
+  | "donnees";
+
+export interface ActivityEntry {
+  id: string;
+  time: string; // ISO
+  kind: ActivityKind;
+  label: string;
+}
+
 export interface AppState {
   version: number;
   event: EventConfig;
@@ -71,6 +86,8 @@ export interface AppState {
   brackets: Record<string, Match[]>;
   catStatus: Record<string, CategoryStatus>;
   results: Record<string, Podium>;
+  disabledCats: string[];
+  activity: ActivityEntry[];
 }
 
 export type Action =
@@ -83,4 +100,7 @@ export type Action =
   | { type: "RESET_BRACKET"; catId: string }
   | { type: "SET_MATCH"; catId: string; match: Match }
   | { type: "FINISH_MATCH"; catId: string; matchId: string; winner: "a" | "b" }
+  | { type: "UPDATE_EVENT"; event: EventConfig }
+  | { type: "TOGGLE_CLASS"; catId: string }
+  | { type: "IMPORT_STATE"; state: AppState; label?: string }
   | { type: "RESET_ALL" };

@@ -8,6 +8,7 @@ import WeighIn from "./pages/WeighIn";
 import Brackets from "./pages/Brackets";
 import { LiveIndex, LiveMatch } from "./pages/Live";
 import Results from "./pages/Results";
+import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
 function LiveMatchPage() {
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="/live" element={<LiveIndex />} />
               <Route path="/live/:matchId" element={<LiveMatchPage />} />
               <Route path="/resultats" element={<Results />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Layout>

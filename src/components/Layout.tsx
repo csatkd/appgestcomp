@@ -11,6 +11,7 @@ import {
   IconBracket,
   IconLive,
   IconTrophy,
+  IconGear,
   IconLock,
   IconReset,
 } from "./Icons";
@@ -22,9 +23,10 @@ const NAV = [
   { to: "/tirages", label: "Tirages au sort", icon: IconBracket },
   { to: "/live", label: "Live Scoring", icon: IconLive },
   { to: "/resultats", label: "Résultats", icon: IconTrophy },
+  { to: "/admin", label: "Administration", icon: IconGear },
 ];
 
-const UPCOMING = ["Réclamations", "Mode TV", "QR Présences", "Exports"];
+const UPCOMING = ["Réclamations", "Mode TV", "QR Présences"];
 
 function Clock() {
   const [now, setNow] = useState(() => new Date());

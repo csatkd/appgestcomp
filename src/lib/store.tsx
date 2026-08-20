@@ -6,17 +6,23 @@ import {
   useReducer,
   type ReactNode,
 } from "react";
-import type { Action, AppState, Match } from "./types";
-import { buildSeed, categoryFor, STORAGE_KEY, WEIGHT_CLASSES } from "./data";
-import { finishMatch, generateBracket, shuffle } from "./bracket";
+import type { Action, ActivityEntry, ActivityKind, AppState, Match } from "./types";
+import { buildSeed, categoryFor, classLabel, STORAGE_KEY, WEIGHT_CLASSES } from "./data";
+import { finishMatch, generateBracket, shuffle, uid } from "./bracket";
+
+const ACTIVITY_LIMIT = 80;
 
 function loadInitial(): AppState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed && parsed.version === 2 && Array.isArray(parsed.athletes)) {
-        return parsed;
+      if (parsed && parsed.version === 3 && Array.isArray(parsed.athletes)) {
+        return {
+          ...parsed,
+          disabledCats: parsed.disabledCats ?? [],
+          activity: parsed.activity ?? [],
+        };
       }
     }
   } catch {
@@ -25,21 +31,54 @@ function loadInitial(): AppState {
   return buildSeed();
 }
 
+/** Ajoute une entrée au journal d'activité (plafonné). */
+function withLog(
+  state: AppState,
+  kind: ActivityKind,
+  label: string
+): AppState {
+  const entry: ActivityEntry = {
+    id: uid("act"),
+    time: new Date().toISOString(),
+    kind,
+    label,
+  };
+  return { ...state, activity: [entry, ...state.activity].slice(0, ACTIVITY_LIMIT) };
+}
+
+function athleteLabel(state: AppState, id: string): string {
+  const a = state.athletes.find((x) => x.id === id);
+  return a ? `${a.firstName} ${a.lastName}` : id;
+}
+
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case "ADD_ATHLETE":
-      return { ...state, athletes: [action.athlete, ...state.athletes] };
+    case "ADD_ATHLETE": {
+      const next = { ...state, athletes: [action.athlete, ...state.athletes] };
+      return withLog(
+        next,
+        "athlete",
+        `Inscription : ${action.athlete.firstName} ${action.athlete.lastName} (${action.athlete.club})`
+      );
+    }
 
-    case "DELETE_ATHLETE":
-      return {
+    case "DELETE_ATHLETE": {
+      const name = athleteLabel(state, action.id);
+      const next = {
         ...state,
         athletes: state.athletes.filter((a) => a.id !== action.id),
       };
+      return withLog(next, "athlete", `Suppression du dossier : ${name}`);
+    }
 
     case "WEIGH_IN": {
+      const name = athleteLabel(state, action.id);
+      const cat = categoryFor(
+        state.athletes.find((a) => a.id === action.id)?.gender ?? "M",
+        action.weight
+      );
       const athletes = state.athletes.map((a) => {
         if (a.id !== action.id) return a;
-        const cat = categoryFor(a.gender, action.weight);
         return {
           ...a,
           weight: action.weight,
@@ -47,48 +86,64 @@ function reducer(state: AppState, action: Action): AppState {
           status: "pesé" as const,
         };
       });
-      return { ...state, athletes };
+      return withLog(
+        { ...state, athletes },
+        "pesee",
+        `Pesée validée : ${name} — ${action.weight.toFixed(1)} kg → ${classLabel(cat.id)}`
+      );
     }
 
-    case "FORFAIT":
-      return {
+    case "FORFAIT": {
+      const name = athleteLabel(state, action.id);
+      const next = {
         ...state,
         athletes: state.athletes.map((a) =>
-          a.id === action.id ? { ...a, status: "forfait" } : a
+          a.id === action.id ? { ...a, status: "forfait" as const } : a
         ),
       };
+      return withLog(next, "pesee", `Forfait déclaré : ${name}`);
+    }
 
-    case "REINSTATE":
-      return {
+    case "REINSTATE": {
+      const name = athleteLabel(state, action.id);
+      const next = {
         ...state,
         athletes: state.athletes.map((a) =>
           a.id === action.id
-            ? { ...a, status: a.weight !== null ? "pesé" : "inscrit" }
+            ? { ...a, status: a.weight !== null ? ("pesé" as const) : ("inscrit" as const) }
             : a
         ),
       };
+      return withLog(next, "pesee", `Réintégration : ${name}`);
+    }
 
     case "GENERATE_BRACKET": {
       const ids = shuffle(action.athleteIds);
       const matches = generateBracket(action.catId, ids);
-      return {
+      const next = {
         ...state,
         brackets: { ...state.brackets, [action.catId]: matches },
-        catStatus: { ...state.catStatus, [action.catId]: "tirée" },
+        catStatus: { ...state.catStatus, [action.catId]: "tirée" as const },
       };
+      return withLog(
+        next,
+        "tirage",
+        `Tirage au sort généré — ${classLabel(action.catId)} (${ids.length} engagés)`
+      );
     }
 
     case "RESET_BRACKET": {
       const brackets = { ...state.brackets };
       delete brackets[action.catId];
-      return {
+      const next = {
         ...state,
         brackets,
-        catStatus: { ...state.catStatus, [action.catId]: "ouverte" },
+        catStatus: { ...state.catStatus, [action.catId]: "ouverte" as const },
         results: Object.fromEntries(
           Object.entries(state.results).filter(([k]) => k !== action.catId)
         ),
       };
+      return withLog(next, "tirage", `Tableau annulé — ${classLabel(action.catId)}`);
     }
 
     case "SET_MATCH": {
@@ -113,16 +168,53 @@ function reducer(state: AppState, action: Action): AppState {
       const catStatus = podium
         ? { ...state.catStatus, [action.catId]: "terminée" as const }
         : state.catStatus;
-      return {
+      const next = {
         ...state,
         brackets: { ...state.brackets, [action.catId]: matches },
         results,
         catStatus,
       };
+      if (podium) {
+        return withLog(
+          next,
+          "combat",
+          `Catégorie officialisée — ${classLabel(action.catId)} : or pour ${athleteLabel(state, podium.gold)}`
+        );
+      }
+      return next;
     }
 
-    case "RESET_ALL":
-      return buildSeed();
+    case "UPDATE_EVENT": {
+      const next = { ...state, event: action.event };
+      return withLog(next, "config", `Événement mis à jour : ${action.event.name}`);
+    }
+
+    case "TOGGLE_CLASS": {
+      const disabled = state.disabledCats.includes(action.catId);
+      const disabledCats = disabled
+        ? state.disabledCats.filter((c) => c !== action.catId)
+        : [...state.disabledCats, action.catId];
+      const next = { ...state, disabledCats };
+      return withLog(
+        next,
+        "config",
+        `${classLabel(action.catId)} ${disabled ? "réouverte aux engagements" : "fermée aux engagements"}`
+      );
+    }
+
+    case "IMPORT_STATE": {
+      const next = withLog(
+        action.state,
+        "donnees",
+        action.label ?? "Données importées depuis une sauvegarde JSON"
+      );
+      return next;
+    }
+
+    case "RESET_ALL": {
+      const next = buildSeed();
+      return withLog(next, "donnees", "Données réinitialisées (jeu de démonstration FITKD)");
+    }
 
     default:
       return state;

@@ -122,7 +122,10 @@ export default function WeighIn() {
               const previewW = Number(draft);
               const previewValid = Number.isFinite(previewW) && previewW >= 20 && previewW <= 200;
               const previewCat = previewValid ? categoryFor(a.gender, previewW) : null;
-              const locked = previewCat !== null && state.catStatus[previewCat.id] !== "ouverte";
+              const locked =
+                previewCat !== null &&
+                (state.catStatus[previewCat.id] !== "ouverte" ||
+                  state.disabledCats.includes(previewCat.id));
 
               return (
                 <tr key={a.id} className="row-hover">
@@ -156,6 +159,11 @@ export default function WeighIn() {
                     {previewCat ? (
                       <span className={`text-sm font-semibold ${locked ? "text-flame" : "text-gold"}`}>
                         {classLabel(previewCat.id)}
+                        {state.disabledCats.includes(previewCat.id) && (
+                          <span className="ml-2 font-mono text-[9px] uppercase tracking-[0.14em] text-flame">
+                            · Fermée
+                          </span>
+                        )}
                       </span>
                     ) : (
                       <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-dune/60">
