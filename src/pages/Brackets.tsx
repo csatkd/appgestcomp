@@ -103,6 +103,14 @@ export default function Brackets() {
   const eligible = weighedIn(state, selected);
 
   const generate = () => {
+    if (eligible.length < 2) {
+      toast("Impossible : au moins 2 athlètes pesés requis", "error");
+      return;
+    }
+    if (eligible.length > 64) {
+      toast("Attention : plus de 64 athlètes dans cette catégorie", "error");
+      return;
+    }
     dispatch({ type: "GENERATE_BRACKET", catId: selected, athleteIds: eligible.map((a) => a.id) });
     toast(`Tirage généré — ${classLabel(selected)} (${eligible.length} athlètes)`);
   };

@@ -28,13 +28,32 @@ export default function WeighIn() {
 
   const save = (id: string) => {
     const raw = pending[id];
+    if (!raw || raw.trim() === "") {
+      toast("Veuillez saisir un poids", "error");
+      return;
+    }
     const w = Number(raw);
-    if (!raw || !Number.isFinite(w) || w < 20 || w > 200) {
-      toast("Poids invalide — valeur attendue entre 20 et 200 kg", "error");
+    if (!Number.isFinite(w)) {
+      toast("Poids invalide — veuillez entrer un nombre", "error");
+      return;
+    }
+    if (w < 20 || w > 200) {
+      toast("Poids hors limites — valeur attendue entre 20 et 200 kg", "error");
+      return;
+    }
+    if (w < 30) {
+      toast("Attention : poids très faible, vérifiez la saisie", "error");
       return;
     }
     const athlete = state.athletes.find((a) => a.id === id);
-    if (!athlete) return;
+    if (!athlete) {
+      toast("Athlète introuvable", "error");
+      return;
+    }
+    if (athlete.status === "forfait") {
+      toast("Impossible : cet athlète a déclaré forfait", "error");
+      return;
+    }
     const cat = categoryFor(athlete.gender, w);
     const catStatus = state.catStatus[cat.id];
     if (catStatus !== "ouverte") {
@@ -47,7 +66,7 @@ export default function WeighIn() {
       delete n[id];
       return n;
     });
-    toast(`${athlete.firstName} ${athlete.lastName} → ${classLabel(cat.id)}`);
+    toast(`${athlete.firstName} ${athlete.lastName} → ${classLabel(cat.id)} (${w.toFixed(1)} kg)`);
   };
 
   return (

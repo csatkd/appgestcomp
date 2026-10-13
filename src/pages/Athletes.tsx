@@ -47,10 +47,15 @@ export default function Athletes() {
     e.preventDefault();
     const errs: typeof errors = {};
     if (!form.firstName.trim()) errs.firstName = "Prénom requis";
+    else if (form.firstName.trim().length < 2) errs.firstName = "Prénom trop court (2 caractères min.)";
     if (!form.lastName.trim()) errs.lastName = "Nom requis";
+    else if (form.lastName.trim().length < 2) errs.lastName = "Nom trop court (2 caractères min.)";
     const year = Number(form.birthYear);
-    if (!year || year < 1940 || year > 2020) errs.birthYear = "Année entre 1940 et 2020";
+    if (!year || !Number.isInteger(year)) errs.birthYear = "Année invalide";
+    else if (year < 1950) errs.birthYear = "Année trop ancienne (1950 min.)";
+    else if (year > new Date().getFullYear() - 5) errs.birthYear = "Âge minimum : 5 ans";
     if (!form.club.trim()) errs.club = "Club requis";
+    else if (form.club.trim().length < 3) errs.club = "Nom de club trop court";
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
 

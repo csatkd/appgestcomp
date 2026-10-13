@@ -1,7 +1,7 @@
 import type { AppState, Athlete, WeightClass } from "./types";
 import { generateBracket, totalRounds, finishMatch } from "./bracket";
 
-export const STORAGE_KEY = "dojang:v1";
+export const STORAGE_KEY = "dojang:v3";
 
 export const WEIGHT_CLASSES: WeightClass[] = [
   { id: "M-58", gender: "M", label: "Hommes −58 kg", maxWeight: 58 },

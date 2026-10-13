@@ -298,7 +298,14 @@ export function LiveMatch() {
   };
 
   const confirm = () => {
-    if (!winner) return;
+    if (!winner) {
+      toast("Aucun vainqueur sélectionné", "error");
+      return;
+    }
+    if (!match.a || !match.b) {
+      toast("Combat incomplet", "error");
+      return;
+    }
     dispatch({ type: "FINISH_MATCH", catId: match.catId, matchId: match.id, winner });
     const name = athleteName(state.athletes, winner === "a" ? match.a : match.b);
     toast(`Résultat officiel : victoire de ${name}`);

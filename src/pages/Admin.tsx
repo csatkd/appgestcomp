@@ -89,12 +89,15 @@ export default function Admin() {
     e.preventDefault();
     const errs: Record<string, string> = {};
     if (form.name.trim().length < 3) errs.name = "Nom trop court (3 caractères min.)";
+    else if (form.name.trim().length > 100) errs.name = "Nom trop long (100 caractères max.)";
     if (!form.date.trim()) errs.date = "Date requise";
+    else if (form.date.trim().length > 50) errs.date = "Date trop longue (50 caractères max.)";
     if (!form.venue.trim()) errs.venue = "Lieu requis";
-    if (form.arenas < 1 || form.arenas > 8) errs.arenas = "Entre 1 et 8 aires";
+    else if (form.venue.trim().length > 100) errs.venue = "Lieu trop long (100 caractères max.)";
+    if (!Number.isInteger(form.arenas) || form.arenas < 1 || form.arenas > 8) errs.arenas = "Entre 1 et 8 aires (entier)";
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    dispatch({ type: "UPDATE_EVENT", event: { ...form, name: form.name.trim() } });
+    dispatch({ type: "UPDATE_EVENT", event: { ...form, name: form.name.trim(), date: form.date.trim(), venue: form.venue.trim() } });
     toast("Paramètres de l'événement enregistrés");
   };
 
@@ -163,6 +166,14 @@ export default function Admin() {
   };
 
   const importJson = (file: File) => {
+    if (!file.name.endsWith(".json")) {
+      toast("Format de fichier invalide — fichier JSON requis", "error");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast("Fichier trop volumineux (max 10 Mo)", "error");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       try {
@@ -171,9 +182,16 @@ export default function Admin() {
           parsed.version !== 3 ||
           !Array.isArray(parsed.athletes) ||
           !parsed.event ||
-          typeof parsed.event.name !== "string"
+          typeof parsed.event.name !== "string" ||
+          typeof parsed.event.date !== "string" ||
+          typeof parsed.event.venue !== "string" ||
+          typeof parsed.event.arenas !== "number"
         ) {
           throw new Error("format");
+        }
+        if (parsed.athletes.length > 1000) {
+          toast("Sauvegarde trop volumineuse (max 1000 athlètes)", "error");
+          return;
         }
         dispatch({
           type: "IMPORT_STATE",
