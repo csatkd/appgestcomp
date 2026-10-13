@@ -222,7 +222,7 @@ export default function Admin() {
 
   const doWipe = () => {
     const empty: AppState = {
-      version: 4,
+      version: 5,
       event: state.event,
       athletes: [],
       brackets: {},
@@ -231,6 +231,9 @@ export default function Admin() {
       disabledCats: [],
       claims: [],
       qrScans: [],
+      competitions: state.competitions,
+      organizers: state.organizers,
+      currentCompetitionId: state.currentCompetitionId,
       activity: [
         {
           id: uid("act"),

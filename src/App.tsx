@@ -11,6 +11,8 @@ import Results from "./pages/Results";
 import Claims from "./pages/Claims";
 import TvMode from "./pages/TvMode";
 import QrPresence from "./pages/QrPresence";
+import Competitions from "./pages/Competitions";
+import Organizers from "./pages/Organizers";
 import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -27,6 +29,8 @@ export default function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/competitions" element={<Competitions />} />
+              <Route path="/organizers" element={<Organizers />} />
               <Route path="/athletes" element={<Athletes />} />
               <Route path="/pesee" element={<WeighIn />} />
               <Route path="/tirages" element={<Brackets />} />

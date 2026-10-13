@@ -17,10 +17,14 @@ import {
   IconFlag,
   IconTv,
   IconQr,
+  IconCalendar,
+  IconBuilding,
 } from "./Icons";
 
 const NAV = [
   { to: "/", label: "Tableau de bord", icon: IconGrid, end: true },
+  { to: "/competitions", label: "Compétitions", icon: IconCalendar },
+  { to: "/organizers", label: "Organisateurs", icon: IconBuilding },
   { to: "/athletes", label: "Athlètes", icon: IconUsers },
   { to: "/pesee", label: "Pesée", icon: IconScale },
   { to: "/tirages", label: "Tirages au sort", icon: IconBracket },

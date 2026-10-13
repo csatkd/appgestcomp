@@ -1,7 +1,7 @@
 import type { AppState, Athlete, WeightClass } from "./types";
 import { generateBracket, totalRounds, finishMatch } from "./bracket";
 
-export const STORAGE_KEY = "dojang:v4";
+export const STORAGE_KEY = "dojang:v5";
 
 export const WEIGHT_CLASSES: WeightClass[] = [
   { id: "M-58", gender: "M", label: "Hommes −58 kg", maxWeight: 58 },
@@ -136,7 +136,7 @@ export function buildSeed(): AppState {
   catStatus["M-68"] = "tirée";
 
   return {
-    version: 4,
+    version: 5,
     event: {
       name: "Championnat National FITKD 2026",
       date: "14–16 Mars 2026",
@@ -150,6 +150,31 @@ export function buildSeed(): AppState {
     disabledCats: [],
     claims: [],
     qrScans: [],
+    competitions: [
+      {
+        id: "comp-1",
+        name: "Championnat National FITKD 2026",
+        type: "nationale",
+        status: "active",
+        organizerId: "org-1",
+        startDate: "2026-03-14",
+        endDate: "2026-03-16",
+        venue: "Palais des Sports — Treichville, Abidjan",
+        arenas: 3,
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ],
+    organizers: [
+      {
+        id: "org-1",
+        name: "Fédération Ivoirienne de Taekwondo",
+        email: "contact@fitkd.ci",
+        organization: "FITKD",
+        phone: "+225 27 22 44 55 66",
+      },
+    ],
+    currentCompetitionId: "comp-1",
     activity: [
       {
         id: "seed-1",

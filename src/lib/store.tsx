@@ -17,7 +17,7 @@ function loadInitial(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed && parsed.version === 4 && Array.isArray(parsed.athletes)) {
+      if (parsed && parsed.version === 5 && Array.isArray(parsed.athletes)) {
         return {
           ...parsed,
           disabledCats: parsed.disabledCats ?? [],
@@ -240,6 +240,53 @@ function reducer(state: AppState, action: Action): AppState {
       const name = athlete ? `${athlete.firstName} ${athlete.lastName}` : "Inconnu";
       const typeLabel = action.scan.type === "presence" ? "présence" : "pesée";
       return withLog(next, "config", `Scan QR ${typeLabel} : ${name}`);
+    }
+
+    case "ADD_COMPETITION": {
+      const next = { ...state, competitions: [action.competition, ...state.competitions] };
+      return withLog(next, "config", `Nouvelle compétition créée : ${action.competition.name}`);
+    }
+
+    case "UPDATE_COMPETITION": {
+      const competitions = state.competitions.map((c) => {
+        if (c.id !== action.id) return c;
+        return { ...c, ...action.updates, updatedAt: new Date().toISOString() };
+      });
+      const next = { ...state, competitions };
+      const comp = competitions.find((c) => c.id === action.id);
+      return withLog(next, "config", `Compétition mise à jour : ${comp?.name}`);
+    }
+
+    case "DELETE_COMPETITION": {
+      const competitions = state.competitions.filter((c) => c.id !== action.id);
+      const next = {
+        ...state,
+        competitions,
+        currentCompetitionId: state.currentCompetitionId === action.id ? null : state.currentCompetitionId,
+      };
+      return withLog(next, "config", `Compétition supprimée`);
+    }
+
+    case "SET_CURRENT_COMPETITION": {
+      return { ...state, currentCompetitionId: action.id };
+    }
+
+    case "ADD_ORGANIZER": {
+      const next = { ...state, organizers: [action.organizer, ...state.organizers] };
+      return withLog(next, "config", `Nouvel organisateur ajouté : ${action.organizer.name}`);
+    }
+
+    case "UPDATE_ORGANIZER": {
+      const organizers = state.organizers.map((o) => {
+        if (o.id !== action.id) return o;
+        return { ...o, ...action.updates };
+      });
+      return { ...state, organizers };
+    }
+
+    case "DELETE_ORGANIZER": {
+      const organizers = state.organizers.filter((o) => o.id !== action.id);
+      return { ...state, organizers };
     }
 
     case "IMPORT_STATE": {
