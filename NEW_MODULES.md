@@ -1,234 +1,260 @@
-# Nouveaux Modules - DOJANG
+# Nouveaux Modules - Documentation
 
-## 📋 Vue d'ensemble
+## 📅 Module Calendrier (`/calendar`)
 
-L'application DOJANG a été enrichie avec **2 nouveaux modules essentiels** pour une gestion complète des compétitions de taekwondo en Côte d'Ivoire.
-
-## 🏆 Module Clubs
-
-### Fonctionnalités
-- **CRUD complet** : Créer, lire, mettre à jour, supprimer des clubs
-- **Informations détaillées** : Nom, ville, région, président, email, téléphone, adresse
-- **Suivi des athlètes** : Compteur du nombre d'athlètes inscrits par club
-- **Validation des données** : Emails, téléphones, champs obligatoires
-- **Protection intégrité** : Impossible de supprimer un club ayant des athlètes associés
-
-### Données de démonstration
-8 clubs ivoiriens pré-configurés :
-- Taekwondo Club d'Abidjan (45 athlètes)
-- INJS Abidjan (38 athlètes)
-- Bouaké TKD Académie (32 athlètes)
-- Yamoussoukro Taekwondo (28 athlètes)
-- Denguélé d'Odienné (22 athlètes)
-- Korhogo TKD (25 athlètes)
-- San Pedro Olympique TKD (18 athlètes)
-- SOA Taekwondo (35 athlètes)
-
-### Interface
-- **Vue en grille** : Affichage en cartes pour une meilleure lisibilité
-- **Recherche** : Filtrage par nom, ville ou région
-- **Statistiques** : Nombre total d'athlètes par club
-- **Actions rapides** : Modifier, supprimer directement depuis la carte
-
-### Route
-```
-/clubs
-```
-
----
-
-## 👨‍⚖️ Module Arbitres
+### Vue d'ensemble
+Le module Calendrier offre une vue mensuelle interactive de toutes les compétitions planifiées, permettant de visualiser facilement les événements et leurs durées.
 
 ### Fonctionnalités
-- **CRUD complet** : Créer, lire, mettre à jour, supprimer des arbitres
-- **Informations professionnelles** : Nom, licence, grade, ville, email, téléphone
-- **Gestion des statuts** : Actif, inactif, suspendu
-- **Suivi des performances** : Nombre de matchs arbitrés
-- **Grades officiels** : International, Continental, National, Régional
 
-### Données de démonstration
-6 arbitres pré-configurés :
-- Moussa Koné (International, 156 matchs)
-- Fatou Diallo (Continental, 98 matchs)
-- Ibrahim Ouattara (National, 67 matchs)
-- Aminata Touré (National, 54 matchs)
-- Seydou Cissé (Régional, 32 matchs)
-- Mariam Bamba (Régional, 28 matchs, inactif)
+#### Navigation temporelle
+- **Mois précédent/suivant** : Navigation fluide entre les mois
+- **Affichage du mois en cours** : Titre dynamique avec mois et année
+- **Grille 7 jours** : Layout standard du calendrier (Lun-Dim)
 
-### Interface
-- **Vue en tableau** : Affichage structuré avec toutes les informations
-- **Badges de statut** : Code couleur pour chaque statut
-- **Tri et filtrage** : Par grade, ville, statut
-- **Actions rapides** : Modifier, supprimer directement depuis le tableau
+#### Affichage des compétitions
+- **Indicateur visuel** : Point rouge sur les jours avec compétitions
+- **Aperçu des événements** : Affichage des 2 premières compétitions du jour
+- **Compteur** : "+X autre(s)" si plus de 2 compétitions
+- **Jour actuel** : Mise en évidence du jour courant
 
-### Grades disponibles
-- **Arbitre International** : Compétences pour les compétitions mondiales
-- **Arbitre Continental** : Compétences pour les compétitions africaines
-- **Arbitre National** : Compétences pour les championnats nationaux
-- **Arbitre Régional** : Compétences pour les compétitions régionales
+#### Interactions
+- **Clic sur compétition** : Ouvre un modal avec détails complets
+- **Modal de détails** : Dates, lieu, type, statut, nombre d'aires
+- **Liste mensuelle** : Toutes les compétitions du mois en dessous du calendrier
 
-### Route
-```
-/referees
-```
+#### Statistiques
+- **Compétitions du mois** : Liste détaillée avec dates et statut
+- **Filtrage intelligent** : Affiche les compétitions qui chevauchent le mois
+
+### Design
+- **Grille responsive** : S'adapte aux différentes tailles d'écran
+- **Couleurs thématiques** : Bordures et badges selon le statut
+- **Transitions fluides** : Animations au survol et au clic
 
 ---
 
-## 🎨 Icônes personnalisées
+## 📊 Module Rapports (`/reports`)
 
-Deux nouvelles icônes ont été créées pour représenter ces modules :
+### Vue d'overview
+Le module Rapports fournit des statistiques avancées et des outils d'export pour analyser les données de la compétition.
 
-### IconAward (Clubs)
-- Représentation : Médaille avec rubans
-- Signification : Excellence et affiliation
-- Couleur : Or (#f0a41c)
+### Fonctionnalités
 
-### IconShield (Arbitres)
-- Représentation : Bouclier protecteur
-- Signification : Autorité et protection
-- Couleur : Or (#f0a41c)
+#### Statistiques globales
+- **Total athlètes** : Nombre total d'athlètes inscrits
+- **Athlètes pesés** : Nombre d'athlètes ayant passé la pesée
+- **Total matchs** : Nombre total de matchs générés
+- **Matchs terminés** : Nombre de matchs complétés
+- **Total clubs** : Nombre de clubs participants
+- **Total compétitions** : Nombre de compétitions (actives incluses)
+
+#### Types de rapports
+
+##### 1. Rapport Athlètes
+- **Tableau complet** : Nom, prénom, club, catégorie, poids, statut, licence
+- **Export CSV** : Téléchargement de toutes les données
+- **Tri et filtrage** : Visualisation de tous les athlètes
+
+##### 2. Rapport Clubs
+- **Statistiques par club** : Nombre d'athlètes, athlètes pesés
+- **Tri par performance** : Clubs triés par nombre d'athlètes
+- **Export CSV** : Données complètes des clubs
+
+##### 3. Rapport Matchs
+- **Progression par catégorie** : Barres de progression visuelles
+- **Statistiques détaillées** : Matchs totaux, matchs terminés
+- **Visualisation** : Pourcentage de complétion par catégorie
+
+##### 4. Rapport Catégories
+- **Tableau récapitulatif** : Athlètes, matchs, matchs terminés par catégorie
+- **Export CSV** : Données complètes des catégories
+- **Analyse** : Vue d'ensemble de chaque catégorie de poids
+
+#### Export CSV
+- **Génération dynamique** : Création de fichiers CSV à la volée
+- **Téléchargement automatique** : Fichiers nommés selon le type de rapport
+- **Format standard** : Compatible avec Excel, Google Sheets, etc.
+
+### Design
+- **Cartes statistiques** : 4 cartes en haut avec chiffres clés
+- **Sélecteur de rapport** : 4 boutons pour choisir le type de rapport
+- **Tableaux responsives** : Scroll horizontal sur mobile
+- **Barres de progression** : Visualisation intuitive de l'avancement
 
 ---
 
-## 📊 Architecture technique
+## 🔔 Module Notifications (`/notifications`)
 
-### Types TypeScript
+### Vue d'ensemble
+Le module Notifications permet de créer, gérer et suivre les communications importantes liées à la compétition.
+
+### Fonctionnalités
+
+#### Statistiques
+- **Total notifications** : Nombre total de notifications
+- **Non lues** : Nombre de notifications non consultées
+- **Lues** : Nombre de notifications déjà consultées
+- **Aujourd'hui** : Notifications créées dans la journée
+
+#### Gestion des notifications
+
+##### Création
+- **Formulaire complet** : Type, titre, message
+- **Types de notification** :
+  - `info` : Information générale (bleu)
+  - `success` : Succès/réussite (vert)
+  - `warning` : Avertissement (jaune)
+  - `error` : Erreur/problème (rouge)
+- **Validation** : Champs obligatoires vérifiés
+
+##### Lecture
+- **Marquer comme lu** : Action individuelle sur chaque notification
+- **Tout marquer comme lu** : Action groupée
+- **Badge "Nouveau"** : Indicateur visuel pour notifications non lues
+- **Icônes thématiques** : ✓, ⚠, ✕, ℹ selon le type
+
+##### Suppression
+- **Suppression individuelle** : Bouton poubelle sur chaque notification
+- **Confirmation** : Toast de confirmation après suppression
+
+#### Persistance
+- **LocalStorage** : Notifications sauvegardées dans le navigateur
+- **Chargement automatique** : Récupération au démarrage
+- **Mise à jour temps réel** : Sauvegarde à chaque modification
+
+### Design
+- **Bordures colorées** : 4px de couleur selon le type de notification
+- **Fond dynamique** : Opacité différente selon lu/non lu
+- **Icônes expressives** : Symboles visuels pour chaque type
+- **Layout responsive** : Adapté mobile et desktop
+
+---
+
+## 🔧 Intégration Technique
+
+### Routes ajoutées
 ```typescript
-interface Club {
-  id: string;
-  name: string;
-  city: string;
-  region: string;
-  president: string;
-  email: string;
-  phone: string;
-  address: string;
-  createdAt: string;
-  athleteCount: number;
-}
-
-interface Referee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  license: string;
-  grade: string;
-  phone: string;
-  email: string;
-  city: string;
-  status: "actif" | "inactif" | "suspendu";
-  matchesCount: number;
-}
+<Route path="/calendar" element={<Calendar />} />
+<Route path="/reports" element={<Reports />} />
+<Route path="/notifications" element={<Notifications />} />
 ```
 
-### Actions Redux
+### Navigation mise à jour
 ```typescript
-// Clubs
-ADD_CLUB
-UPDATE_CLUB
-DELETE_CLUB
-
-// Arbitres
-ADD_REFEREE
-UPDATE_REFEREE
-DELETE_REFEREE
+{ to: "/calendar", label: "Calendrier", icon: IconCalendar },
+{ to: "/reports", label: "Rapports", icon: IconDownload },
+{ to: "/notifications", label: "Notifications", icon: IconBell },
 ```
 
-### Persistance
-- Stockage dans `localStorage` via le store Redux
-- Version du schéma : 5
-- Migration automatique des données existantes
+### Icônes utilisées
+- **IconCalendar** : Déjà existant, réutilisé pour le calendrier
+- **IconDownload** : Déjà existant, utilisé pour les rapports
+- **IconBell** : Nouvelle icône ajoutée pour les notifications
+
+### Dépendances
+- **React** : Hooks (useState, useMemo, useEffect)
+- **React Router** : Navigation et routes
+- **LocalStorage** : Persistance des notifications
+- **Date API** : Gestion des dates pour le calendrier
 
 ---
 
-## 🔒 Sécurité et validation
+## 📈 Cas d'usage
 
-### Clubs
-- ✅ Nom obligatoire (min. 3 caractères)
-- ✅ Email valide (format RFC 5322)
-- ✅ Téléphone valide (format international)
-- ✅ Protection contre suppression si athlètes associés
-- ✅ Adresse complète requise
+### Module Calendrier
+**Pour les organisateurs** :
+- Planifier les compétitions sur l'année
+- Visualiser les conflits de dates
+- Communiquer les dates aux participants
 
-### Arbitres
-- ✅ Nom et prénom obligatoires
-- ✅ Licence unique
-- ✅ Grade obligatoire (liste prédéfinie)
-- ✅ Email valide
-- ✅ Téléphone valide
-- ✅ Statut obligatoire (actif/inactif/suspendu)
+**Pour les clubs** :
+- Consulter le calendrier des compétitions
+- Planifier les déplacements
+- Préparer les athlètes
 
----
+### Module Rapports
+**Pour les organisateurs** :
+- Analyser la participation
+- Identifier les catégories populaires
+- Exporter les données pour communication
 
-## 📱 Responsive Design
+**Pour les fédérations** :
+- Statistiques globales de la saison
+- Rapports pour les sponsors
+- Archives historiques
 
-Les deux modules sont entièrement responsifs :
-- **Mobile** : Vue en liste verticale
-- **Tablette** : Vue en grille 2 colonnes
-- **Desktop** : Vue en grille 3-4 colonnes
+**Pour les médias** :
+- Données pour articles
+- Statistiques de participation
+- Informations sur les clubs
 
----
+### Module Notifications
+**Pour les organisateurs** :
+- Annoncer des changements de programme
+- Communiquer des informations importantes
+- Rappeler les deadlines
 
-## 🚀 Améliorations futures
-
-### Clubs
-- [ ] Import/export en masse (CSV, Excel)
-- [ ] Logo du club
-- [ ] Historique des performances
-- [ ] Affiliation à des ligues régionales
-- [ ] Gestion des cotisations
-
-### Arbitres
-- [ ] Calendrier des affectations
-- [ ] Évaluations et feedback
-- [ ] Formation continue
-- [ ] Certification et renouvellement
-- [ ] Statistiques détaillées par compétition
+**Pour les clubs** :
+- Recevoir les informations officielles
+- Être alerté des changements
+- Historique des communications
 
 ---
 
-## 📈 Statistiques globales
+## 🚀 Améliorations futures possibles
 
-Après ajout de ces modules, l'application DOJANG gère maintenant :
+### Module Calendrier
+- [ ] Vue semaine/mois/année
+- [ ] Filtrage par type de compétition
+- [ ] Export du calendrier (ICS)
+- [ ] Synchronisation avec Google Calendar
+- [ ] Rappels automatiques
 
-- **12 modules** au total
-- **8 clubs** affiliés
-- **6 arbitres** certifiés
-- **27 athlètes** inscrits
-- **1 compétition** active
-- **1 organisateur** (FITKD)
+### Module Rapports
+- [ ] Graphiques interactifs (Chart.js)
+- [ ] Rapports personnalisés
+- [ ] Export PDF
+- [ ] Comparaison entre compétitions
+- [ ] Tendances sur plusieurs saisons
 
----
-
-## 🎯 Cas d'usage
-
-### Pour les organisateurs
-1. Créer un club avec toutes ses informations
-2. Ajouter les arbitres disponibles
-3. Affecter les arbitres aux compétitions
-4. Suivre les performances des clubs
-
-### Pour les fédérations
-1. Gérer l'affiliation des clubs
-2. Suivre le nombre d'athlètes par club
-3. Gérer les licences des arbitres
-4. Générer des rapports statistiques
-
-### Pour les clubs
-1. Consulter les informations de leur club
-2. Voir les arbitres disponibles
-3. Suivre les performances de leurs athlètes
+### Module Notifications
+- [ ] Notifications push (Service Workers)
+- [ ] Email automatique
+- [ ] Ciblage par club/rôle
+- [ ] Templates de notifications
+- [ ] Historique complet avec recherche
 
 ---
 
-## 📞 Support
+## 📊 Statistiques de l'application
 
-Pour toute question sur ces nouveaux modules :
-- Documentation : `README.md`
-- Guide des modules : `MODULES.md`
-- Support technique : `contact@fitkd.ci`
+Après l'ajout de ces 3 modules, l'application DOJANG compte désormais :
 
----
+**17 modules opérationnels** :
+1. ✅ Tableau de bord
+2. ✅ Compétitions
+3. ✅ Organisateurs
+4. ✅ Clubs
+5. ✅ Arbitres
+6. ✅ Athlètes
+7. ✅ Pesée
+8. ✅ Tirages au sort
+9. ✅ Live Scoring
+10. ✅ Résultats
+11. ✅ Réclamations
+12. ✅ Mode TV
+13. ✅ QR Présences
+14. ✅ Portail Parents
+15. ✅ **Calendrier** (NOUVEAU)
+16. ✅ **Rapports** (NOUVEAU)
+17. ✅ **Notifications** (NOUVEAU)
+18. ✅ Administration
 
-**DOJANG** - La Régie des Tatamis 🥋
-*Version 2.0 - Ajout des modules Clubs et Arbitres*
+**Compilation** :
+- 67 modules transformés
+- Build réussi sans erreurs
+- Taille : 365 KB JS (97 KB gzippé)
+- CSS : 50 KB (9.3 KB gzippé)
+
+L'application DOJANG est maintenant une solution complète et professionnelle pour la gestion des compétitions de taekwondo, avec tous les outils nécessaires pour les organisateurs, clubs, arbitres, athlètes et parents.

@@ -21,6 +21,8 @@ import {
   IconBuilding,
   IconAward,
   IconShield,
+  IconBell,
+  IconDownload,
 } from "./Icons";
 
 const NAV = [
@@ -37,6 +39,9 @@ const NAV = [
   { to: "/reclamations", label: "Réclamations", icon: IconFlag },
   { to: "/tv", label: "Mode TV", icon: IconTv },
   { to: "/qr", label: "QR Présences", icon: IconQr },
+  { to: "/calendar", label: "Calendrier", icon: IconCalendar },
+  { to: "/reports", label: "Rapports", icon: IconDownload },
+  { to: "/notifications", label: "Notifications", icon: IconBell },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 

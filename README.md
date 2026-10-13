@@ -134,7 +134,34 @@ Validation des présences :
 - Présences et pesées
 - Statistiques de participation
 
-### 14. **Administration** (`/admin`)
+### 14. **Calendrier** (`/calendar`) ✨ NOUVEAU
+Vue calendrier des compétitions :
+- Vue mensuelle interactive avec navigation
+- Affichage des compétitions par jour
+- Indicateurs visuels (point rouge pour jours avec événements)
+- Modal de détails pour chaque compétition
+- Liste des compétitions du mois
+- Jour actuel mis en évidence
+
+### 15. **Rapports** (`/reports`) ✨ NOUVEAU
+Statistiques avancées et exports :
+- Statistiques globales (athlètes, matchs, clubs, compétitions)
+- 4 types de rapports : Athlètes, Clubs, Matchs, Catégories
+- Tableaux détaillés avec toutes les données
+- Export CSV pour chaque type de rapport
+- Barres de progression pour visualiser l'avancement
+- Tri et filtrage des données
+
+### 16. **Notifications** (`/notifications`) ✨ NOUVEAU
+Centre de messages et alertes :
+- Création de notifications (info, succès, avertissement, erreur)
+- Gestion des notifications (lire, supprimer)
+- Statistiques (total, non lues, lues, aujourd'hui)
+- Persistance dans localStorage
+- Icônes et couleurs thématiques
+- Badge "Nouveau" pour notifications non lues
+
+### 17. **Administration** (`/admin`)
 Configuration globale :
 - Paramètres de l'événement
 - Gestion des catégories

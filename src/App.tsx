@@ -18,6 +18,9 @@ import Clubs from "./pages/Clubs";
 import Referees from "./pages/Referees";
 import ParentsLogin from "./pages/ParentsLogin";
 import ParentsDashboard from "./pages/ParentsDashboard";
+import Calendar from "./pages/Calendar";
+import Reports from "./pages/Reports";
+import Notifications from "./pages/Notifications";
 import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -59,6 +62,9 @@ export default function App() {
                     <Route path="/reclamations" element={<Claims />} />
                     <Route path="/tv" element={<TvMode />} />
                     <Route path="/qr" element={<QrPresence />} />
+                    <Route path="/calendar" element={<Calendar />} />
+                    <Route path="/reports" element={<Reports />} />
+                    <Route path="/notifications" element={<Notifications />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
