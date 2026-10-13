@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useApp } from "../lib/store";
 import { Modal, useToast, StatusBadge } from "../components/ui";
-import { IconPlus, IconEdit, IconTrash, IconEye } from "../components/Icons";
-import type { Sponsor, SponsorType, SponsorLevel, SponsorStatus } from "../lib/types";
+import { IconPlus, IconEdit, IconTrash, IconEye, IconFile, IconCalendar } from "../components/Icons";
+import { PaymentsManager } from "../components/PaymentsManager";
+import { CommunicationsManager } from "../components/CommunicationsManager";
+import type { Sponsor, SponsorType, SponsorLevel, SponsorStatus, SponsorVisibility } from "../lib/types";
 
 const SPONSOR_TYPES: { value: SponsorType; label: string }[] = [
   { value: "principal", label: "Sponsor Principal" },
@@ -24,14 +26,26 @@ const SPONSOR_STATUSES: { value: SponsorStatus; label: string }[] = [
   { value: "expire", label: "Expiré" },
 ];
 
+const VISIBILITY_OPTIONS: { value: SponsorVisibility; label: string }[] = [
+  { value: "site_web", label: "Site web" },
+  { value: "tv", label: "Diffusion TV" },
+  { value: "affiches", label: "Affiches" },
+  { value: "maillots", label: "Maillots" },
+  { value: "stand", label: "Stand" },
+  { value: "reseaux_sociaux", label: "Réseaux sociaux" },
+  { value: "presse", label: "Communiqués de presse" },
+];
+
 export default function Sponsors() {
   const { state, dispatch } = useApp();
   const toast = useToast();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isAdvancedModalOpen, setIsAdvancedModalOpen] = useState(false);
   const [editingSponsor, setEditingSponsor] = useState<Sponsor | null>(null);
   const [viewingSponsor, setViewingSponsor] = useState<Sponsor | null>(null);
+  const [advancedTab, setAdvancedTab] = useState<"payments" | "communications" | "visibility">("payments");
 
   const [filterType, setFilterType] = useState<SponsorType | "all">("all");
   const [filterLevel, setFilterLevel] = useState<SponsorLevel | "all">("all");
@@ -42,6 +56,7 @@ export default function Sponsors() {
     type: "partenaire" as SponsorType,
     level: "bronze" as SponsorLevel,
     logo: "",
+    logoHighRes: "",
     website: "",
     contact: "",
     email: "",
@@ -51,6 +66,10 @@ export default function Sponsors() {
     status: "en_attente" as SponsorStatus,
     amount: "",
     description: "",
+    visibility: [] as SponsorVisibility[],
+    benefits: [] as string[],
+    contractFile: "",
+    notes: "",
   });
 
   const filteredSponsors = state.sponsors.filter((sponsor) => {
@@ -67,6 +86,7 @@ export default function Sponsors() {
       type: "partenaire",
       level: "bronze",
       logo: "",
+      logoHighRes: "",
       website: "",
       contact: "",
       email: "",
@@ -76,6 +96,10 @@ export default function Sponsors() {
       status: "en_attente",
       amount: "",
       description: "",
+      visibility: [],
+      benefits: [],
+      contractFile: "",
+      notes: "",
     });
     setIsModalOpen(true);
   };
@@ -87,6 +111,7 @@ export default function Sponsors() {
       type: sponsor.type,
       level: sponsor.level,
       logo: sponsor.logo,
+      logoHighRes: sponsor.logoHighRes || "",
       website: sponsor.website,
       contact: sponsor.contact,
       email: sponsor.email,
@@ -96,6 +121,10 @@ export default function Sponsors() {
       status: sponsor.status,
       amount: sponsor.amount?.toString() || "",
       description: sponsor.description || "",
+      visibility: sponsor.visibility || [],
+      benefits: sponsor.benefits || [],
+      contractFile: sponsor.contractFile || "",
+      notes: sponsor.notes || "",
     });
     setIsModalOpen(true);
   };
@@ -103,6 +132,12 @@ export default function Sponsors() {
   const openViewModal = (sponsor: Sponsor) => {
     setViewingSponsor(sponsor);
     setIsViewModalOpen(true);
+  };
+
+  const openAdvancedModal = (sponsor: Sponsor) => {
+    setViewingSponsor(sponsor);
+    setAdvancedTab("payments");
+    setIsAdvancedModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -122,6 +157,7 @@ export default function Sponsors() {
           type: formData.type,
           level: formData.level,
           logo: formData.logo,
+          logoHighRes: formData.logoHighRes || undefined,
           website: formData.website,
           contact: formData.contact,
           email: formData.email,
@@ -131,6 +167,10 @@ export default function Sponsors() {
           status: formData.status,
           amount: formData.amount ? parseFloat(formData.amount) : undefined,
           description: formData.description,
+          visibility: formData.visibility,
+          benefits: formData.benefits,
+          contractFile: formData.contractFile || undefined,
+          notes: formData.notes || undefined,
         },
       });
       toast("Sponsor mis à jour avec succès");
@@ -141,6 +181,7 @@ export default function Sponsors() {
         type: formData.type,
         level: formData.level,
         logo: formData.logo,
+        logoHighRes: formData.logoHighRes || undefined,
         website: formData.website,
         contact: formData.contact,
         email: formData.email,
@@ -150,6 +191,12 @@ export default function Sponsors() {
         status: formData.status,
         amount: formData.amount ? parseFloat(formData.amount) : undefined,
         description: formData.description,
+        visibility: formData.visibility,
+        benefits: formData.benefits,
+        contractFile: formData.contractFile || undefined,
+        notes: formData.notes || undefined,
+        payments: [],
+        communications: [],
       };
       dispatch({ type: "ADD_SPONSOR", sponsor: newSponsor });
       toast("Sponsor ajouté avec succès");
@@ -165,6 +212,24 @@ export default function Sponsors() {
     }
   };
 
+  const handleUpdatePayments = (sponsorId: string, payments: any[]) => {
+    dispatch({
+      type: "UPDATE_SPONSOR",
+      id: sponsorId,
+      updates: { payments },
+    });
+    setViewingSponsor({ ...viewingSponsor!, payments });
+  };
+
+  const handleUpdateCommunications = (sponsorId: string, communications: any[]) => {
+    dispatch({
+      type: "UPDATE_SPONSOR",
+      id: sponsorId,
+      updates: { communications },
+    });
+    setViewingSponsor({ ...viewingSponsor!, communications });
+  };
+
   const getTypeLabel = (type: SponsorType) => {
     return SPONSOR_TYPES.find((t) => t.value === type)?.label || type;
   };
@@ -175,6 +240,10 @@ export default function Sponsors() {
 
   const getStatusLabel = (status: SponsorStatus) => {
     return SPONSOR_STATUSES.find((s) => s.value === status)?.label || status;
+  };
+
+  const getVisibilityLabel = (visibility: SponsorVisibility) => {
+    return VISIBILITY_OPTIONS.find((v) => v.value === visibility)?.label || visibility;
   };
 
   const formatAmount = (amount?: number) => {
@@ -190,6 +259,14 @@ export default function Sponsors() {
     .filter((s) => s.status === "actif" && s.amount)
     .reduce((sum, s) => sum + (s.amount || 0), 0);
 
+  const expiringSponsors = state.sponsors.filter((s) => {
+    if (s.status !== "actif" || !s.endDate) return false;
+    const endDate = new Date(s.endDate);
+    const now = new Date();
+    const daysUntilExpiry = (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+    return daysUntilExpiry <= 30 && daysUntilExpiry > 0;
+  });
+
   return (
     <div className="fade-up mx-auto max-w-7xl">
       <div className="mb-8 flex items-center justify-between">
@@ -198,7 +275,7 @@ export default function Sponsors() {
             Sponsors & Partenaires
           </h1>
           <p className="mt-2 text-dune">
-            Gestion des sponsors et partenaires de la compétition
+            Gestion complète des sponsors et partenaires de la compétition
           </p>
         </div>
         <button onClick={openCreateModal} className="btn btn-primary">
@@ -206,6 +283,30 @@ export default function Sponsors() {
           Ajouter un sponsor
         </button>
       </div>
+
+      {/* Alertes */}
+      {expiringSponsors.length > 0 && (
+        <div className="mb-6 panel border-l-4 border-l-gold p-4">
+          <div className="flex items-start gap-3">
+            <IconCalendar className="w-6 h-6 text-gold flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-bone mb-1">
+                Contrats expirant bientôt
+              </h3>
+              <p className="text-sm text-dune">
+                {expiringSponsors.length} sponsor(s) avec un contrat expirant dans les 30 prochains jours :
+              </p>
+              <ul className="mt-2 space-y-1">
+                {expiringSponsors.map((s) => (
+                  <li key={s.id} className="text-sm text-dune">
+                    • {s.name} - expire le {new Date(s.endDate).toLocaleDateString("fr-FR")}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Statistiques */}
       <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -385,12 +486,19 @@ export default function Sponsors() {
                       Voir
                     </button>
                     <button
-                      onClick={() => openEditModal(sponsor)}
+                      onClick={() => openAdvancedModal(sponsor)}
                       className="btn btn-ghost flex-1"
+                      title="Gérer paiements et communications"
+                    >
+                      <IconFile className="w-4 h-4" />
+                      Gérer
+                    </button>
+                    <button
+                      onClick={() => openEditModal(sponsor)}
+                      className="btn btn-ghost"
                       title="Modifier"
                     >
                       <IconEdit className="w-4 h-4" />
-                      Modifier
                     </button>
                     <button
                       onClick={() => handleDelete(sponsor.id)}
@@ -413,7 +521,7 @@ export default function Sponsors() {
         onClose={() => setIsModalOpen(false)}
         title={editingSponsor ? "Modifier le sponsor" : "Ajouter un sponsor"}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label className="label">Nom du sponsor *</label>
@@ -473,15 +581,27 @@ export default function Sponsors() {
             </div>
           </div>
 
-          <div>
-            <label className="label">URL du logo</label>
-            <input
-              type="url"
-              value={formData.logo}
-              onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-              className="input"
-              placeholder="https://example.com/logo.png"
-            />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label className="label">URL du logo</label>
+              <input
+                type="url"
+                value={formData.logo}
+                onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
+                className="input"
+                placeholder="https://example.com/logo.png"
+              />
+            </div>
+            <div>
+              <label className="label">URL logo haute résolution</label>
+              <input
+                type="url"
+                value={formData.logoHighRes}
+                onChange={(e) => setFormData({ ...formData, logoHighRes: e.target.value })}
+                className="input"
+                placeholder="https://example.com/logo-hd.png"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -565,6 +685,35 @@ export default function Sponsors() {
           </div>
 
           <div>
+            <label className="label">Visibilité du sponsor</label>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              {VISIBILITY_OPTIONS.map((option) => (
+                <label key={option.value} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={formData.visibility.includes(option.value)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFormData({
+                          ...formData,
+                          visibility: [...formData.visibility, option.value],
+                        });
+                      } else {
+                        setFormData({
+                          ...formData,
+                          visibility: formData.visibility.filter((v) => v !== option.value),
+                        });
+                      }
+                    }}
+                    className="checkbox"
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
             <label className="label">Description</label>
             <textarea
               value={formData.description}
@@ -572,6 +721,17 @@ export default function Sponsors() {
               className="input"
               rows={3}
               placeholder="Description du partenariat..."
+            />
+          </div>
+
+          <div>
+            <label className="label">Notes internes</label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              className="input"
+              rows={2}
+              placeholder="Notes privées..."
             />
           </div>
 
@@ -597,7 +757,7 @@ export default function Sponsors() {
         title="Détails du sponsor"
       >
         {viewingSponsor && (
-          <div className="space-y-6">
+          <div className="space-y-6 max-h-[70vh] overflow-y-auto">
             {/* Logo */}
             <div className="flex h-48 items-center justify-center bg-bark p-6">
               {viewingSponsor.logo ? (
@@ -671,12 +831,34 @@ export default function Sponsors() {
                 </div>
               </div>
 
+              {viewingSponsor.visibility && viewingSponsor.visibility.length > 0 && (
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-wider text-dune">Visibilité</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {viewingSponsor.visibility.map((v) => (
+                      <span key={v} className="badge text-gold">
+                        {getVisibilityLabel(v)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {viewingSponsor.description && (
                 <div>
                   <p className="font-mono text-xs uppercase tracking-wider text-dune">
                     Description
                   </p>
                   <p className="mt-1 text-bone">{viewingSponsor.description}</p>
+                </div>
+              )}
+
+              {viewingSponsor.notes && (
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-wider text-dune">
+                    Notes internes
+                  </p>
+                  <p className="mt-1 text-bone italic">{viewingSponsor.notes}</p>
                 </div>
               )}
             </div>
@@ -698,6 +880,58 @@ export default function Sponsors() {
                 Modifier
               </button>
             </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Modal avancé (paiements et communications) */}
+      <Modal
+        open={isAdvancedModalOpen}
+        onClose={() => setIsAdvancedModalOpen(false)}
+        title={`Gestion avancée - ${viewingSponsor?.name || ""}`}
+      >
+        {viewingSponsor && (
+          <div className="space-y-4 max-h-[70vh] overflow-y-auto">
+            {/* Onglets */}
+            <div className="flex gap-2 border-b border-husk">
+              <button
+                onClick={() => setAdvancedTab("payments")}
+                className={`px-4 py-2 font-mono text-sm uppercase tracking-wider ${
+                  advancedTab === "payments"
+                    ? "text-gold border-b-2 border-gold"
+                    : "text-dune hover:text-bone"
+                }`}
+              >
+                Paiements
+              </button>
+              <button
+                onClick={() => setAdvancedTab("communications")}
+                className={`px-4 py-2 font-mono text-sm uppercase tracking-wider ${
+                  advancedTab === "communications"
+                    ? "text-gold border-b-2 border-gold"
+                    : "text-dune hover:text-bone"
+                }`}
+              >
+                Communications
+              </button>
+            </div>
+
+            {/* Contenu des onglets */}
+            {advancedTab === "payments" && (
+              <PaymentsManager
+                payments={viewingSponsor.payments || []}
+                onUpdate={(payments) => handleUpdatePayments(viewingSponsor.id, payments)}
+              />
+            )}
+
+            {advancedTab === "communications" && (
+              <CommunicationsManager
+                communications={viewingSponsor.communications || []}
+                onUpdate={(communications) =>
+                  handleUpdateCommunications(viewingSponsor.id, communications)
+                }
+              />
+            )}
           </div>
         )}
       </Modal>

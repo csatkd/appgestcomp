@@ -23,6 +23,7 @@ import Reports from "./pages/Reports";
 import Notifications from "./pages/Notifications";
 import ExportImport from "./pages/ExportImport";
 import Sponsors from "./pages/Sponsors";
+import SponsorsReport from "./pages/SponsorsReport";
 import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -69,6 +70,7 @@ export default function App() {
                     <Route path="/notifications" element={<Notifications />} />
                     <Route path="/export" element={<ExportImport />} />
                     <Route path="/sponsors" element={<Sponsors />} />
+                    <Route path="/sponsors/report" element={<SponsorsReport />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>

@@ -171,18 +171,25 @@ Gestion des données avec export/import CSV :
 - Gestion des erreurs et doublons
 
 ### 18. **Sponsors & Partenaires** (`/sponsors`) ✨ NOUVEAU
-Gestion complète des sponsors et partenaires :
+Gestion complète et approfondie des sponsors et partenaires :
 - CRUD complet des sponsors (créer, lire, modifier, supprimer)
 - Classification par type (Principal, Officiel, Partenaire, Média, Technique)
 - Niveaux de sponsoring (Or, Argent, Bronze) avec code couleur
 - Statuts (Actif, En attente, Expiré)
-- Gestion des logos avec affichage visuel
+- Gestion des logos avec affichage visuel (standard et haute résolution)
+- Gestion de la visibilité (site web, TV, affiches, maillots, stand, réseaux sociaux, presse)
+- Liste des avantages accordés au sponsor
+- Notes internes privées
 - Statistiques en temps réel (total, actifs, financement total)
 - Système de filtrage avancé (type, niveau, statut)
 - Affichage en grille responsive avec cartes colorées
 - Modals de création/édition et visualisation détaillée
-- 3 sponsors de démonstration pré-configurés
-- Documentation complète dans [SPONSORS_MODULE.md](./SPONSORS_MODULE.md)
+- **Gestion des paiements** : Suivi des versements avec statuts (payé, en attente, en retard)
+- **Gestion des communications** : Historique complet des interactions (email, téléphone, réunion)
+- **Alertes automatiques** : Contrats expirant dans les 30 jours
+- **Rapport détaillé** (`/sponsors/report`) : Statistiques avancées, suivi des paiements, export JSON
+- 3 sponsors de démonstration pré-configurés avec paiements et communications
+- Documentation complète dans [SPONSORS_MODULE_ADVANCED.md](./SPONSORS_MODULE_ADVANCED.md)
 
 ### 19. **Administration** (`/admin`)
 Configuration globale :

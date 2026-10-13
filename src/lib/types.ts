@@ -174,6 +174,7 @@ export interface Sponsor {
   type: SponsorType;
   level: SponsorLevel;
   logo: string;
+  logoHighRes?: string;
   website: string;
   contact: string;
   email: string;
@@ -183,6 +184,33 @@ export interface Sponsor {
   status: SponsorStatus;
   amount?: number;
   description?: string;
+  visibility?: SponsorVisibility[];
+  benefits?: string[];
+  contractFile?: string;
+  notes?: string;
+  payments?: SponsorPayment[];
+  communications?: SponsorCommunication[];
+}
+
+export type SponsorVisibility = "site_web" | "tv" | "affiches" | "maillots" | "stand" | "reseaux_sociaux" | "presse";
+
+export interface SponsorPayment {
+  id: string;
+  amount: number;
+  date: string;
+  status: "paye" | "en_attente" | "en_retard";
+  method?: string;
+  reference?: string;
+  notes?: string;
+}
+
+export interface SponsorCommunication {
+  id: string;
+  date: string;
+  type: "email" | "telephone" | "reunion" | "autre";
+  subject: string;
+  content: string;
+  participants?: string[];
 }
 
 export interface AppState {
