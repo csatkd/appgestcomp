@@ -64,6 +64,31 @@ export interface EventConfig {
   arenas: number;
 }
 
+export type CompetitionType = "locale" | "nationale" | "internationale";
+export type CompetitionStatus = "brouillon" | "active" | "terminee" | "archivee";
+
+export interface Organizer {
+  id: string;
+  name: string;
+  email: string;
+  organization: string;
+  phone?: string;
+}
+
+export interface Competition {
+  id: string;
+  name: string;
+  type: CompetitionType;
+  status: CompetitionStatus;
+  organizerId: string;
+  startDate: string;
+  endDate: string;
+  venue: string;
+  arenas: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type ActivityKind =
   | "athlete"
   | "pesee"
@@ -111,6 +136,9 @@ export interface AppState {
   activity: ActivityEntry[];
   claims: Claim[];
   qrScans: QrScan[];
+  competitions: Competition[];
+  organizers: Organizer[];
+  currentCompetitionId: string | null;
 }
 
 export type Action =
@@ -129,5 +157,12 @@ export type Action =
   | { type: "UPDATE_CLAIM"; id: string; status: ClaimStatus; resolution?: string }
   | { type: "DELETE_CLAIM"; id: string }
   | { type: "ADD_QR_SCAN"; scan: QrScan }
+  | { type: "ADD_COMPETITION"; competition: Competition }
+  | { type: "UPDATE_COMPETITION"; id: string; updates: Partial<Competition> }
+  | { type: "DELETE_COMPETITION"; id: string }
+  | { type: "SET_CURRENT_COMPETITION"; id: string | null }
+  | { type: "ADD_ORGANIZER"; organizer: Organizer }
+  | { type: "UPDATE_ORGANIZER"; id: string; updates: Partial<Organizer> }
+  | { type: "DELETE_ORGANIZER"; id: string }
   | { type: "IMPORT_STATE"; state: AppState; label?: string }
   | { type: "RESET_ALL" };
