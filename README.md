@@ -33,6 +33,23 @@ Système complet de gestion des entités organisatrices :
 - Téléphone
 - Association avec les compétitions
 
+## 👨‍👩‍👧 Portail Parents
+
+### Accès Sécurisé
+Les parents peuvent suivre la progression de leur enfant grâce à un portail dédié :
+- **URL** : `#/parents/login`
+- **Authentification** : Numéro de licence de l'athlète (sert de login ET mot de passe)
+- **Session** : Stockée dans localStorage pour une navigation fluide
+
+### Fonctionnalités du Portail
+- **Profil complet** : Informations personnelles, catégorie, club, statut
+- **Statistiques** : Victoires, défaites, total des matchs
+- **Historique** : Liste détaillée de tous les matchs avec scores et adversaires
+- **Déconnexion** : Bouton de déconnexion sécurisé
+
+### Documentation
+Voir [PARENTS_PORTAL.md](./PARENTS_PORTAL.md) pour plus de détails.
+
 ## 📋 Modules Disponibles
 
 ### 1. **Tableau de bord** (`/`)

@@ -16,6 +16,8 @@ import Competitions from "./pages/Competitions";
 import Organizers from "./pages/Organizers";
 import Clubs from "./pages/Clubs";
 import Referees from "./pages/Referees";
+import ParentsLogin from "./pages/ParentsLogin";
+import ParentsDashboard from "./pages/ParentsDashboard";
 import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -32,6 +34,10 @@ export default function App() {
           <Routes>
             {/* Landing page sans layout */}
             <Route path="/landing" element={<Landing />} />
+            
+            {/* Portail Parents (sans layout) */}
+            <Route path="/parents/login" element={<ParentsLogin />} />
+            <Route path="/parents/dashboard" element={<ParentsDashboard />} />
             
             {/* Application avec layout */}
             <Route
