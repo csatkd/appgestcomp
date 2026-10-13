@@ -23,6 +23,7 @@ import {
   IconShield,
   IconBell,
   IconDownload,
+  IconFile,
 } from "./Icons";
 
 const NAV = [
@@ -42,6 +43,7 @@ const NAV = [
   { to: "/calendar", label: "Calendrier", icon: IconCalendar },
   { to: "/reports", label: "Rapports", icon: IconDownload },
   { to: "/notifications", label: "Notifications", icon: IconBell },
+  { to: "/export", label: "Export & Import", icon: IconFile },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 

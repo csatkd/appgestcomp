@@ -1,285 +1,290 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { useApp } from "../lib/store";
-import { PageHead, useToast } from "../components/ui";
-import { IconGrid, IconDownload } from "../components/Icons";
+import { PageHead } from "../components/ui";
+import { IconChart, IconUsers, IconTrophy, IconCalendar } from "../components/Icons";
 import PageBackground from "../components/PageBackground";
 import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function Reports() {
   const { state } = useApp();
-  const toast = useToast();
-  const [reportType, setReportType] = useState<"athletes" | "clubs" | "matches" | "categories">("athletes");
 
   // Statistiques globales
-  const stats = {
-    totalAthletes: state.athletes.length,
-    weighedAthletes: state.athletes.filter(a => a.status === "pesé").length,
-    totalMatches: Object.values(state.brackets).flat().length,
-    completedMatches: Object.values(state.brackets).flat().filter(m => m.status === "termine").length,
-    totalClubs: state.clubs.length,
-    totalCompetitions: state.competitions.length,
-    activeCompetitions: state.competitions.filter(c => c.status === "active").length,
-  };
+  const stats = useMemo(() => {
+    const totalAthletes = state.athletes.length;
+    const weighedAthletes = state.athletes.filter((a) => a.status === "pesé").length;
+    const forfeitAthletes = state.athletes.filter((a) => a.status === "forfait").length;
+
+    const totalMatches = Object.values(state.brackets).flat().length;
+    const completedMatches = Object.values(state.brackets)
+      .flat()
+      .filter((m) => m.status === "termine").length;
+    const pendingMatches = Object.values(state.brackets)
+      .flat()
+      .filter((m) => m.status === "pret").length;
+
+    const totalClubs = state.clubs.length;
+    const totalReferees = state.referees.filter((r) => r.status === "actif").length;
+    const totalCompetitions = state.competitions.length;
+    const activeCompetitions = state.competitions.filter((c) => c.status === "active").length;
+
+    const totalClaims = state.claims.length;
+    const resolvedClaims = state.claims.filter((c) => c.status !== "soumise").length;
+
+    return {
+      athletes: { total: totalAthletes, weighed: weighedAthletes, forfeit: forfeitAthletes },
+      matches: { total: totalMatches, completed: completedMatches, pending: pendingMatches },
+      clubs: totalClubs,
+      referees: totalReferees,
+      competitions: { total: totalCompetitions, active: activeCompetitions },
+      claims: { total: totalClaims, resolved: resolvedClaims },
+    };
+  }, [state]);
 
   // Statistiques par catégorie
-  const categoryStats = Object.entries(state.brackets).map(([catId, matches]) => {
-    const totalMatches = matches.length;
-    const completedMatches = matches.filter(m => m.status === "termine").length;
-    const athletes = state.athletes.filter(a => a.category === catId);
-    return {
-      catId,
-      totalMatches,
-      completedMatches,
-      athletes: athletes.length,
-    };
-  });
+  const categoryStats = useMemo(() => {
+    return Object.entries(state.catStatus).map(([catId, status]) => {
+      const athletes = state.athletes.filter((a) => a.category === catId);
+      const matches = state.brackets[catId] || [];
+      const completedMatches = matches.filter((m) => m.status === "termine").length;
+
+      return {
+        catId,
+        status,
+        athleteCount: athletes.length,
+        matchCount: matches.length,
+        completedMatches,
+      };
+    });
+  }, [state]);
 
   // Statistiques par club
-  const clubStats = state.clubs.map(club => {
-    const athletes = state.athletes.filter(a => a.club === club.name);
-    const weighedAthletes = athletes.filter(a => a.status === "pesé").length;
-    return {
-      ...club,
-      totalAthletes: athletes.length,
-      weighedAthletes,
-    };
-  }).sort((a, b) => b.totalAthletes - a.totalAthletes);
+  const clubStats = useMemo(() => {
+    return state.clubs.map((club) => {
+      const athletes = state.athletes.filter((a) => a.club === club.name);
+      const weighedAthletes = athletes.filter((a) => a.status === "pesé").length;
 
-  // Export CSV
-  const exportCSV = () => {
-    let csv = "";
-    let filename = "";
+      return {
+        name: club.name,
+        totalAthletes: athletes.length,
+        weighedAthletes,
+      };
+    }).sort((a, b) => b.totalAthletes - a.totalAthletes);
+  }, [state]);
 
-    switch (reportType) {
-      case "athletes":
-        csv = "Nom,Prénom,Club,Catégorie,Poids,Statut,Licence\n";
-        state.athletes.forEach(a => {
-          csv += `${a.lastName},${a.firstName},${a.club},${a.category || "N/A"},${a.weight || "N/A"},${a.status},${a.license}\n`;
-        });
-        filename = "athletes.csv";
-        break;
+  // Taux de completion
+  const completionRate = stats.matches.total > 0
+    ? Math.round((stats.matches.completed / stats.matches.total) * 100)
+    : 0;
 
-      case "clubs":
-        csv = "Nom,Ville,Région,Email,Téléphone,Nb Athlètes\n";
-        clubStats.forEach(c => {
-          csv += `${c.name},${c.city},${c.region},${c.email},${c.phone},${c.totalAthletes}\n`;
-        });
-        filename = "clubs.csv";
-        break;
-
-      case "matches":
-        csv = "Catégorie,Statut,Nb Matchs Total,Nb Matchs Terminés\n";
-        categoryStats.forEach(c => {
-          csv += `${c.catId},${c.completedMatches === c.totalMatches ? "Terminé" : "En cours"},${c.totalMatches},${c.completedMatches}\n`;
-        });
-        filename = "matches.csv";
-        break;
-
-      case "categories":
-        csv = "Catégorie,Nb Athlètes,Nb Matchs,Matchs Terminés\n";
-        categoryStats.forEach(c => {
-          csv += `${c.catId},${c.athletes},${c.totalMatches},${c.completedMatches}\n`;
-        });
-        filename = "categories.csv";
-        break;
-    }
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-    toast("Rapport exporté avec succès");
-  };
+  const weighInRate = stats.athletes.total > 0
+    ? Math.round((stats.athletes.weighed / stats.athletes.total) * 100)
+    : 0;
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
-      <PageBackground imageUrl={PAGE_BACKGROUNDS.dashboard} opacity={0.08} blur={3} />
-      <PageHead
-        title="Rapports & Statistiques"
-        subtitle="Analyses et exports de données"
-        actions={
-          <button onClick={exportCSV} className="btn btn-primary btn-sm">
-            <IconDownload className="w-4 h-4" />
-            Exporter CSV
-          </button>
-        }
-      />
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.results} opacity={0.08} blur={3} />
+      <PageHead title="Rapports & Statistiques" subtitle="Analyse des données" />
 
-      {/* Statistiques globales */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Athlètes</p>
-          <p className="font-display text-3xl text-bone">{stats.totalAthletes}</p>
-          <p className="text-sm text-forest mt-1">{stats.weighedAthletes} pesés</p>
+      {/* KPIs principaux */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div className="panel p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <IconUsers className="w-5 h-5 text-gold" />
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Athlètes
+            </span>
+          </div>
+          <p className="font-display text-3xl text-bone">{stats.athletes.total}</p>
+          <p className="text-xs text-dune mt-1">
+            {stats.athletes.weighed} pesés · {stats.athletes.forfeit} forfaits
+          </p>
         </div>
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Matchs</p>
-          <p className="font-display text-3xl text-bone">{stats.totalMatches}</p>
-          <p className="text-sm text-forest mt-1">{stats.completedMatches} terminés</p>
+
+        <div className="panel p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <IconTrophy className="w-5 h-5 text-forest" />
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Matchs
+            </span>
+          </div>
+          <p className="font-display text-3xl text-bone">{stats.matches.total}</p>
+          <p className="text-xs text-dune mt-1">
+            {stats.matches.completed} terminés · {stats.matches.pending} prêts
+          </p>
         </div>
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Clubs</p>
-          <p className="font-display text-3xl text-bone">{stats.totalClubs}</p>
+
+        <div className="panel p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <IconCalendar className="w-5 h-5 text-chong" />
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Compétitions
+            </span>
+          </div>
+          <p className="font-display text-3xl text-bone">{stats.competitions.total}</p>
+          <p className="text-xs text-dune mt-1">
+            {stats.competitions.active} active(s)
+          </p>
         </div>
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Compétitions</p>
-          <p className="font-display text-3xl text-bone">{stats.totalCompetitions}</p>
-          <p className="text-sm text-forest mt-1">{stats.activeCompetitions} actives</p>
+
+        <div className="panel p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <IconChart className="w-5 h-5 text-flame" />
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Progression
+            </span>
+          </div>
+          <p className="font-display text-3xl text-bone">{completionRate}%</p>
+          <p className="text-xs text-dune mt-1">
+            Matchs terminés
+          </p>
         </div>
       </div>
 
-      {/* Sélecteur de rapport */}
+      {/* Barres de progression */}
       <div className="panel p-6 mb-6">
-        <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-          Type de rapport
+        <h3 className="font-display text-lg uppercase tracking-wide text-bone mb-4">
+          Taux de progression
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { id: "athletes", label: "Athlètes" },
-            { id: "clubs", label: "Clubs" },
-            { id: "matches", label: "Matchs" },
-            { id: "categories", label: "Catégories" },
-          ].map((type) => (
-            <button
-              key={type.id}
-              onClick={() => setReportType(type.id as any)}
-              className={`p-4 border transition-colors ${
-                reportType === type.id
-                  ? "border-gold bg-gold/10 text-gold"
-                  : "border-husk text-dune hover:border-gold/50"
-              }`}
-            >
-              {type.label}
-            </button>
-          ))}
+        <div className="space-y-4">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-dune">Pesées</span>
+              <span className="text-sm font-semibold text-bone">{weighInRate}%</span>
+            </div>
+            <div className="h-2 bg-husk rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gold transition-all duration-500"
+                style={{ width: `${weighInRate}%` }}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-dune">Matchs terminés</span>
+              <span className="text-sm font-semibold text-bone">{completionRate}%</span>
+            </div>
+            <div className="h-2 bg-husk rounded-full overflow-hidden">
+              <div
+                className="h-full bg-forest transition-all duration-500"
+                style={{ width: `${completionRate}%` }}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-dune">Réclamations résolues</span>
+              <span className="text-sm font-semibold text-bone">
+                {stats.claims.total > 0
+                  ? Math.round((stats.claims.resolved / stats.claims.total) * 100)
+                  : 0}
+                %
+              </span>
+            </div>
+            <div className="h-2 bg-husk rounded-full overflow-hidden">
+              <div
+                className="h-full bg-chong transition-all duration-500"
+                style={{
+                  width: `${
+                    stats.claims.total > 0
+                      ? (stats.claims.resolved / stats.claims.total) * 100
+                      : 0
+                  }%`,
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Contenu du rapport */}
-      <div className="panel p-6">
-        {reportType === "athletes" && (
-          <div>
-            <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-              Liste des Athlètes
-            </h3>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-husk">
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Nom</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Club</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Catégorie</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Statut</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.athletes.map((a) => (
-                    <tr key={a.id} className="border-b border-husk/50 hover:bg-bark/30">
-                      <td className="p-3 text-bone">{a.firstName} {a.lastName}</td>
-                      <td className="p-3 text-dune">{a.club}</td>
-                      <td className="p-3 text-dune">{a.category || "N/A"}</td>
-                      <td className="p-3">
-                        <span className={`badge ${
-                          a.status === "pesé" ? "text-forest" :
-                          a.status === "inscrit" ? "text-gold" : "text-flame"
-                        }`}>
-                          {a.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {reportType === "clubs" && (
-          <div>
-            <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-              Statistiques par Club
-            </h3>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-husk">
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Club</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Ville</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Athlètes</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Pesés</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {clubStats.map((c) => (
-                    <tr key={c.id} className="border-b border-husk/50 hover:bg-bark/30">
-                      <td className="p-3 text-bone">{c.name}</td>
-                      <td className="p-3 text-dune">{c.city}</td>
-                      <td className="p-3 text-bone">{c.totalAthletes}</td>
-                      <td className="p-3 text-forest">{c.weighedAthletes}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {reportType === "matches" && (
-          <div>
-            <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-              Progression des Matchs par Catégorie
-            </h3>
-            <div className="space-y-4">
-              {categoryStats.map((c) => (
-                <div key={c.catId} className="border border-husk p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-semibold text-bone">{c.catId}</p>
-                    <p className="text-sm text-dune">
-                      {c.completedMatches}/{c.totalMatches} matchs
-                    </p>
-                  </div>
-                  <div className="w-full bg-husk rounded-full h-2">
-                    <div
-                      className="bg-gold h-2 rounded-full transition-all"
-                      style={{ width: `${c.totalMatches > 0 ? (c.completedMatches / c.totalMatches) * 100 : 0}%` }}
-                    />
-                  </div>
-                </div>
+      {/* Statistiques par catégorie */}
+      <div className="panel p-6 mb-6">
+        <h3 className="font-display text-lg uppercase tracking-wide text-bone mb-4">
+          Statistiques par catégorie
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-husk">
+                <th className="text-left py-3 px-2 font-mono text-xs uppercase tracking-wider text-dune">
+                  Catégorie
+                </th>
+                <th className="text-center py-3 px-2 font-mono text-xs uppercase tracking-wider text-dune">
+                  Athlètes
+                </th>
+                <th className="text-center py-3 px-2 font-mono text-xs uppercase tracking-wider text-dune">
+                  Matchs
+                </th>
+                <th className="text-center py-3 px-2 font-mono text-xs uppercase tracking-wider text-dune">
+                  Terminés
+                </th>
+                <th className="text-center py-3 px-2 font-mono text-xs uppercase tracking-wider text-dune">
+                  Statut
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {categoryStats.map((cat) => (
+                <tr key={cat.catId} className="border-b border-husk/50 hover:bg-bark/50">
+                  <td className="py-3 px-2 text-sm font-semibold text-bone">{cat.catId}</td>
+                  <td className="py-3 px-2 text-sm text-center text-dune">{cat.athleteCount}</td>
+                  <td className="py-3 px-2 text-sm text-center text-dune">{cat.matchCount}</td>
+                  <td className="py-3 px-2 text-sm text-center text-dune">{cat.completedMatches}</td>
+                  <td className="py-3 px-2 text-center">
+                    <span
+                      className={`badge ${
+                        cat.status === "terminée"
+                          ? "text-forest"
+                          : cat.status === "tirée"
+                          ? "text-gold"
+                          : "text-dune"
+                      }`}
+                    >
+                      {cat.status}
+                    </span>
+                  </td>
+                </tr>
               ))}
-            </div>
-          </div>
-        )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        {reportType === "categories" && (
-          <div>
-            <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-              Statistiques par Catégorie
-            </h3>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-husk">
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Catégorie</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Athlètes</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Matchs</th>
-                    <th className="text-left p-3 font-mono text-xs uppercase tracking-wider text-dune">Terminés</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categoryStats.map((c) => (
-                    <tr key={c.catId} className="border-b border-husk/50 hover:bg-bark/30">
-                      <td className="p-3 text-bone">{c.catId}</td>
-                      <td className="p-3 text-bone">{c.athletes}</td>
-                      <td className="p-3 text-bone">{c.totalMatches}</td>
-                      <td className="p-3 text-forest">{c.completedMatches}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+      {/* Statistiques par club */}
+      <div className="panel p-6">
+        <h3 className="font-display text-lg uppercase tracking-wide text-bone mb-4">
+          Statistiques par club
+        </h3>
+        <div className="space-y-3">
+          {clubStats.slice(0, 10).map((club, idx) => {
+            const percentage =
+              club.totalAthletes > 0
+                ? Math.round((club.weighedAthletes / club.totalAthletes) * 100)
+                : 0;
+
+            return (
+              <div key={club.name} className="border-l-4 border-gold bg-bark/50 p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <span className="font-display text-xl text-gold">#{idx + 1}</span>
+                    <div>
+                      <h4 className="font-semibold text-bone">{club.name}</h4>
+                      <p className="text-xs text-dune">
+                        {club.weighedAthletes} / {club.totalAthletes} athlètes pesés
+                      </p>
+                    </div>
+                  </div>
+                  <span className="font-display text-2xl text-bone">{percentage}%</span>
+                </div>
+                <div className="h-1.5 bg-husk rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gold transition-all duration-500"
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

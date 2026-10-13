@@ -3,258 +3,226 @@
 ## 📅 Module Calendrier (`/calendar`)
 
 ### Vue d'ensemble
-Le module Calendrier offre une vue mensuelle interactive de toutes les compétitions planifiées, permettant de visualiser facilement les événements et leurs durées.
+Module de visualisation du planning des compétitions sous forme de calendrier mensuel interactif.
 
 ### Fonctionnalités
+- **Navigation mensuelle** : Boutons précédent/suivant pour naviguer entre les mois
+- **Vue calendrier** : Grille de 6 semaines × 7 jours
+- **Événements colorés** : Code couleur par type de compétition
+  - 🟢 Vert : Compétition locale
+  - 🟡 Or : Compétition nationale
+  - 🔴 Rouge : Compétition internationale
+- **Liste des événements** : Détail des compétitions du mois sélectionné
+- **Légende** : Explication des codes couleur
 
-#### Navigation temporelle
-- **Mois précédent/suivant** : Navigation fluide entre les mois
-- **Affichage du mois en cours** : Titre dynamique avec mois et année
-- **Grille 7 jours** : Layout standard du calendrier (Lun-Dim)
+### Composants
+- `src/pages/Calendar.tsx` : Composant principal
+- Utilise `IconCalendar` et `IconChevron`
 
-#### Affichage des compétitions
-- **Indicateur visuel** : Point rouge sur les jours avec compétitions
-- **Aperçu des événements** : Affichage des 2 premières compétitions du jour
-- **Compteur** : "+X autre(s)" si plus de 2 compétitions
-- **Jour actuel** : Mise en évidence du jour courant
-
-#### Interactions
-- **Clic sur compétition** : Ouvre un modal avec détails complets
-- **Modal de détails** : Dates, lieu, type, statut, nombre d'aires
-- **Liste mensuelle** : Toutes les compétitions du mois en dessous du calendrier
-
-#### Statistiques
-- **Compétitions du mois** : Liste détaillée avec dates et statut
-- **Filtrage intelligent** : Affiche les compétitions qui chevauchent le mois
-
-### Design
-- **Grille responsive** : S'adapte aux différentes tailles d'écran
-- **Couleurs thématiques** : Bordures et badges selon le statut
-- **Transitions fluides** : Animations au survol et au clic
-
----
-
-## 📊 Module Rapports (`/reports`)
-
-### Vue d'overview
-Le module Rapports fournit des statistiques avancées et des outils d'export pour analyser les données de la compétition.
-
-### Fonctionnalités
-
-#### Statistiques globales
-- **Total athlètes** : Nombre total d'athlètes inscrits
-- **Athlètes pesés** : Nombre d'athlètes ayant passé la pesée
-- **Total matchs** : Nombre total de matchs générés
-- **Matchs terminés** : Nombre de matchs complétés
-- **Total clubs** : Nombre de clubs participants
-- **Total compétitions** : Nombre de compétitions (actives incluses)
-
-#### Types de rapports
-
-##### 1. Rapport Athlètes
-- **Tableau complet** : Nom, prénom, club, catégorie, poids, statut, licence
-- **Export CSV** : Téléchargement de toutes les données
-- **Tri et filtrage** : Visualisation de tous les athlètes
-
-##### 2. Rapport Clubs
-- **Statistiques par club** : Nombre d'athlètes, athlètes pesés
-- **Tri par performance** : Clubs triés par nombre d'athlètes
-- **Export CSV** : Données complètes des clubs
-
-##### 3. Rapport Matchs
-- **Progression par catégorie** : Barres de progression visuelles
-- **Statistiques détaillées** : Matchs totaux, matchs terminés
-- **Visualisation** : Pourcentage de complétion par catégorie
-
-##### 4. Rapport Catégories
-- **Tableau récapitulatif** : Athlètes, matchs, matchs terminés par catégorie
-- **Export CSV** : Données complètes des catégories
-- **Analyse** : Vue d'ensemble de chaque catégorie de poids
-
-#### Export CSV
-- **Génération dynamique** : Création de fichiers CSV à la volée
-- **Téléchargement automatique** : Fichiers nommés selon le type de rapport
-- **Format standard** : Compatible avec Excel, Google Sheets, etc.
-
-### Design
-- **Cartes statistiques** : 4 cartes en haut avec chiffres clés
-- **Sélecteur de rapport** : 4 boutons pour choisir le type de rapport
-- **Tableaux responsives** : Scroll horizontal sur mobile
-- **Barres de progression** : Visualisation intuitive de l'avancement
+### Données affichées
+- Nom de la compétition
+- Dates de début et fin
+- Lieu
+- Type (locale/nationale/internationale)
 
 ---
 
 ## 🔔 Module Notifications (`/notifications`)
 
-### Vue d'ensemble
-Le module Notifications permet de créer, gérer et suivre les communications importantes liées à la compétition.
+### Vue d'overview
+Système de notifications intelligentes basé sur l'état actuel de la compétition.
 
 ### Fonctionnalités
+- **Notifications automatiques** :
+  - ⚠️ Pesées en attente
+  - ℹ️ Tirages à générer
+  - ✗ Réclamations en attente
+  - ✓ Matchs prêts
+  - ℹ️ Compétitions actives
+- **Filtres** : Toutes / Non lues
+- **Statistiques** : Total, non lues
+- **Actions rapides** : Liens directs vers les modules concernés
+- **Marquage** : Marquer comme lu / Tout marquer comme lu
 
-#### Statistiques
-- **Total notifications** : Nombre total de notifications
-- **Non lues** : Nombre de notifications non consultées
-- **Lues** : Nombre de notifications déjà consultées
-- **Aujourd'hui** : Notifications créées dans la journée
+### Composants
+- `src/pages/Notifications.tsx` : Composant principal
+- Utilise `IconBell`, `IconCheck`, `IconTrash`
 
-#### Gestion des notifications
-
-##### Création
-- **Formulaire complet** : Type, titre, message
-- **Types de notification** :
-  - `info` : Information générale (bleu)
-  - `success` : Succès/réussite (vert)
-  - `warning` : Avertissement (jaune)
-  - `error` : Erreur/problème (rouge)
-- **Validation** : Champs obligatoires vérifiés
-
-##### Lecture
-- **Marquer comme lu** : Action individuelle sur chaque notification
-- **Tout marquer comme lu** : Action groupée
-- **Badge "Nouveau"** : Indicateur visuel pour notifications non lues
-- **Icônes thématiques** : ✓, ⚠, ✕, ℹ selon le type
-
-##### Suppression
-- **Suppression individuelle** : Bouton poubelle sur chaque notification
-- **Confirmation** : Toast de confirmation après suppression
-
-#### Persistance
-- **LocalStorage** : Notifications sauvegardées dans le navigateur
-- **Chargement automatique** : Récupération au démarrage
-- **Mise à jour temps réel** : Sauvegarde à chaque modification
-
-### Design
-- **Bordures colorées** : 4px de couleur selon le type de notification
-- **Fond dynamique** : Opacité différente selon lu/non lu
-- **Icônes expressives** : Symboles visuels pour chaque type
-- **Layout responsive** : Adapté mobile et desktop
+### Types de notifications
+- `info` : Informations générales (bleu)
+- `success` : Succès (vert)
+- `warning` : Avertissements (or)
+- `error` : Erreurs/urgences (rouge)
 
 ---
 
-## 🔧 Intégration Technique
+## 📊 Module Rapports & Statistiques (`/reports`)
 
-### Routes ajoutées
-```typescript
+### Vue d'ensemble
+Tableau de bord analytique avec statistiques détaillées et visualisations.
+
+### Fonctionnalités
+- **KPIs principaux** :
+  - Athlètes (total, pesés, forfaits)
+  - Matchs (total, terminés, prêts)
+  - Compétitions (total, actives)
+  - Progression (taux de completion)
+- **Barres de progression** :
+  - Taux de pesées
+  - Taux de matchs terminés
+  - Taux de réclamations résolues
+- **Statistiques par catégorie** :
+  - Tableau détaillé par catégorie de poids
+  - Nombre d'athlètes, matchs, matchs terminés
+  - Statut de chaque catégorie
+- **Statistiques par club** :
+  - Classement des clubs par nombre d'athlètes
+  - Taux de pesées par club
+  - Barres de progression visuelles
+
+### Composants
+- `src/pages/Reports.tsx` : Composant principal
+- Utilise `IconChart`, `IconUsers`, `IconTrophy`, `IconCalendar`
+
+### Métriques calculées
+- Taux de pesées : (athlètes pesés / total athlètes) × 100
+- Taux de completion : (matchs terminés / total matchs) × 100
+- Taux de réclamations résolues : (réclamations résolues / total réclamations) × 100
+
+---
+
+## 📤 Module Export & Import (`/export`)
+
+### Vue d'overview
+Module de gestion des données avec export/import au format CSV.
+
+### Fonctionnalités d'export
+- **Types de données exportables** :
+  - Athlètes (toutes les informations)
+  - Clubs (coordonnées complètes)
+  - Résultats (podiums par catégorie)
+- **Format CSV** : Compatible Excel, Google Sheets
+- **Téléchargement automatique** : Fichier généré et téléchargé
+
+### Fonctionnalités d'import
+- **Import d'athlètes** : Upload de fichier CSV
+- **Validation** : Vérification des en-têtes requis
+- **Format requis** :
+  ```
+  Prénom, Nom, Genre, Année de naissance, Club, Licence, Poids, Catégorie, Statut
+  ```
+- **Gestion des erreurs** : Messages d'erreur clairs
+
+### Composants
+- `src/pages/ExportImport.tsx` : Composant principal
+- Utilise `IconDownload`, `IconUpload`, `IconFile`
+
+### Formats de fichiers
+- **Export** : CSV avec séparateur virgule, champs entre guillemets
+- **Import** : CSV avec en-têtes obligatoires
+
+### Statistiques affichées
+- Nombre d'athlètes
+- Nombre de clubs
+- Nombre d'arbitres
+- Nombre de compétitions
+
+---
+
+## 🎨 Icônes ajoutées
+
+### Nouvelles icônes dans `Icons.tsx`
+- `IconChart` : Graphique en barres (pour Rapports)
+- `IconFile` : Document (pour Export/Import)
+- `IconLogout` : Déconnexion (pour Portail Parents)
+
+### Icônes réutilisées
+- `IconCalendar` : Calendrier
+- `IconBell` : Notifications
+- `IconDownload` : Export
+- `IconUpload` : Import
+- `IconCheck` : Validation
+- `IconTrash` : Suppression
+
+---
+
+## 📋 Mise à jour de la navigation
+
+### Layout.tsx
+Ajout de 4 nouveaux liens dans la barre de navigation latérale :
+1. **Calendrier** (`/calendar`) - Icône `IconCalendar`
+2. **Rapports** (`/reports`) - Icône `IconDownload`
+3. **Notifications** (`/notifications`) - Icône `IconBell`
+4. **Export & Import** (`/export`) - Icône `IconFile`
+
+### App.tsx
+Ajout de 4 nouvelles routes :
+```tsx
 <Route path="/calendar" element={<Calendar />} />
 <Route path="/reports" element={<Reports />} />
 <Route path="/notifications" element={<Notifications />} />
+<Route path="/export" element={<ExportImport />} />
 ```
-
-### Navigation mise à jour
-```typescript
-{ to: "/calendar", label: "Calendrier", icon: IconCalendar },
-{ to: "/reports", label: "Rapports", icon: IconDownload },
-{ to: "/notifications", label: "Notifications", icon: IconBell },
-```
-
-### Icônes utilisées
-- **IconCalendar** : Déjà existant, réutilisé pour le calendrier
-- **IconDownload** : Déjà existant, utilisé pour les rapports
-- **IconBell** : Nouvelle icône ajoutée pour les notifications
-
-### Dépendances
-- **React** : Hooks (useState, useMemo, useEffect)
-- **React Router** : Navigation et routes
-- **LocalStorage** : Persistance des notifications
-- **Date API** : Gestion des dates pour le calendrier
 
 ---
 
-## 📈 Cas d'usage
+## 📊 Statistiques globales de l'application
 
-### Module Calendrier
-**Pour les organisateurs** :
-- Planifier les compétitions sur l'année
-- Visualiser les conflits de dates
-- Communiquer les dates aux participants
+### Nombre total de modules : 18
+1. Tableau de bord
+2. Compétitions
+3. Organisateurs
+4. Clubs
+5. Arbitres
+6. Athlètes
+7. Pesée
+8. Tirages au sort
+9. Live Scoring
+10. Résultats
+11. Réclamations
+12. Mode TV
+13. QR Présences
+14. **Calendrier** (NOUVEAU)
+15. **Rapports & Statistiques** (NOUVEAU)
+16. **Notifications** (NOUVEAU)
+17. **Export & Import** (NOUVEAU)
+18. Administration
++ Portail Parents (2 pages)
 
-**Pour les clubs** :
-- Consulter le calendrier des compétitions
-- Planifier les déplacements
-- Préparer les athlètes
-
-### Module Rapports
-**Pour les organisateurs** :
-- Analyser la participation
-- Identifier les catégories populaires
-- Exporter les données pour communication
-
-**Pour les fédérations** :
-- Statistiques globales de la saison
-- Rapports pour les sponsors
-- Archives historiques
-
-**Pour les médias** :
-- Données pour articles
-- Statistiques de participation
-- Informations sur les clubs
-
-### Module Notifications
-**Pour les organisateurs** :
-- Annoncer des changements de programme
-- Communiquer des informations importantes
-- Rappeler les deadlines
-
-**Pour les clubs** :
-- Recevoir les informations officielles
-- Être alerté des changements
-- Historique des communications
+### Compilation
+- **68 modules** transformés
+- **Build réussi** sans erreurs
+- **Taille** : 370 KB JS (99 KB gzippé)
+- **CSS** : 49 KB (9.2 KB gzippé)
 
 ---
 
 ## 🚀 Améliorations futures possibles
 
 ### Module Calendrier
-- [ ] Vue semaine/mois/année
-- [ ] Filtrage par type de compétition
-- [ ] Export du calendrier (ICS)
+- [ ] Vue semaine/jour
+- [ ] Drag & drop pour déplacer les événements
 - [ ] Synchronisation avec Google Calendar
-- [ ] Rappels automatiques
+- [ ] Export iCal
+
+### Module Notifications
+- [ ] Notifications push (PWA)
+- [ ] Email notifications
+- [ ] Historique des notifications
+- [ ] Personnalisation des alertes
 
 ### Module Rapports
 - [ ] Graphiques interactifs (Chart.js)
-- [ ] Rapports personnalisés
-- [ ] Export PDF
+- [ ] Export PDF des rapports
 - [ ] Comparaison entre compétitions
-- [ ] Tendances sur plusieurs saisons
+- [ ] Prédictions et tendances
 
-### Module Notifications
-- [ ] Notifications push (Service Workers)
-- [ ] Email automatique
-- [ ] Ciblage par club/rôle
-- [ ] Templates de notifications
-- [ ] Historique complet avec recherche
+### Module Export/Import
+- [ ] Export Excel (XLSX)
+- [ ] Import de résultats depuis fichiers PSS
+- [ ] Synchronisation cloud
+- [ ] Sauvegarde automatique
 
 ---
 
-## 📊 Statistiques de l'application
-
-Après l'ajout de ces 3 modules, l'application DOJANG compte désormais :
-
-**17 modules opérationnels** :
-1. ✅ Tableau de bord
-2. ✅ Compétitions
-3. ✅ Organisateurs
-4. ✅ Clubs
-5. ✅ Arbitres
-6. ✅ Athlètes
-7. ✅ Pesée
-8. ✅ Tirages au sort
-9. ✅ Live Scoring
-10. ✅ Résultats
-11. ✅ Réclamations
-12. ✅ Mode TV
-13. ✅ QR Présences
-14. ✅ Portail Parents
-15. ✅ **Calendrier** (NOUVEAU)
-16. ✅ **Rapports** (NOUVEAU)
-17. ✅ **Notifications** (NOUVEAU)
-18. ✅ Administration
-
-**Compilation** :
-- 67 modules transformés
-- Build réussi sans erreurs
-- Taille : 365 KB JS (97 KB gzippé)
-- CSS : 50 KB (9.3 KB gzippé)
-
-L'application DOJANG est maintenant une solution complète et professionnelle pour la gestion des compétitions de taekwondo, avec tous les outils nécessaires pour les organisateurs, clubs, arbitres, athlètes et parents.
+**DOJANG** - La Régie des Tatamis 🥋

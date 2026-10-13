@@ -21,6 +21,7 @@ import ParentsDashboard from "./pages/ParentsDashboard";
 import Calendar from "./pages/Calendar";
 import Reports from "./pages/Reports";
 import Notifications from "./pages/Notifications";
+import ExportImport from "./pages/ExportImport";
 import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -65,6 +66,7 @@ export default function App() {
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/reports" element={<Reports />} />
                     <Route path="/notifications" element={<Notifications />} />
+                    <Route path="/export" element={<ExportImport />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>

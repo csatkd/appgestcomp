@@ -161,7 +161,16 @@ Centre de messages et alertes :
 - Icônes et couleurs thématiques
 - Badge "Nouveau" pour notifications non lues
 
-### 17. **Administration** (`/admin`)
+### 17. **Export & Import** (`/export`) ✨ NOUVEAU
+Gestion des données avec export/import CSV :
+- Export des athlètes, clubs et résultats au format CSV
+- Import d'athlètes depuis fichier CSV
+- Validation des données importées
+- Statistiques des données (athlètes, clubs, arbitres, compétitions)
+- Compatible Excel, Google Sheets
+- Gestion des erreurs et doublons
+
+### 18. **Administration** (`/admin`)
 Configuration globale :
 - Paramètres de l'événement
 - Gestion des catégories
@@ -200,6 +209,7 @@ AppState {
   results: Record<string, Podium>
   claims: Claim[]
   qrScans: QrScan[]
+  notifications: Notification[]        // Notifications ✨ NOUVEAU
   // ... autres propriétés
 }
 ```
@@ -210,6 +220,7 @@ AppState {
 - `ADD_ORGANIZER` / `UPDATE_ORGANIZER` / `DELETE_ORGANIZER`
 - `ADD_CLUB` / `UPDATE_CLUB` / `DELETE_CLUB` ✨ NOUVEAU
 - `ADD_REFEREE` / `UPDATE_REFEREE` / `DELETE_REFEREE` ✨ NOUVEAU
+- `ADD_NOTIFICATION` / `UPDATE_NOTIFICATION` / `DELETE_NOTIFICATION` ✨ NOUVEAU
 - Toutes les actions existantes (athlètes, pesée, tirages, etc.)
 
 ### Persistance

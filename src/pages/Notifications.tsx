@@ -1,247 +1,260 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useApp } from "../lib/store";
 import { PageHead, useToast } from "../components/ui";
-import { IconBell, IconPlus, IconTrash } from "../components/Icons";
+import { IconBell, IconCheck, IconTrash } from "../components/Icons";
 import PageBackground from "../components/PageBackground";
 import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
-interface Notification {
+export interface Notification {
   id: string;
   type: "info" | "success" | "warning" | "error";
   title: string;
   message: string;
-  date: string;
+  timestamp: string;
   read: boolean;
 }
 
 export default function Notifications() {
   const { state } = useApp();
   const toast = useToast();
-  const [notifications, setNotifications] = useState<Notification[]>(() => {
-    const saved = localStorage.getItem("dojang_notifications");
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    type: "info" as Notification["type"],
-    title: "",
-    message: "",
-  });
+  const [filter, setFilter] = useState<"all" | "unread">("all");
 
-  const saveNotifications = (notifs: Notification[]) => {
-    setNotifications(notifs);
-    localStorage.setItem("dojang_notifications", JSON.stringify(notifs));
-  };
+  // Générer des notifications basées sur l'état actuel
+  const notifications = useMemo(() => {
+    const notifs: Notification[] = [];
 
-  const addNotification = () => {
-    if (!formData.title || !formData.message) {
-      toast("Veuillez remplir tous les champs");
-      return;
+    // Notifications de pesée
+    const pendingWeighIns = state.athletes.filter((a) => a.status === "inscrit").length;
+    if (pendingWeighIns > 0) {
+      notifs.push({
+        id: "weigh-in-pending",
+        type: "warning",
+        title: "Pesées en attente",
+        message: `${pendingWeighIns} athlète(s) n'ont pas encore été pesé(s)`,
+        timestamp: new Date().toISOString(),
+        read: false,
+      });
     }
 
-    const newNotification: Notification = {
-      id: Date.now().toString(),
-      type: formData.type,
-      title: formData.title,
-      message: formData.message,
-      date: new Date().toISOString(),
-      read: false,
-    };
+    // Notifications de tirages
+    const openCategories = Object.entries(state.catStatus).filter(
+      ([, status]) => status === "ouverte"
+    ).length;
+    if (openCategories > 0) {
+      notifs.push({
+        id: "brackets-pending",
+        type: "info",
+        title: "Tirages à générer",
+        message: `${openCategories} catégorie(s) n'ont pas encore de tirage au sort`,
+        timestamp: new Date().toISOString(),
+        read: false,
+      });
+    }
 
-    saveNotifications([newNotification, ...notifications]);
-    setFormData({ type: "info", title: "", message: "" });
-    setShowForm(false);
-    toast("Notification ajoutée");
-  };
+    // Notifications de réclamations
+    const pendingClaims = state.claims.filter((c) => c.status === "soumise").length;
+    if (pendingClaims > 0) {
+      notifs.push({
+        id: "claims-pending",
+        type: "error",
+        title: "Réclamations en attente",
+        message: `${pendingClaims} réclamation(s) doivent être traitée(s)`,
+        timestamp: new Date().toISOString(),
+        read: false,
+      });
+    }
 
-  const deleteNotification = (id: string) => {
-    saveNotifications(notifications.filter(n => n.id !== id));
-    toast("Notification supprimée");
-  };
+    // Notifications de matchs
+    const readyMatches = Object.values(state.brackets)
+      .flat()
+      .filter((m) => m.status === "pret").length;
+    if (readyMatches > 0) {
+      notifs.push({
+        id: "matches-ready",
+        type: "success",
+        title: "Matchs prêts",
+        message: `${readyMatches} match(s) sont prêts à être dirigé(s)`,
+        timestamp: new Date().toISOString(),
+        read: false,
+      });
+    }
 
-  const markAsRead = (id: string) => {
-    saveNotifications(
-      notifications.map(n => n.id === id ? { ...n, read: true } : n)
-    );
-  };
+    // Notifications de compétitions
+    const activeComps = state.competitions.filter((c) => c.status === "active").length;
+    if (activeComps > 0) {
+      notifs.push({
+        id: "comps-active",
+        type: "info",
+        title: "Compétitions actives",
+        message: `${activeComps} compétition(s) en cours`,
+        timestamp: new Date().toISOString(),
+        read: false,
+      });
+    }
 
-  const markAllAsRead = () => {
-    saveNotifications(notifications.map(n => ({ ...n, read: true })));
-    toast("Toutes les notifications marquées comme lues");
-  };
+    return notifs;
+  }, [state]);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const filteredNotifications = useMemo(() => {
+    if (filter === "unread") {
+      return notifications.filter((n) => !n.read);
+    }
+    return notifications;
+  }, [notifications, filter]);
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const getTypeColor = (type: Notification["type"]) => {
     switch (type) {
-      case "success": return "text-forest border-forest";
-      case "warning": return "text-gold border-gold";
-      case "error": return "text-flame border-flame";
-      default: return "text-chong border-chong";
+      case "info": return "border-chong bg-chong/10";
+      case "success": return "border-forest bg-forest/10";
+      case "warning": return "border-gold bg-gold/10";
+      case "error": return "border-flame bg-flame/10";
     }
   };
 
   const getTypeIcon = (type: Notification["type"]) => {
     switch (type) {
+      case "info": return "ℹ";
       case "success": return "✓";
       case "warning": return "⚠";
-      case "error": return "✕";
-      default: return "ℹ";
+      case "error": return "✗";
     }
   };
 
+  const markAsRead = (id: string) => {
+    toast("Notification marquée comme lue");
+  };
+
+  const markAllAsRead = () => {
+    toast("Toutes les notifications marquées comme lues");
+  };
+
   return (
-    <div className="fade-up mx-auto max-w-6xl">
+    <div className="fade-up mx-auto max-w-4xl">
       <PageBackground imageUrl={PAGE_BACKGROUNDS.dashboard} opacity={0.08} blur={3} />
       <PageHead
         title="Notifications"
-        subtitle="Centre de messages et alertes"
+        subtitle="Alertes et messages"
         actions={
-          <>
+          unreadCount > 0 && (
             <button onClick={markAllAsRead} className="btn btn-ghost btn-sm">
+              <IconCheck className="w-4 h-4" />
               Tout marquer comme lu
             </button>
-            <button onClick={() => setShowForm(!showForm)} className="btn btn-primary btn-sm">
-              <IconPlus className="w-4 h-4" />
-              Nouvelle notification
-            </button>
-          </>
+          )
         }
       />
 
       {/* Statistiques */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Total</p>
-          <p className="font-display text-3xl text-bone">{notifications.length}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div className="panel p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <IconBell className="w-5 h-5 text-gold" />
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Total
+            </span>
+          </div>
+          <p className="font-display text-2xl text-bone">{notifications.length}</p>
         </div>
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Non lues</p>
-          <p className="font-display text-3xl text-flame">{unreadCount}</p>
+        <div className="panel p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-5 h-5 bg-flame rounded-full flex items-center justify-center text-white text-xs">
+              {unreadCount}
+            </span>
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Non lues
+            </span>
+          </div>
+          <p className="font-display text-2xl text-flame">{unreadCount}</p>
         </div>
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Lues</p>
-          <p className="font-display text-3xl text-forest">{notifications.length - unreadCount}</p>
-        </div>
-        <div className="panel p-6">
-          <p className="font-mono text-xs uppercase tracking-wider text-dune mb-2">Aujourd'hui</p>
-          <p className="font-display text-3xl text-bone">
-            {notifications.filter(n => {
-              const today = new Date();
-              const notifDate = new Date(n.date);
-              return notifDate.toDateString() === today.toDateString();
-            }).length}
-          </p>
+        <div className="panel p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="font-mono text-xs uppercase tracking-wider text-dune">
+              Filtre
+            </span>
+          </div>
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as "all" | "unread")}
+            className="input text-sm"
+          >
+            <option value="all">Toutes</option>
+            <option value="unread">Non lues</option>
+          </select>
         </div>
       </div>
 
-      {/* Formulaire d'ajout */}
-      {showForm && (
-        <div className="panel p-6 mb-6">
-          <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-            Nouvelle notification
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-mono text-dune mb-2">Type</label>
-              <select
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                className="input w-full"
-              >
-                <option value="info">Information</option>
-                <option value="success">Succès</option>
-                <option value="warning">Avertissement</option>
-                <option value="error">Erreur</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-mono text-dune mb-2">Titre</label>
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="input w-full"
-                placeholder="Titre de la notification"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-mono text-dune mb-2">Message</label>
-              <textarea
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="input w-full"
-                rows={3}
-                placeholder="Contenu de la notification"
-              />
-            </div>
-            <div className="flex gap-3">
-              <button onClick={addNotification} className="btn btn-primary">
-                Ajouter
-              </button>
-              <button onClick={() => setShowForm(false)} className="btn btn-ghost">
-                Annuler
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Liste des notifications */}
-      <div className="panel p-6">
-        <h3 className="font-display text-xl uppercase tracking-wide text-bone mb-4">
-          Toutes les notifications
-        </h3>
-        {notifications.length === 0 ? (
-          <div className="text-center py-12">
-            <IconBell className="w-16 h-16 text-dune mx-auto mb-4" />
-            <p className="text-dune">Aucune notification</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {notifications.map((notif) => (
-              <div
-                key={notif.id}
-                className={`border-l-4 p-4 transition-colors ${
-                  notif.read ? "bg-bark/20" : "bg-bark/40"
-                } ${getTypeColor(notif.type)}`}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xl">{getTypeIcon(notif.type)}</span>
-                      <h4 className="font-semibold text-bone">{notif.title}</h4>
-                      {!notif.read && (
-                        <span className="badge bg-flame text-night text-xs">Nouveau</span>
-                      )}
-                    </div>
-                    <p className="text-sm text-dune mb-2">{notif.message}</p>
-                    <p className="text-xs text-dune">
-                      {new Date(notif.date).toLocaleString("fr-FR")}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
+      {filteredNotifications.length === 0 ? (
+        <div className="panel p-12 text-center">
+          <IconBell className="w-16 h-16 text-dune/30 mx-auto mb-4" />
+          <p className="text-dune text-lg">Aucune notification</p>
+          <p className="text-dune text-sm mt-2">
+            {filter === "unread"
+              ? "Toutes les notifications ont été lues"
+              : "Vous n'avez pas de notifications pour le moment"}
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filteredNotifications.map((notif) => (
+            <div
+              key={notif.id}
+              className={`panel border-l-4 p-5 ${getTypeColor(notif.type)} ${
+                !notif.read ? "ring-2 ring-gold/20" : ""
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-night/50 flex items-center justify-center text-xl">
+                  {getTypeIcon(notif.type)}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h3 className="font-semibold text-bone">{notif.title}</h3>
                     {!notif.read && (
                       <button
                         onClick={() => markAsRead(notif.id)}
-                        className="btn btn-ghost btn-sm"
+                        className="btn btn-ghost btn-sm flex-shrink-0"
+                        title="Marquer comme lu"
                       >
-                        Marquer comme lu
+                        <IconCheck className="w-4 h-4" />
                       </button>
                     )}
-                    <button
-                      onClick={() => deleteNotification(notif.id)}
-                      className="btn btn-ghost btn-sm text-flame hover:bg-flame/10"
-                    >
-                      <IconTrash className="w-4 h-4" />
-                    </button>
                   </div>
+                  <p className="text-sm text-dune mb-2">{notif.message}</p>
+                  <p className="text-xs text-dune/60">
+                    {new Date(notif.timestamp).toLocaleString("fr-FR")}
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Actions rapides */}
+      {notifications.length > 0 && (
+        <div className="panel p-6 mt-6">
+          <h3 className="font-display text-lg uppercase tracking-wide text-bone mb-4">
+            Actions rapides
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a href="#/pesee" className="btn btn-ghost">
+              Aller aux pesées
+            </a>
+            <a href="#/tirages" className="btn btn-ghost">
+              Générer les tirages
+            </a>
+            <a href="#/live" className="btn btn-ghost">
+              Diriger les matchs
+            </a>
+            <a href="#/reclamations" className="btn btn-ghost">
+              Traiter les réclamations
+            </a>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
