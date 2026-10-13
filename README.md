@@ -170,7 +170,21 @@ Gestion des données avec export/import CSV :
 - Compatible Excel, Google Sheets
 - Gestion des erreurs et doublons
 
-### 18. **Administration** (`/admin`)
+### 18. **Sponsors & Partenaires** (`/sponsors`) ✨ NOUVEAU
+Gestion complète des sponsors et partenaires :
+- CRUD complet des sponsors (créer, lire, modifier, supprimer)
+- Classification par type (Principal, Officiel, Partenaire, Média, Technique)
+- Niveaux de sponsoring (Or, Argent, Bronze) avec code couleur
+- Statuts (Actif, En attente, Expiré)
+- Gestion des logos avec affichage visuel
+- Statistiques en temps réel (total, actifs, financement total)
+- Système de filtrage avancé (type, niveau, statut)
+- Affichage en grille responsive avec cartes colorées
+- Modals de création/édition et visualisation détaillée
+- 3 sponsors de démonstration pré-configurés
+- Documentation complète dans [SPONSORS_MODULE.md](./SPONSORS_MODULE.md)
+
+### 19. **Administration** (`/admin`)
 Configuration globale :
 - Paramètres de l'événement
 - Gestion des catégories

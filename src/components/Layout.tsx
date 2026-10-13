@@ -24,6 +24,7 @@ import {
   IconBell,
   IconDownload,
   IconFile,
+  IconHandshake,
 } from "./Icons";
 
 const NAV = [
@@ -44,6 +45,7 @@ const NAV = [
   { to: "/reports", label: "Rapports", icon: IconDownload },
   { to: "/notifications", label: "Notifications", icon: IconBell },
   { to: "/export", label: "Export & Import", icon: IconFile },
+  { to: "/sponsors", label: "Sponsors & Partenaires", icon: IconHandshake },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 

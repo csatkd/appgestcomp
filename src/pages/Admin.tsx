@@ -236,6 +236,7 @@ export default function Admin() {
       currentCompetitionId: state.currentCompetitionId,
       clubs: state.clubs,
       referees: state.referees,
+      sponsors: [],
       activity: [
         {
           id: uid("act"),

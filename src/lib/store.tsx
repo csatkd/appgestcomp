@@ -331,6 +331,27 @@ function reducer(state: AppState, action: Action): AppState {
       return withLog(next, "config", `Arbitre supprimé`);
     }
 
+    case "ADD_SPONSOR": {
+      const next = { ...state, sponsors: [action.sponsor, ...state.sponsors] };
+      return withLog(next, "config", `Nouveau sponsor ajouté : ${action.sponsor.name}`);
+    }
+
+    case "UPDATE_SPONSOR": {
+      const sponsors = state.sponsors.map((s) => {
+        if (s.id !== action.id) return s;
+        return { ...s, ...action.updates };
+      });
+      const next = { ...state, sponsors };
+      const sponsor = sponsors.find((s) => s.id === action.id);
+      return withLog(next, "config", `Sponsor mis à jour : ${sponsor?.name}`);
+    }
+
+    case "DELETE_SPONSOR": {
+      const sponsors = state.sponsors.filter((s) => s.id !== action.id);
+      const next = { ...state, sponsors };
+      return withLog(next, "config", `Sponsor supprimé`);
+    }
+
     case "IMPORT_STATE": {
       const next = withLog(
         action.state,

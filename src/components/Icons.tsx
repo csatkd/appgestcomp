@@ -348,3 +348,21 @@ export function IconFile({ className = "w-5 h-5" }: IconProps) {
     </svg>
   );
 }
+
+export function IconEye({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+export function IconHandshake({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <path d="M20.5 11.5l-6-6a2 2 0 0 0-2.8 0l-6 6a2 2 0 0 0 0 2.8l6 6a2 2 0 0 0 2.8 0l6-6a2 2 0 0 0 0-2.8z" />
+      <path d="M8 12l4 4M12 8l4 4" />
+    </svg>
+  );
+}

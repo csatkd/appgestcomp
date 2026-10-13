@@ -164,6 +164,27 @@ export interface Referee {
   matchesCount: number;
 }
 
+export type SponsorType = "principal" | "officiel" | "partenaire" | "media" | "technique";
+export type SponsorLevel = "or" | "argent" | "bronze";
+export type SponsorStatus = "actif" | "en_attente" | "expire";
+
+export interface Sponsor {
+  id: string;
+  name: string;
+  type: SponsorType;
+  level: SponsorLevel;
+  logo: string;
+  website: string;
+  contact: string;
+  email: string;
+  phone: string;
+  startDate: string;
+  endDate: string;
+  status: SponsorStatus;
+  amount?: number;
+  description?: string;
+}
+
 export interface AppState {
   version: number;
   event: EventConfig;
@@ -180,6 +201,7 @@ export interface AppState {
   currentCompetitionId: string | null;
   clubs: Club[];
   referees: Referee[];
+  sponsors: Sponsor[];
 }
 
 export type Action =
@@ -211,5 +233,8 @@ export type Action =
   | { type: "ADD_REFEREE"; referee: Referee }
   | { type: "UPDATE_REFEREE"; id: string; updates: Partial<Referee> }
   | { type: "DELETE_REFEREE"; id: string }
+  | { type: "ADD_SPONSOR"; sponsor: Sponsor }
+  | { type: "UPDATE_SPONSOR"; id: string; updates: Partial<Sponsor> }
+  | { type: "DELETE_SPONSOR"; id: string }
   | { type: "IMPORT_STATE"; state: AppState; label?: string }
   | { type: "RESET_ALL" };
