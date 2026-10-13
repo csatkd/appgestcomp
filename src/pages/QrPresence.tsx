@@ -4,6 +4,8 @@ import { athleteName, classLabel } from "../lib/data";
 import { PageHead, StatusBadge, useToast, Modal } from "../components/ui";
 import { IconQr, IconCheck, IconX } from "../components/Icons";
 import type { QrScan } from "../lib/types";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function QrPresence() {
   const { state, dispatch } = useApp();
@@ -72,6 +74,7 @@ export default function QrPresence() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.qrPresence} opacity={0.1} blur={3} />
       <PageHead
         title="QR Présences"
         subtitle="Validation des présences et pesées"

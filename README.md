@@ -162,6 +162,15 @@ Une landing page dynamique et évolutive est disponible pour présenter l'applic
 - **Animations** : Scroll reveal, compteurs animés
 - **Documentation** : Voir [LANDING.md](./LANDING.md) pour personnaliser et étendre
 
+## 🎨 Images d'Arrière-Plan
+
+Chaque page de l'application dispose d'une image d'arrière-plan unique générée par IA :
+
+- **10 images thématiques** : Pattern kente, athlètes, trophées, combats, etc.
+- **Esthétique africaine** : Palette kente (or, rouge, vert) cohérente
+- **Composant réutilisable** : `PageBackground` avec opacité et flou configurables
+- **Documentation** : Voir [BACKGROUNDS.md](./BACKGROUNDS.md) pour personnaliser les images
+
 ## 🚀 Installation et Démarrage
 
 ```bash

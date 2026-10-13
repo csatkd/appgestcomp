@@ -15,6 +15,8 @@ import {
   IconCheck,
   IconTrophy,
 } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 const ROUND_SECONDS = 120;
 const REST_SECONDS = 60;
@@ -29,6 +31,7 @@ export function LiveIndex() {
 
   return (
     <div className="fade-up mx-auto max-w-4xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.live} opacity={0.1} blur={3} />
       <PageHead title="Régie Live" subtitle="Poste de contrôle des aires de combat" />
 
       {ready.length === 0 ? (
@@ -452,6 +455,7 @@ export function LiveMatch() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.live} opacity={0.08} blur={4} />
       <PageHead
         title="Aire de combat"
         subtitle={`${classLabel(match.catId)} · ${roundName(match.round, rounds)}`}

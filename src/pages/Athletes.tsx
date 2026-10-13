@@ -4,6 +4,8 @@ import { CLUBS, classLabel } from "../lib/data";
 import type { Athlete, Gender } from "../lib/types";
 import { PageHead, Modal, EmptyState, StatusBadge, useToast } from "../components/ui";
 import { IconPlus, IconSearch, IconTrash, IconUsers } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 interface FormState {
   firstName: string;
@@ -91,6 +93,7 @@ export default function Athletes() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.athletes} opacity={0.1} blur={3} />
       <PageHead
         title="Athlètes"
         subtitle="Base de données de la compétition"

@@ -3,6 +3,8 @@ import { useApp } from "../lib/store";
 import { categoryFor, classLabel, WEIGHT_CLASSES } from "../lib/data";
 import { PageHead, StatusBadge, useToast, ProgressBar } from "../components/ui";
 import { IconCheck, IconFlag, IconScale, IconX } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 type GenderFilter = "tous" | "M" | "F";
 
@@ -71,6 +73,7 @@ export default function WeighIn() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.weighIn} opacity={0.1} blur={3} />
       <PageHead title="Pesée" subtitle="Contrôle officiel des poids" />
 
       {/* Synthèse */}

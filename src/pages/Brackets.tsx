@@ -6,6 +6,8 @@ import { roundName, totalScore } from "../lib/bracket";
 import type { Match } from "../lib/types";
 import { PageHead, StatusBadge, useToast } from "../components/ui";
 import { IconBracket, IconLive, IconReset } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 function MatchCard({ m, catDone }: { m: Match; catDone: boolean }) {
   const { state } = useApp();
@@ -122,6 +124,7 @@ export default function Brackets() {
 
   return (
     <div className="fade-up mx-auto max-w-[1400px]">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.brackets} opacity={0.1} blur={3} />
       <PageHead title="Tirages au sort" subtitle="Tableaux à élimination directe" />
 
       {/* Cartes catégories */}

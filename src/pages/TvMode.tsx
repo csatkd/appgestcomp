@@ -3,6 +3,8 @@ import { useApp } from "../lib/store";
 import { athleteName, classLabel, WEIGHT_CLASSES } from "../lib/data";
 import { PageHead } from "../components/ui";
 import { IconTv, IconTrophy, IconUsers } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function TvMode() {
   const { state } = useApp();
@@ -36,6 +38,7 @@ export default function TvMode() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.tvMode} opacity={0.1} blur={3} />
       <PageHead title="Mode TV" subtitle="Affichage grand écran" />
 
       {/* Sélecteur de vue */}

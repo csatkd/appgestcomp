@@ -3,6 +3,8 @@ import { useApp } from "../lib/store";
 import { athleteName, classLabel, WEIGHT_CLASSES } from "../lib/data";
 import { PageHead, EmptyState, StatusBadge, useToast } from "../components/ui";
 import { IconTrophy, IconMedal, IconTrash } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 const MEDAL_COLORS = { gold: "#f0a41c", silver: "#c8ccd4", bronze: "#c97f4a" };
 
@@ -43,6 +45,7 @@ export default function Results() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.results} opacity={0.12} blur={3} />
       <PageHead
         title="Résultats"
         subtitle="Podiums & classement des clubs"

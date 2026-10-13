@@ -4,6 +4,8 @@ import { athleteName, classLabel } from "../lib/data";
 import { PageHead, StatusBadge, useToast, Modal } from "../components/ui";
 import { IconFlag, IconPlus, IconCheck, IconX, IconTrash } from "../components/Icons";
 import type { Claim, ClaimStatus } from "../lib/types";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function Claims() {
   const { state, dispatch } = useApp();
@@ -81,6 +83,7 @@ export default function Claims() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.claims} opacity={0.1} blur={3} />
       <PageHead
         title="Réclamations"
         subtitle="Gestion des contestations"

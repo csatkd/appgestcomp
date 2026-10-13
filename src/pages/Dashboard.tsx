@@ -10,6 +10,8 @@ import {
 } from "../lib/data";
 import { PageHead, ProgressBar, EmptyState } from "../components/ui";
 import { IconChevron, IconLive, IconTrophy, IconBracket } from "../components/Icons";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function Dashboard() {
   const { state } = useApp();
@@ -33,6 +35,7 @@ export default function Dashboard() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.dashboard} opacity={0.12} blur={3} />
       <PageHead
         title="Tableau de bord"
         subtitle="Vue d'ensemble de la compétition"

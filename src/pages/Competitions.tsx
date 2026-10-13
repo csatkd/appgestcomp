@@ -3,6 +3,8 @@ import { useApp } from "../lib/store";
 import { PageHead, Modal, useToast } from "../components/ui";
 import { IconPlus, IconEdit, IconTrash, IconCheck } from "../components/Icons";
 import type { Competition, CompetitionType, CompetitionStatus } from "../lib/types";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function Competitions() {
   const { state, dispatch } = useApp();
@@ -164,6 +166,7 @@ export default function Competitions() {
 
   return (
     <div className="fade-up mx-auto max-w-6xl">
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.competitions} opacity={0.1} blur={3} />
       <PageHead
         title="Compétitions"
         subtitle="Gestion multi-événements"
