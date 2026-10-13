@@ -127,6 +127,15 @@ Affichage grand écran :
 - Podiums par catégorie
 - Classement général des clubs
 - Statistiques de la compétition
+- **Affichage automatique des logos des sponsors** ✨ NOUVEAU
+  - Carrousel automatique avec transitions fluides
+  - Filtres par niveau (Or, Argent, Bronze)
+  - Contrôle de vitesse (2-10 secondes)
+  - Mode plein écran pour projection TV
+  - Page dédiée aux cérémonies (`/ceremony-sponsors`)
+  - Affichage des sponsors avec visibilité "tv" uniquement
+  - Animations professionnelles avec gradients dynamiques
+  - Documentation complète dans [TV_MODE_SPONSORS.md](./TV_MODE_SPONSORS.md)
 
 ### 13. **QR Présences** (`/qr`)
 Validation des présences :

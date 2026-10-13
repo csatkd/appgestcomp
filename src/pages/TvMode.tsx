@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useApp } from "../lib/store";
 import { athleteName, classLabel, WEIGHT_CLASSES } from "../lib/data";
 import { PageHead } from "../components/ui";
-import { IconTv, IconTrophy, IconUsers } from "../components/Icons";
+import { IconTv, IconTrophy, IconUsers, IconHandshake } from "../components/Icons";
 import PageBackground from "../components/PageBackground";
 import { PAGE_BACKGROUNDS } from "../config/backgrounds";
+import SponsorDisplay from "../components/SponsorDisplay";
 
 export default function TvMode() {
   const { state } = useApp();
-  const [view, setView] = useState<"podium" | "rankings" | "athletes">("podium");
+  const [view, setView] = useState<"podium" | "rankings" | "athletes" | "sponsors">("podium");
   const [selectedCat, setSelectedCat] = useState<string | null>(
     Object.keys(state.results)[0] ?? null
   );
@@ -42,7 +43,7 @@ export default function TvMode() {
       <PageHead title="Mode TV" subtitle="Affichage grand écran" />
 
       {/* Sélecteur de vue */}
-      <div className="mb-6 flex gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
         <button
           type="button"
           onClick={() => setView("podium")}
@@ -66,6 +67,14 @@ export default function TvMode() {
         >
           <IconTv className="h-4 w-4" />
           Statistiques
+        </button>
+        <button
+          type="button"
+          onClick={() => setView("sponsors")}
+          className={`btn ${view === "sponsors" ? "btn-primary" : "btn-ghost"}`}
+        >
+          <IconHandshake className="h-4 w-4" />
+          Sponsors
         </button>
       </div>
 
@@ -286,6 +295,14 @@ export default function TvMode() {
               {state.event.date} · {state.event.venue}
             </p>
           </div>
+        </div>
+      )}
+
+      {/* Vue Sponsors */}
+      {view === "sponsors" && (
+        <div className="panel relative overflow-hidden p-8">
+          <div className="kente absolute left-0 top-0 h-2 w-full" aria-hidden="true" />
+          <SponsorDisplay />
         </div>
       )}
     </div>
