@@ -79,6 +79,27 @@ export interface ActivityEntry {
   label: string;
 }
 
+export type ClaimStatus = "soumise" | "en_examen" | "acceptee" | "rejetee";
+
+export interface Claim {
+  id: string;
+  matchId: string;
+  catId: string;
+  athleteId: string;
+  reason: string;
+  status: ClaimStatus;
+  submittedAt: string;
+  resolvedAt: string | null;
+  resolution: string | null;
+}
+
+export interface QrScan {
+  id: string;
+  athleteId: string;
+  scannedAt: string;
+  type: "presence" | "pesee";
+}
+
 export interface AppState {
   version: number;
   event: EventConfig;
@@ -88,6 +109,8 @@ export interface AppState {
   results: Record<string, Podium>;
   disabledCats: string[];
   activity: ActivityEntry[];
+  claims: Claim[];
+  qrScans: QrScan[];
 }
 
 export type Action =
@@ -102,5 +125,9 @@ export type Action =
   | { type: "FINISH_MATCH"; catId: string; matchId: string; winner: "a" | "b" }
   | { type: "UPDATE_EVENT"; event: EventConfig }
   | { type: "TOGGLE_CLASS"; catId: string }
+  | { type: "ADD_CLAIM"; claim: Claim }
+  | { type: "UPDATE_CLAIM"; id: string; status: ClaimStatus; resolution?: string }
+  | { type: "DELETE_CLAIM"; id: string }
+  | { type: "ADD_QR_SCAN"; scan: QrScan }
   | { type: "IMPORT_STATE"; state: AppState; label?: string }
   | { type: "RESET_ALL" };

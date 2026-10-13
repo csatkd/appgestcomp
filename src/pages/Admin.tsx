@@ -222,13 +222,15 @@ export default function Admin() {
 
   const doWipe = () => {
     const empty: AppState = {
-      version: 3,
+      version: 4,
       event: state.event,
       athletes: [],
       brackets: {},
       catStatus: Object.fromEntries(WEIGHT_CLASSES.map((c) => [c.id, "ouverte" as const])),
       results: {},
       disabledCats: [],
+      claims: [],
+      qrScans: [],
       activity: [
         {
           id: uid("act"),

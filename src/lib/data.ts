@@ -1,7 +1,7 @@
 import type { AppState, Athlete, WeightClass } from "./types";
 import { generateBracket, totalRounds, finishMatch } from "./bracket";
 
-export const STORAGE_KEY = "dojang:v3";
+export const STORAGE_KEY = "dojang:v4";
 
 export const WEIGHT_CLASSES: WeightClass[] = [
   { id: "M-58", gender: "M", label: "Hommes −58 kg", maxWeight: 58 },
@@ -136,7 +136,7 @@ export function buildSeed(): AppState {
   catStatus["M-68"] = "tirée";
 
   return {
-    version: 3,
+    version: 4,
     event: {
       name: "Championnat National FITKD 2026",
       date: "14–16 Mars 2026",
@@ -148,6 +148,8 @@ export function buildSeed(): AppState {
     catStatus,
     results: {},
     disabledCats: [],
+    claims: [],
+    qrScans: [],
     activity: [
       {
         id: "seed-1",

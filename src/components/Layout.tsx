@@ -14,6 +14,9 @@ import {
   IconGear,
   IconLock,
   IconReset,
+  IconFlag,
+  IconTv,
+  IconQr,
 } from "./Icons";
 
 const NAV = [
@@ -23,10 +26,13 @@ const NAV = [
   { to: "/tirages", label: "Tirages au sort", icon: IconBracket },
   { to: "/live", label: "Live Scoring", icon: IconLive },
   { to: "/resultats", label: "Résultats", icon: IconTrophy },
+  { to: "/reclamations", label: "Réclamations", icon: IconFlag },
+  { to: "/tv", label: "Mode TV", icon: IconTv },
+  { to: "/qr", label: "QR Présences", icon: IconQr },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 
-const UPCOMING = ["Réclamations", "Mode TV", "QR Présences"];
+const UPCOMING: string[] = [];
 
 function Clock() {
   const [now, setNow] = useState(() => new Date());

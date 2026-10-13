@@ -79,6 +79,29 @@ export function IconTrophy({ className = "w-5 h-5" }: IconProps) {
   );
 }
 
+export function IconTv({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <rect x="2.5" y="5.5" width="19" height="12" rx="1" />
+      <path d="M8.5 20.5h7M12 17.5v3" />
+    </svg>
+  );
+}
+
+export function IconQr({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden="true">
+      <rect x="3.5" y="3.5" width="7" height="7" />
+      <rect x="13.5" y="3.5" width="7" height="7" />
+      <rect x="3.5" y="13.5" width="7" height="7" />
+      <path d="M14.5 13.5h2v2h-2zM17.5 13.5h3v2h-3zM14.5 16.5h2v2h-2zM17.5 16.5h3v4h-3z" />
+      <rect x="5.5" y="5.5" width="3" height="3" fill="currentColor" />
+      <rect x="15.5" y="5.5" width="3" height="3" fill="currentColor" />
+      <rect x="5.5" y="15.5" width="3" height="3" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function IconPlus({ className = "w-4 h-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden="true">

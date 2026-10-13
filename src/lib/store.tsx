@@ -17,11 +17,13 @@ function loadInitial(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed && parsed.version === 3 && Array.isArray(parsed.athletes)) {
+      if (parsed && parsed.version === 4 && Array.isArray(parsed.athletes)) {
         return {
           ...parsed,
           disabledCats: parsed.disabledCats ?? [],
           activity: parsed.activity ?? [],
+          claims: parsed.claims ?? [],
+          qrScans: parsed.qrScans ?? [],
         };
       }
     }
@@ -200,6 +202,44 @@ function reducer(state: AppState, action: Action): AppState {
         "config",
         `${classLabel(action.catId)} ${disabled ? "réouverte aux engagements" : "fermée aux engagements"}`
       );
+    }
+
+    case "ADD_CLAIM": {
+      const next = { ...state, claims: [action.claim, ...state.claims] };
+      const athlete = state.athletes.find((a) => a.id === action.claim.athleteId);
+      const name = athlete ? `${athlete.firstName} ${athlete.lastName}` : "Inconnu";
+      return withLog(next, "config", `Réclamation soumise par ${name}`);
+    }
+
+    case "UPDATE_CLAIM": {
+      const claims = state.claims.map((c) => {
+        if (c.id !== action.id) return c;
+        return {
+          ...c,
+          status: action.status,
+          resolvedAt: action.status === "acceptee" || action.status === "rejetee" ? new Date().toISOString() : null,
+          resolution: action.resolution ?? c.resolution,
+        };
+      });
+      const next = { ...state, claims };
+      const claim = claims.find((c) => c.id === action.id);
+      const athlete = state.athletes.find((a) => a.id === claim?.athleteId);
+      const name = athlete ? `${athlete.firstName} ${athlete.lastName}` : "Inconnu";
+      const statusLabel = action.status === "acceptee" ? "acceptée" : action.status === "rejetee" ? "rejetée" : "en examen";
+      return withLog(next, "config", `Réclamation de ${name} ${statusLabel}`);
+    }
+
+    case "DELETE_CLAIM": {
+      const claims = state.claims.filter((c) => c.id !== action.id);
+      return { ...state, claims };
+    }
+
+    case "ADD_QR_SCAN": {
+      const next = { ...state, qrScans: [action.scan, ...state.qrScans] };
+      const athlete = state.athletes.find((a) => a.id === action.scan.athleteId);
+      const name = athlete ? `${athlete.firstName} ${athlete.lastName}` : "Inconnu";
+      const typeLabel = action.scan.type === "presence" ? "présence" : "pesée";
+      return withLog(next, "config", `Scan QR ${typeLabel} : ${name}`);
     }
 
     case "IMPORT_STATE": {
