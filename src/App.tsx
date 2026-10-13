@@ -2,6 +2,7 @@ import { HashRouter, Route, Routes, Navigate, useParams } from "react-router-dom
 import { StoreProvider } from "./lib/store";
 import { ToastProvider } from "./components/ui";
 import Layout from "./components/Layout";
+import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Athletes from "./pages/Athletes";
 import WeighIn from "./pages/WeighIn";
@@ -26,24 +27,35 @@ export default function App() {
     <StoreProvider>
       <ToastProvider>
         <HashRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/competitions" element={<Competitions />} />
-              <Route path="/organizers" element={<Organizers />} />
-              <Route path="/athletes" element={<Athletes />} />
-              <Route path="/pesee" element={<WeighIn />} />
-              <Route path="/tirages" element={<Brackets />} />
-              <Route path="/live" element={<LiveIndex />} />
-              <Route path="/live/:matchId" element={<LiveMatchPage />} />
-              <Route path="/resultats" element={<Results />} />
-              <Route path="/reclamations" element={<Claims />} />
-              <Route path="/tv" element={<TvMode />} />
-              <Route path="/qr" element={<QrPresence />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Layout>
+          <Routes>
+            {/* Landing page sans layout */}
+            <Route path="/landing" element={<Landing />} />
+            
+            {/* Application avec layout */}
+            <Route
+              path="/*"
+              element={
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/competitions" element={<Competitions />} />
+                    <Route path="/organizers" element={<Organizers />} />
+                    <Route path="/athletes" element={<Athletes />} />
+                    <Route path="/pesee" element={<WeighIn />} />
+                    <Route path="/tirages" element={<Brackets />} />
+                    <Route path="/live" element={<LiveIndex />} />
+                    <Route path="/live/:matchId" element={<LiveMatchPage />} />
+                    <Route path="/resultats" element={<Results />} />
+                    <Route path="/reclamations" element={<Claims />} />
+                    <Route path="/tv" element={<TvMode />} />
+                    <Route path="/qr" element={<QrPresence />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </Layout>
+              }
+            />
+          </Routes>
         </HashRouter>
       </ToastProvider>
     </StoreProvider>

@@ -153,6 +153,15 @@ AppState {
 - Export/import JSON
 - Versioning du schéma (v5)
 
+## 🌐 Landing Page
+
+Une landing page dynamique et évolutive est disponible pour présenter l'application :
+
+- **Accès** : `#/landing`
+- **Architecture** : Modulaire (Hero, Features, Stats, Testimonials, CTA, Footer)
+- **Animations** : Scroll reveal, compteurs animés
+- **Documentation** : Voir [LANDING.md](./LANDING.md) pour personnaliser et étendre
+
 ## 🚀 Installation et Démarrage
 
 ```bash
@@ -168,6 +177,10 @@ npm run build
 # Vérification des types
 npm run typecheck
 ```
+
+### Accès rapide
+- **Landing page** : `http://localhost:5173/#/landing`
+- **Application** : `http://localhost:5173/#/`
 
 ## 📊 Données de démonstration
 
