@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useApp } from "../lib/store";
 import { PageHead, Modal, useToast, StatusBadge } from "../components/ui";
-import { IconPlus, IconEdit, IconTrash, IconUsers } from "../components/Icons";
-import PageBackground from "../components/PageBackground";
+import { IconPlus, IconEdit, IconTrash } from "../components/Icons";
 import type { Referee } from "../lib/types";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function Referees() {
   const { state, dispatch } = useApp();
@@ -19,7 +20,6 @@ export default function Referees() {
     email: "",
     city: "",
     status: "actif" as "actif" | "inactif" | "suspendu",
-    matchesCount: 0,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -33,7 +33,6 @@ export default function Referees() {
       email: "",
       city: "",
       status: "actif",
-      matchesCount: 0,
     });
     setErrors({});
     setEditingId(null);
@@ -54,7 +53,6 @@ export default function Referees() {
       email: referee.email,
       city: referee.city,
       status: referee.status,
-      matchesCount: referee.matchesCount,
     });
     setEditingId(referee.id);
     setOpen(true);
@@ -68,20 +66,17 @@ export default function Referees() {
     if (!form.lastName.trim()) errs.lastName = "Nom requis";
     if (!form.license.trim()) errs.license = "Licence requise";
     if (!form.grade.trim()) errs.grade = "Grade requis";
-    
-    if (!form.phone.trim()) errs.phone = "Téléphone requis";
-    else if (!/^[+]?[\d\s-]{8,}$/.test(form.phone)) {
-      errs.phone = "Numéro de téléphone invalide";
-    }
+    if (!form.city.trim()) errs.city = "Ville requise";
     
     if (!form.email.trim()) errs.email = "Email requis";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       errs.email = "Email invalide";
     }
     
-    if (!form.city.trim()) errs.city = "Ville requise";
-    
-    if (form.matchesCount < 0) errs.matchesCount = "Nombre de matchs invalide";
+    if (!form.phone.trim()) errs.phone = "Téléphone requis";
+    else if (!/^[+]?[\d\s-]{8,}$/.test(form.phone)) {
+      errs.phone = "Numéro de téléphone invalide";
+    }
     
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
@@ -99,7 +94,6 @@ export default function Referees() {
           email: form.email.trim(),
           city: form.city.trim(),
           status: form.status,
-          matchesCount: form.matchesCount,
         },
       });
       toast("Arbitre mis à jour");
@@ -114,7 +108,7 @@ export default function Referees() {
         email: form.email.trim(),
         city: form.city.trim(),
         status: form.status,
-        matchesCount: form.matchesCount,
+        matchesCount: 0,
       };
       dispatch({ type: "ADD_REFEREE", referee: newReferee });
       toast("Arbitre ajouté");
@@ -130,13 +124,21 @@ export default function Referees() {
     toast("Arbitre supprimé", "info");
   };
 
+  const getStatusColor = (status: Referee["status"]) => {
+    const colors = {
+      actif: "text-forest",
+      inactif: "text-dune",
+      suspendu: "text-flame",
+    };
+    return colors[status];
+  };
+
   return (
     <div className="fade-up mx-auto max-w-6xl">
-      <PageBackground imageUrl="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1920" opacity={0.08} blur={3} />
-      
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.live} opacity={0.08} blur={3} />
       <PageHead
         title="Arbitres"
-        subtitle="Gestion du corps arbitral"
+        subtitle="Gestion des officiels de combat"
         actions={
           <button type="button" className="btn btn-primary btn-sm" onClick={openCreate}>
             <IconPlus className="h-3.5 w-3.5" />
@@ -147,12 +149,11 @@ export default function Referees() {
 
       {state.referees.length === 0 ? (
         <div className="panel flex flex-col items-center px-8 py-16 text-center">
-          <IconUsers className="h-16 w-16 text-dune/40 mb-4" />
           <p className="font-display text-2xl uppercase tracking-wide text-bone">
             Aucun arbitre enregistré
           </p>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-dune">
-            Ajoutez votre premier arbitre pour commencer à gérer les affectations.
+            Ajoutez votre premier arbitre pour commencer à gérer les officiels de combat.
           </p>
           <button type="button" className="btn btn-primary mt-6" onClick={openCreate}>
             <IconPlus className="h-4 w-4" />
@@ -160,102 +161,79 @@ export default function Referees() {
           </button>
         </div>
       ) : (
-        <div className="panel overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-husk">
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Arbitre
-                </th>
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Licence
-                </th>
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Grade
-                </th>
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Ville
-                </th>
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Contact
-                </th>
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Statut
-                </th>
-                <th className="text-left py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Matchs
-                </th>
-                <th className="text-right py-3 px-4 font-mono text-xs uppercase tracking-wider text-dune">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {state.referees.map((referee) => (
-                <tr key={referee.id} className="border-b border-husk/50 hover:bg-bark/30 transition-colors">
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gold/20 text-gold font-semibold">
-                        {referee.firstName[0]}{referee.lastName[0]}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-bone">
-                          {referee.firstName} {referee.lastName}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 font-mono text-sm text-dune">
-                    {referee.license}
-                  </td>
-                  <td className="py-3 px-4 text-sm text-bone">
-                    {referee.grade}
-                  </td>
-                  <td className="py-3 px-4 text-sm text-dune">
-                    {referee.city}
-                  </td>
-                  <td className="py-3 px-4">
-                    <div className="space-y-1 text-sm">
-                      <a href={`mailto:${referee.email}`} className="block text-gold hover:underline">
-                        {referee.email}
-                      </a>
-                      <a href={`tel:${referee.phone}`} className="block text-dune hover:text-gold">
-                        {referee.phone}
-                      </a>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4">
+        <div className="space-y-4">
+          {state.referees.map((referee) => (
+            <div key={referee.id} className="panel p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-display text-xl uppercase tracking-wide text-bone">
+                      {referee.firstName} {referee.lastName}
+                    </h3>
                     <StatusBadge status={referee.status} />
-                  </td>
-                  <td className="py-3 px-4">
-                    <span className="font-display text-lg text-gold">
-                      {referee.matchesCount}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4">
-                    <div className="flex gap-2 justify-end">
-                      <button
-                        type="button"
-                        onClick={() => openEdit(referee)}
-                        className="btn btn-ghost btn-sm"
-                        title="Modifier"
-                      >
-                        <IconEdit className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => deleteReferee(referee.id)}
-                        className="btn btn-ghost btn-sm hover:border-flame hover:text-flame"
-                        title="Supprimer"
-                      >
-                        <IconTrash className="h-3.5 w-3.5" />
-                      </button>
+                  </div>
+                  <div className="mt-3 grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Licence
+                      </p>
+                      <p className="mt-1 text-bone">{referee.license}</p>
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Grade
+                      </p>
+                      <p className="mt-1 text-gold font-semibold">{referee.grade}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Ville
+                      </p>
+                      <p className="mt-1 text-bone">{referee.city}</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Email
+                      </p>
+                      <p className="mt-1 text-bone">{referee.email}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Téléphone
+                      </p>
+                      <p className="mt-1 text-bone">{referee.phone}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Matchs arbitrés
+                      </p>
+                      <p className="mt-1 text-bone">{referee.matchesCount}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => openEdit(referee)}
+                    className="btn btn-ghost btn-sm"
+                    title="Modifier"
+                  >
+                    <IconEdit className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteReferee(referee.id)}
+                    className="btn btn-ghost btn-sm hover:border-flame hover:text-flame"
+                    title="Supprimer"
+                  >
+                    <IconTrash className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -278,7 +256,7 @@ export default function Referees() {
                 className="input"
                 value={form.firstName}
                 onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                placeholder="Ex: Moussa"
+                placeholder="Ex: Ibrahim"
               />
               {errors.firstName && <p className="mt-1.5 text-xs text-flame">{errors.firstName}</p>}
             </div>
@@ -307,7 +285,7 @@ export default function Referees() {
                 className="input"
                 value={form.license}
                 onChange={(e) => setForm({ ...form, license: e.target.value })}
-                placeholder="Ex: ARB-2024-001"
+                placeholder="Ex: FITKD-ARB-2024-001"
               />
               {errors.license && <p className="mt-1.5 text-xs text-flame">{errors.license}</p>}
             </div>
@@ -315,20 +293,29 @@ export default function Referees() {
               <label htmlFor="ref-grade" className="label">
                 Grade
               </label>
-              <select
+              <input
                 id="ref-grade"
                 className="input"
                 value={form.grade}
                 onChange={(e) => setForm({ ...form, grade: e.target.value })}
-              >
-                <option value="">Sélectionnez un grade</option>
-                <option value="Arbitre International">Arbitre International</option>
-                <option value="Arbitre Continental">Arbitre Continental</option>
-                <option value="Arbitre National">Arbitre National</option>
-                <option value="Arbitre Régional">Arbitre Régional</option>
-              </select>
+                placeholder="Ex: Ceinture noire 4e Dan"
+              />
               {errors.grade && <p className="mt-1.5 text-xs text-flame">{errors.grade}</p>}
             </div>
+          </div>
+
+          <div>
+            <label htmlFor="ref-city" className="label">
+              Ville
+            </label>
+            <input
+              id="ref-city"
+              className="input"
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              placeholder="Ex: Abidjan"
+            />
+            {errors.city && <p className="mt-1.5 text-xs text-flame">{errors.city}</p>}
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -356,58 +343,26 @@ export default function Referees() {
                 className="input"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="+225 07 11 22 33 44"
+                placeholder="+225 07 12 34 56 78"
               />
               {errors.phone && <p className="mt-1.5 text-xs text-flame">{errors.phone}</p>}
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label htmlFor="ref-city" className="label">
-                Ville
-              </label>
-              <input
-                id="ref-city"
-                className="input"
-                value={form.city}
-                onChange={(e) => setForm({ ...form, city: e.target.value })}
-                placeholder="Ex: Abidjan"
-              />
-              {errors.city && <p className="mt-1.5 text-xs text-flame">{errors.city}</p>}
-            </div>
-            <div>
-              <label htmlFor="ref-status" className="label">
-                Statut
-              </label>
-              <select
-                id="ref-status"
-                className="input"
-                value={form.status}
-                onChange={(e) => setForm({ ...form, status: e.target.value as any })}
-              >
-                <option value="actif">Actif</option>
-                <option value="inactif">Inactif</option>
-                <option value="suspendu">Suspendu</option>
-              </select>
-            </div>
-          </div>
-
           <div>
-            <label htmlFor="ref-matches" className="label">
-              Nombre de matchs arbitrés
+            <label htmlFor="ref-status" className="label">
+              Statut
             </label>
-            <input
-              id="ref-matches"
-              type="number"
-              min="0"
+            <select
+              id="ref-status"
               className="input"
-              value={form.matchesCount}
-              onChange={(e) => setForm({ ...form, matchesCount: Number(e.target.value) })}
-            />
-            {errors.matchesCount && (
-              <p className="mt-1.5 text-xs text-flame">{errors.matchesCount}</p>
-            )}
+              value={form.status}
+              onChange={(e) => setForm({ ...form, status: e.target.value as any })}
+            >
+              <option value="actif">Actif</option>
+              <option value="inactif">Inactif</option>
+              <option value="suspendu">Suspendu</option>
+            </select>
           </div>
 
           <div className="flex justify-end gap-3 border-t border-husk pt-4">

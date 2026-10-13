@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useApp } from "../lib/store";
 import { PageHead, Modal, useToast } from "../components/ui";
-import { IconPlus, IconEdit, IconTrash, IconUsers } from "../components/Icons";
-import PageBackground from "../components/PageBackground";
+import { IconPlus, IconEdit, IconTrash } from "../components/Icons";
 import type { Club } from "../lib/types";
+import PageBackground from "../components/PageBackground";
+import { PAGE_BACKGROUNDS } from "../config/backgrounds";
 
 export default function Clubs() {
   const { state, dispatch } = useApp();
@@ -18,7 +19,6 @@ export default function Clubs() {
     email: "",
     phone: "",
     address: "",
-    athleteCount: 0,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -31,7 +31,6 @@ export default function Clubs() {
       email: "",
       phone: "",
       address: "",
-      athleteCount: 0,
     });
     setErrors({});
     setEditingId(null);
@@ -51,7 +50,6 @@ export default function Clubs() {
       email: club.email,
       phone: club.phone,
       address: club.address,
-      athleteCount: club.athleteCount,
     });
     setEditingId(club.id);
     setOpen(true);
@@ -67,6 +65,7 @@ export default function Clubs() {
     if (!form.city.trim()) errs.city = "Ville requise";
     if (!form.region.trim()) errs.region = "Région requise";
     if (!form.president.trim()) errs.president = "Président requis";
+    if (!form.address.trim()) errs.address = "Adresse requise";
     
     if (!form.email.trim()) errs.email = "Email requis";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -77,10 +76,6 @@ export default function Clubs() {
     else if (!/^[+]?[\d\s-]{8,}$/.test(form.phone)) {
       errs.phone = "Numéro de téléphone invalide";
     }
-    
-    if (!form.address.trim()) errs.address = "Adresse requise";
-    
-    if (form.athleteCount < 0) errs.athleteCount = "Nombre d'athlètes invalide";
     
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
@@ -97,7 +92,6 @@ export default function Clubs() {
           email: form.email.trim(),
           phone: form.phone.trim(),
           address: form.address.trim(),
-          athleteCount: form.athleteCount,
         },
       });
       toast("Club mis à jour");
@@ -112,7 +106,7 @@ export default function Clubs() {
         phone: form.phone.trim(),
         address: form.address.trim(),
         createdAt: new Date().toISOString(),
-        athleteCount: form.athleteCount,
+        athleteCount: 0,
       };
       dispatch({ type: "ADD_CLUB", club: newClub });
       toast("Club ajouté");
@@ -123,28 +117,29 @@ export default function Clubs() {
   };
 
   const deleteClub = (id: string) => {
-    const hasAthletes = state.athletes.some((a) => {
-      const club = state.clubs.find((c) => c.id === id);
-      return club && a.club === club.name;
-    });
+    const club = state.clubs.find((c) => c.id === id);
+    if (!club) return;
     
+    const hasAthletes = state.athletes.some((a) => a.club === club.name);
     if (hasAthletes) {
       toast("Impossible : ce club a des athlètes associés", "error");
       return;
     }
-    
     if (!confirm("Supprimer ce club ?")) return;
     dispatch({ type: "DELETE_CLUB", id });
     toast("Club supprimé", "info");
   };
 
+  const getAthleteCount = (clubName: string) => {
+    return state.athletes.filter((a) => a.club === clubName).length;
+  };
+
   return (
     <div className="fade-up mx-auto max-w-6xl">
-      <PageBackground imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920" opacity={0.08} blur={3} />
-      
+      <PageBackground imageUrl={PAGE_BACKGROUNDS.dashboard} opacity={0.08} blur={3} />
       <PageHead
         title="Clubs"
-        subtitle="Gestion des clubs affiliés"
+        subtitle="Gestion des clubs et équipes"
         actions={
           <button type="button" className="btn btn-primary btn-sm" onClick={openCreate}>
             <IconPlus className="h-3.5 w-3.5" />
@@ -155,12 +150,11 @@ export default function Clubs() {
 
       {state.clubs.length === 0 ? (
         <div className="panel flex flex-col items-center px-8 py-16 text-center">
-          <IconUsers className="h-16 w-16 text-dune/40 mb-4" />
           <p className="font-display text-2xl uppercase tracking-wide text-bone">
             Aucun club enregistré
           </p>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-dune">
-            Ajoutez votre premier club affilié pour commencer à gérer les inscriptions.
+            Ajoutez votre premier club pour commencer à gérer vos équipes.
           </p>
           <button type="button" className="btn btn-primary mt-6" onClick={openCreate}>
             <IconPlus className="h-4 w-4" />
@@ -168,70 +162,85 @@ export default function Clubs() {
           </button>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {state.clubs.map((club) => (
-            <div key={club.id} className="panel p-6 hover:border-gold/50 transition-colors">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="font-display text-lg uppercase tracking-wide text-bone mb-1">
-                    {club.name}
-                  </h3>
-                  <p className="font-mono text-xs text-dune">
-                    {club.city}, {club.region}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => openEdit(club)}
-                    className="btn btn-ghost btn-sm"
-                    title="Modifier"
-                  >
-                    <IconEdit className="h-3.5 w-3.5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => deleteClub(club.id)}
-                    className="btn btn-ghost btn-sm hover:border-flame hover:text-flame"
-                    title="Supprimer"
-                  >
-                    <IconTrash className="h-3.5 w-3.5" />
-                  </button>
+        <div className="space-y-4">
+          {state.clubs.map((club) => {
+            const athleteCount = getAthleteCount(club.name);
+            return (
+              <div key={club.id} className="panel p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="font-display text-xl uppercase tracking-wide text-bone">
+                      {club.name}
+                    </h3>
+                    <div className="mt-3 grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                          Ville
+                        </p>
+                        <p className="mt-1 text-bone">{club.city}</p>
+                      </div>
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                          Région
+                        </p>
+                        <p className="mt-1 text-bone">{club.region}</p>
+                      </div>
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                          Athlètes
+                        </p>
+                        <p className="mt-1 text-gold font-semibold">{athleteCount}</p>
+                      </div>
+                    </div>
+                    <div className="mt-3 text-sm">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Président
+                      </p>
+                      <p className="mt-1 text-bone">{club.president}</p>
+                    </div>
+                    <div className="mt-3 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                          Email
+                        </p>
+                        <p className="mt-1 text-bone">{club.email}</p>
+                      </div>
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                          Téléphone
+                        </p>
+                        <p className="mt-1 text-bone">{club.phone}</p>
+                      </div>
+                    </div>
+                    <div className="mt-3 text-sm">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dune">
+                        Adresse
+                      </p>
+                      <p className="mt-1 text-bone">{club.address}</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openEdit(club)}
+                      className="btn btn-ghost btn-sm"
+                      title="Modifier"
+                    >
+                      <IconEdit className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deleteClub(club.id)}
+                      className="btn btn-ghost btn-sm hover:border-flame hover:text-flame"
+                      title="Supprimer"
+                    >
+                      <IconTrash className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <IconUsers className="h-4 w-4 text-gold" />
-                  <span className="text-dune">Président:</span>
-                  <span className="text-bone font-semibold">{club.president}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-dune">Email:</span>
-                  <a href={`mailto:${club.email}`} className="text-gold hover:underline">
-                    {club.email}
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-dune">Tél:</span>
-                  <a href={`tel:${club.phone}`} className="text-gold hover:underline">
-                    {club.phone}
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-dune">Adresse:</span>
-                  <span className="text-bone">{club.address}</span>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-husk">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-dune">Athlètes inscrits</span>
-                  <span className="font-display text-2xl text-gold">{club.athleteCount}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -296,9 +305,23 @@ export default function Clubs() {
               className="input"
               value={form.president}
               onChange={(e) => setForm({ ...form, president: e.target.value })}
-              placeholder="Ex: M. Koné Ibrahim"
+              placeholder="Ex: M. Kouamé"
             />
             {errors.president && <p className="mt-1.5 text-xs text-flame">{errors.president}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="club-address" className="label">
+              Adresse
+            </label>
+            <input
+              id="club-address"
+              className="input"
+              value={form.address}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
+              placeholder="Ex: Cocody, Abidjan"
+            />
+            {errors.address && <p className="mt-1.5 text-xs text-flame">{errors.address}</p>}
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -326,41 +349,10 @@ export default function Clubs() {
                 className="input"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="+225 07 12 34 56 78"
+                placeholder="+225 27 22 44 55 66"
               />
               {errors.phone && <p className="mt-1.5 text-xs text-flame">{errors.phone}</p>}
             </div>
-          </div>
-
-          <div>
-            <label htmlFor="club-address" className="label">
-              Adresse
-            </label>
-            <input
-              id="club-address"
-              className="input"
-              value={form.address}
-              onChange={(e) => setForm({ ...form, address: e.target.value })}
-              placeholder="Adresse complète"
-            />
-            {errors.address && <p className="mt-1.5 text-xs text-flame">{errors.address}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="club-athletes" className="label">
-              Nombre d'athlètes
-            </label>
-            <input
-              id="club-athletes"
-              type="number"
-              min="0"
-              className="input"
-              value={form.athleteCount}
-              onChange={(e) => setForm({ ...form, athleteCount: Number(e.target.value) })}
-            />
-            {errors.athleteCount && (
-              <p className="mt-1.5 text-xs text-flame">{errors.athleteCount}</p>
-            )}
           </div>
 
           <div className="flex justify-end gap-3 border-t border-husk pt-4">

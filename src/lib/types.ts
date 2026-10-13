@@ -89,6 +89,19 @@ export interface Competition {
   updatedAt: string;
 }
 
+export interface Club {
+  id: string;
+  name: string;
+  city: string;
+  region: string;
+  president: string;
+  email: string;
+  phone: string;
+  address: string;
+  createdAt: string;
+  athleteCount: number;
+}
+
 export type ActivityKind =
   | "athlete"
   | "pesee"
