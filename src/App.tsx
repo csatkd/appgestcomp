@@ -14,6 +14,8 @@ import TvMode from "./pages/TvMode";
 import QrPresence from "./pages/QrPresence";
 import Competitions from "./pages/Competitions";
 import Organizers from "./pages/Organizers";
+import Clubs from "./pages/Clubs";
+import Referees from "./pages/Referees";
 import Admin from "./pages/Admin";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -40,6 +42,8 @@ export default function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/competitions" element={<Competitions />} />
                     <Route path="/organizers" element={<Organizers />} />
+                    <Route path="/clubs" element={<Clubs />} />
+                    <Route path="/referees" element={<Referees />} />
                     <Route path="/athletes" element={<Athletes />} />
                     <Route path="/pesee" element={<WeighIn />} />
                     <Route path="/tirages" element={<Brackets />} />

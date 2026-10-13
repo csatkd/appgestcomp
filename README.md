@@ -51,25 +51,41 @@ Gestion des entités organisatrices :
 - Informations de contact complètes
 - Protection contre la suppression si compétitions associées
 
-### 4. **Athlètes** (`/athletes`)
+### 4. **Clubs** (`/clubs`) ✨ NOUVEAU
+Gestion des clubs affiliés :
+- CRUD complet des clubs
+- Informations détaillées (président, ville, région, contact)
+- Suivi du nombre d'athlètes par club
+- Protection contre suppression si athlètes associés
+- Vue en grille avec statistiques
+
+### 5. **Arbitres** (`/referees`) ✨ NOUVEAU
+Gestion du corps arbitral :
+- CRUD complet des arbitres
+- Grades officiels (International, Continental, National, Régional)
+- Gestion des statuts (actif, inactif, suspendu)
+- Suivi des matchs arbitrés
+- Vue en tableau avec filtrage
+
+### 6. **Athlètes** (`/athletes`)
 Base de données des compétiteurs avec :
 - Inscription et validation
 - Recherche et filtrage
 - Gestion des licences FITKD
 
-### 5. **Pesée** (`/pesee`)
+### 7. **Pesée** (`/pesee`)
 Contrôle officiel des poids :
 - Saisie avec validation
 - Assignation automatique aux catégories WT
 - Gestion des forfaits
 
-### 6. **Tirages au sort** (`/tirages`)
+### 8. **Tirages au sort** (`/tirages`)
 Génération de tableaux à élimination directe :
 - Seeding équilibré
 - Gestion automatique des exempts (byes)
 - Visualisation par tours
 
-### 7. **Live Scoring** (`/live`)
+### 9. **Live Scoring** (`/live`)
 Régie de combat en temps réel :
 - Chronomètre WT (3 rounds × 2 min)
 - Scoring complet (poing, corps, tête, rotatifs)
@@ -77,31 +93,31 @@ Régie de combat en temps réel :
 - Point en or
 - Persistance des combats en cours
 
-### 8. **Résultats** (`/resultats`)
+### 10. **Résultats** (`/resultats`)
 Podiums et classements :
 - Affichage des médaillés
 - Classement des clubs
 - Statistiques par catégorie
 
-### 9. **Réclamations** (`/reclamations`)
+### 11. **Réclamations** (`/reclamations`)
 Gestion des contestations :
 - Workflow complet (soumise → examen → acceptée/rejetée)
 - Historique détaillé
 - Statistiques en temps réel
 
-### 10. **Mode TV** (`/tv`)
+### 12. **Mode TV** (`/tv`)
 Affichage grand écran :
 - Podiums par catégorie
 - Classement général des clubs
 - Statistiques de la compétition
 
-### 11. **QR Présences** (`/qr`)
+### 13. **QR Présences** (`/qr`)
 Validation des présences :
 - Simulation de scan QR
 - Présences et pesées
 - Statistiques de participation
 
-### 12. **Administration** (`/admin`)
+### 14. **Administration** (`/admin`)
 Configuration globale :
 - Paramètres de l'événement
 - Gestion des catégories
@@ -130,6 +146,8 @@ AppState {
   version: number
   competitions: Competition[]      // Liste des compétitions
   organizers: Organizer[]          // Liste des organisateurs
+  clubs: Club[]                    // Liste des clubs affiliés ✨ NOUVEAU
+  referees: Referee[]              // Liste des arbitres ✨ NOUVEAU
   currentCompetitionId: string     // Compétition active
   event: EventConfig               // Config de la compétition active
   athletes: Athlete[]
@@ -146,6 +164,8 @@ AppState {
 - `ADD_COMPETITION` / `UPDATE_COMPETITION` / `DELETE_COMPETITION`
 - `SET_CURRENT_COMPETITION`
 - `ADD_ORGANIZER` / `UPDATE_ORGANIZER` / `DELETE_ORGANIZER`
+- `ADD_CLUB` / `UPDATE_CLUB` / `DELETE_CLUB` ✨ NOUVEAU
+- `ADD_REFEREE` / `UPDATE_REFEREE` / `DELETE_REFEREE` ✨ NOUVEAU
 - Toutes les actions existantes (athlètes, pesée, tirages, etc.)
 
 ### Persistance
@@ -197,6 +217,8 @@ L'application inclut des données de démonstration préconfigurées :
 
 - **1 compétition** : Championnat National FITKD 2026
 - **1 organisateur** : Fédération Ivoirienne de Taekwondo
+- **8 clubs** ivoiriens affiliés ✨ NOUVEAU
+- **6 arbitres** certifiés ✨ NOUVEAU
 - **27 athlètes** de 8 clubs ivoiriens
 - **1 tirage généré** en Hommes −68 kg
 
@@ -209,7 +231,8 @@ L'application inclut des données de démonstration préconfigurées :
 
 ## 🌍 Adaptation Côte d'Ivoire
 
-- Clubs ivoiriens (Taekwondo Club d'Abidjan, INJS Abidjan, etc.)
+- Clubs ivoiriens (Taekwondo Club d'Abidjan, INJS Abidjan, etc.) ✨ NOUVEAU
+- Arbitres ivoiriens certifiés (International, Continental, National, Régional) ✨ NOUVEAU
 - Athlètes avec noms ivoiriens authentiques
 - Licences FITKD-26-XXXX
 - Lieu : Palais des Sports — Treichville, Abidjan

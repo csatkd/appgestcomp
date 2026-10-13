@@ -289,6 +289,48 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, organizers };
     }
 
+    case "ADD_CLUB": {
+      const next = { ...state, clubs: [action.club, ...state.clubs] };
+      return withLog(next, "config", `Nouveau club ajouté : ${action.club.name}`);
+    }
+
+    case "UPDATE_CLUB": {
+      const clubs = state.clubs.map((c) => {
+        if (c.id !== action.id) return c;
+        return { ...c, ...action.updates };
+      });
+      const next = { ...state, clubs };
+      const club = clubs.find((c) => c.id === action.id);
+      return withLog(next, "config", `Club mis à jour : ${club?.name}`);
+    }
+
+    case "DELETE_CLUB": {
+      const clubs = state.clubs.filter((c) => c.id !== action.id);
+      const next = { ...state, clubs };
+      return withLog(next, "config", `Club supprimé`);
+    }
+
+    case "ADD_REFEREE": {
+      const next = { ...state, referees: [action.referee, ...state.referees] };
+      return withLog(next, "config", `Nouvel arbitre ajouté : ${action.referee.firstName} ${action.referee.lastName}`);
+    }
+
+    case "UPDATE_REFEREE": {
+      const referees = state.referees.map((r) => {
+        if (r.id !== action.id) return r;
+        return { ...r, ...action.updates };
+      });
+      const next = { ...state, referees };
+      const ref = referees.find((r) => r.id === action.id);
+      return withLog(next, "config", `Arbitre mis à jour : ${ref?.firstName} ${ref?.lastName}`);
+    }
+
+    case "DELETE_REFEREE": {
+      const referees = state.referees.filter((r) => r.id !== action.id);
+      const next = { ...state, referees };
+      return withLog(next, "config", `Arbitre supprimé`);
+    }
+
     case "IMPORT_STATE": {
       const next = withLog(
         action.state,

@@ -125,6 +125,32 @@ export interface QrScan {
   type: "presence" | "pesee";
 }
 
+export interface Club {
+  id: string;
+  name: string;
+  city: string;
+  region: string;
+  president: string;
+  email: string;
+  phone: string;
+  address: string;
+  createdAt: string;
+  athleteCount: number;
+}
+
+export interface Referee {
+  id: string;
+  firstName: string;
+  lastName: string;
+  license: string;
+  grade: string;
+  phone: string;
+  email: string;
+  city: string;
+  status: "actif" | "inactif" | "suspendu";
+  matchesCount: number;
+}
+
 export interface AppState {
   version: number;
   event: EventConfig;
@@ -139,6 +165,8 @@ export interface AppState {
   competitions: Competition[];
   organizers: Organizer[];
   currentCompetitionId: string | null;
+  clubs: Club[];
+  referees: Referee[];
 }
 
 export type Action =
@@ -164,5 +192,11 @@ export type Action =
   | { type: "ADD_ORGANIZER"; organizer: Organizer }
   | { type: "UPDATE_ORGANIZER"; id: string; updates: Partial<Organizer> }
   | { type: "DELETE_ORGANIZER"; id: string }
+  | { type: "ADD_CLUB"; club: Club }
+  | { type: "UPDATE_CLUB"; id: string; updates: Partial<Club> }
+  | { type: "DELETE_CLUB"; id: string }
+  | { type: "ADD_REFEREE"; referee: Referee }
+  | { type: "UPDATE_REFEREE"; id: string; updates: Partial<Referee> }
+  | { type: "DELETE_REFEREE"; id: string }
   | { type: "IMPORT_STATE"; state: AppState; label?: string }
   | { type: "RESET_ALL" };
