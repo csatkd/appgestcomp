@@ -5,6 +5,12 @@ import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import DashboardEnhanced from "./pages/DashboardEnhanced";
+import CompetitionWorkflow from "./pages/CompetitionWorkflow";
+import ArenasManager from "./pages/ArenasManager";
+import MatchSchedule from "./pages/MatchSchedule";
+import CallSystem from "./pages/CallSystem";
+import Certificates from "./pages/Certificates";
+import CompetitionReport from "./pages/CompetitionReport";
 import Athletes from "./pages/Athletes";
 import WeighIn from "./pages/WeighIn";
 import Brackets from "./pages/Brackets";
@@ -74,6 +80,12 @@ export default function App() {
                     <Route path="/sponsors" element={<Sponsors />} />
                     <Route path="/sponsors/report" element={<SponsorsReport />} />
                     <Route path="/ceremony-sponsors" element={<CeremonySponsorsPage />} />
+                    <Route path="/workflow" element={<CompetitionWorkflow />} />
+                    <Route path="/arenas" element={<ArenasManager />} />
+                    <Route path="/schedule" element={<MatchSchedule />} />
+                    <Route path="/call" element={<CallSystem />} />
+                    <Route path="/certificates" element={<Certificates />} />
+                    <Route path="/report" element={<CompetitionReport />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>

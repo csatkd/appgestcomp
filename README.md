@@ -244,7 +244,56 @@ Gestion complète et approfondie des sponsors et partenaires :
 - 3 sponsors de démonstration pré-configurés avec paiements et communications
 - Documentation complète dans [SPONSORS_MODULE_ADVANCED.md](./SPONSORS_MODULE_ADVANCED.md)
 
-### 19. **Administration** (`/admin`)
+### 19. **Cycle de Vie de la Compétition** (`/workflow`) ✨ NOUVEAU
+Workflow complet étape par étape :
+- Visualisation de toutes les étapes du cycle de vie
+- Progression en temps réel avec pourcentage
+- Accès rapide à chaque module
+- Statistiques de complétion par étape
+- Indicateurs visuels (complété, actif, verrouillé)
+- 7 étapes : Configuration → Inscriptions → Pesée → Tirages → Compétition → Résultats → Cérémonie
+
+### 20. **Gestion des Aires de Combat** (`/arenas`) ✨ NOUVEAU
+Configuration et suivi des tatamis :
+- Création et gestion des aires de combat
+- Statuts : active, inactive, maintenance
+- Suivi des combats par aire
+- Assignation des officiels
+- Statistiques en temps réel
+
+### 21. **Planning des Combats** (`/schedule`) ✨ NOUVEAU
+Programmation et organisation :
+- Assignation des combats aux aires
+- Programmation des horaires
+- Vue par aire de combat
+- Gestion des conflits
+- Statistiques d'assignation
+
+### 22. **Système d'Appel** (`/call`) ✨ NOUVEAU
+Appel officiel des athlètes :
+- Appel des athlètes avant chaque combat
+- Countdown de 2 minutes
+- Confirmation de présence
+- Gestion des forfaits (no-show)
+- Filtrage par aire de combat
+
+### 23. **Certificats de Participation** (`/certificates`) ✨ NOUVEAU
+Génération de certificats officiels :
+- Certificats individuels personnalisés
+- Design professionnel avec bordure kente
+- Génération en masse
+- Export PDF
+- Informations complètes de l'athlète
+
+### 24. **Rapport de Compétition** (`/report`) ✨ NOUVEAU
+Rapport officiel complet :
+- Statistiques générales
+- Podiums par catégorie
+- Classement des clubs
+- Export PDF professionnel
+- Mise en page optimisée pour l'impression
+
+### 25. **Administration** (`/admin`)
 Configuration globale :
 - Paramètres de l'événement
 - Gestion des catégories

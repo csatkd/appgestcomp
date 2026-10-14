@@ -30,6 +30,7 @@ import {
   IconHandshake,
   IconTrendUp,
   IconSearch,
+  IconCheck,
 } from "./Icons";
 
 const NAV = [
@@ -52,6 +53,12 @@ const NAV = [
   { to: "/export", label: "Export & Import", icon: IconFile },
   { to: "/sponsors", label: "Sponsors & Partenaires", icon: IconHandshake },
   { to: "/sponsors/report", label: "Rapport Sponsors", icon: IconTrendUp },
+  { to: "/workflow", label: "Cycle de Vie", icon: IconCheck },
+  { to: "/arenas", label: "Aires de Combat", icon: IconGrid },
+  { to: "/schedule", label: "Planning Combats", icon: IconCalendar },
+  { to: "/call", label: "Appel Athlètes", icon: IconBell },
+  { to: "/certificates", label: "Certificats", icon: IconAward },
+  { to: "/report", label: "Rapport Compétition", icon: IconFile },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 

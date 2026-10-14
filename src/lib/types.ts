@@ -40,6 +40,9 @@ export interface Match {
   nextId: string | null;
   nextSlot: "a" | "b" | null;
   clock?: MatchClock;
+  arenaId?: string;
+  scheduledTime?: string;
+  called?: boolean;
 }
 
 export type CategoryStatus = "ouverte" | "tirée" | "terminée";
