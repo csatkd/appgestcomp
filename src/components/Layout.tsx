@@ -32,6 +32,9 @@ import {
   IconTrendUp,
   IconSearch,
   IconCheck,
+  IconChart,
+  IconStar,
+  IconBook,
 } from "./Icons";
 
 const NAV = [
@@ -60,6 +63,11 @@ const NAV = [
   { to: "/call", label: "Appel Athlètes", icon: IconBell },
   { to: "/certificates", label: "Certificats", icon: IconAward },
   { to: "/report", label: "Rapport Compétition", icon: IconFile },
+  { to: "/analytics", label: "Analytics Avancés", icon: IconChart },
+  { to: "/ranking", label: "Classement ELO", icon: IconTrophy },
+  { to: "/gamification", label: "Gamification", icon: IconStar },
+  { to: "/profiles", label: "Profils Sociaux", icon: IconUsers },
+  { to: "/training", label: "Formation", icon: IconBook },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 

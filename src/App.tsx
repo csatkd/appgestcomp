@@ -35,6 +35,12 @@ import Sponsors from "./pages/Sponsors";
 import SponsorsReport from "./pages/SponsorsReport";
 import CeremonySponsorsPage from "./pages/CeremonySponsorsPage";
 import Admin from "./pages/Admin";
+import GamificationPanel from "./components/GamificationPanel";
+import AdvancedAnalytics from "./components/AdvancedAnalytics";
+import AthleteRanking from "./components/AthleteRanking";
+import AccessibilityPanel from "./components/AccessibilityPanel";
+import SocialProfiles from "./components/SocialProfiles";
+import TrainingModule from "./components/TrainingModule";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
 function LiveMatchPage() {
@@ -88,6 +94,11 @@ export default function App() {
                     <Route path="/call" element={<CallSystem />} />
                     <Route path="/certificates" element={<Certificates />} />
                     <Route path="/report" element={<CompetitionReport />} />
+                    <Route path="/analytics" element={<AdvancedAnalytics />} />
+                    <Route path="/ranking" element={<AthleteRanking />} />
+                    <Route path="/gamification" element={<GamificationPanel userId="current-user" />} />
+                    <Route path="/profiles" element={<SocialProfiles />} />
+                    <Route path="/training" element={<TrainingModule />} />
                     <Route path="/admin" element={<AdminPanel />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
