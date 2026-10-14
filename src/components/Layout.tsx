@@ -5,6 +5,7 @@ import { readyMatches } from "../lib/data";
 import { useToast } from "./ui";
 import GlobalSearch from "./GlobalSearch";
 import FavoritesSidebar from "./FavoritesSidebar";
+import ThemeSwitcher from "./ThemeSwitcher";
 import { useGlobalShortcuts } from "../hooks/useKeyboardShortcuts";
 import {
   LogoMark,
@@ -212,6 +213,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               Régie ouverte — {state.event.arenas} aires de combat
             </p>
             <div className="flex items-center gap-4">
+              <ThemeSwitcher />
               <button
                 onClick={() => {
                   // Déclencher l'ouverture de la recherche globale

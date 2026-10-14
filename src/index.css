@@ -307,6 +307,80 @@ body {
   background-color: rgba(42, 32, 19, 0.7);
 }
 
+/* ————— Thèmes ————— */
+/* Thème clair */
+[data-theme="light"] {
+  --color-night: #ffffff;
+  --color-coal: #f8f9fa;
+  --color-bark: #e9ecef;
+  --color-husk: #dee2e6;
+  --color-bone: #1a1f2e;
+  --color-dune: #495057;
+  --color-gold: #d97706;
+  --color-flame: #dc2626;
+  --color-forest: #16a34a;
+  --color-chong: #2563eb;
+}
+
+[data-theme="light"] body {
+  background-color: #ffffff;
+  color: #1a1f2e;
+}
+
+[data-theme="light"] .panel {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+[data-theme="light"] .btn-ghost {
+  color: #495057;
+}
+
+[data-theme="light"] .btn-ghost:hover {
+  background-color: #e9ecef;
+  color: #1a1f2e;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border: 2px solid #f8f9fa;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #d97706;
+}
+
+[data-theme="light"] .row-hover:hover {
+  background-color: rgba(233, 236, 239, 0.7);
+}
+
+/* Thème sombre (par défaut) */
+[data-theme="dark"] {
+  --color-night: #14100a;
+  --color-coal: #1e1710;
+  --color-bark: #2a2013;
+  --color-husk: #3d2f1d;
+  --color-bone: #f4ead9;
+  --color-dune: #b09e82;
+  --color-gold: #f0a41c;
+  --color-flame: #e2472e;
+  --color-forest: #23a06a;
+  --color-chong: #3a72e0;
+}
+
+/* Transitions smooth pour le changement de thème */
+body,
+.panel,
+.btn-ghost,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 /* ————— Accessibilité : mouvement réduit ————— */
 @media (prefers-reduced-motion: reduce) {
   html {

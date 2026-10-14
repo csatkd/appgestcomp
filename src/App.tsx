@@ -5,6 +5,8 @@ import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import DashboardEnhanced from "./pages/DashboardEnhanced";
+import DashboardWithDragDrop from "./pages/DashboardWithDragDrop";
+import AdminPanel from "./pages/AdminPanel";
 import CompetitionWorkflow from "./pages/CompetitionWorkflow";
 import ArenasManager from "./pages/ArenasManager";
 import MatchSchedule from "./pages/MatchSchedule";
@@ -59,7 +61,7 @@ export default function App() {
               element={
                 <Layout>
                   <Routes>
-                    <Route path="/" element={<DashboardEnhanced />} />
+                    <Route path="/" element={<DashboardWithDragDrop />} />
                     <Route path="/competitions" element={<Competitions />} />
                     <Route path="/organizers" element={<Organizers />} />
                     <Route path="/clubs" element={<Clubs />} />
@@ -86,7 +88,7 @@ export default function App() {
                     <Route path="/call" element={<CallSystem />} />
                     <Route path="/certificates" element={<Certificates />} />
                     <Route path="/report" element={<CompetitionReport />} />
-                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin" element={<AdminPanel />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Layout>
