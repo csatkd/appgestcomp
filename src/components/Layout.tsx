@@ -68,6 +68,7 @@ const NAV = [
   { to: "/gamification", label: "Gamification", icon: IconStar },
   { to: "/profiles", label: "Profils Sociaux", icon: IconUsers },
   { to: "/training", label: "Formation", icon: IconBook },
+  { to: "/poomsae", label: "Poomsae", icon: IconTrophy },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 
