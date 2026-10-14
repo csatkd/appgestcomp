@@ -2,6 +2,50 @@
 
 Application web professionnelle de gestion de compétitions de taekwondo, développée pour la Fédération Ivoirienne de Taekwondo (FITKD).
 
+## ✨ Améliorations Avancées
+
+### 🔍 Recherche Globale
+- **Recherche unifiée** dans toute l'application (athlètes, clubs, sponsors, arbitres)
+- **Raccourci clavier** : `Ctrl+K` pour ouvrir
+- **Navigation rapide** avec résultats cliquables
+- **Interface moderne** avec modal et overlay
+
+### ⌨️ Raccourcis Clavier
+Navigation rapide vers les pages principales :
+- `Ctrl+K` : Recherche globale
+- `Ctrl+D` : Tableau de bord
+- `Ctrl+A` : Athlètes
+- `Ctrl+L` : Live Scoring
+- `Ctrl+R` : Résultats
+- `Ctrl+C` : Calendrier
+- `Ctrl+S` : Sponsors
+- `Ctrl+N` : Notifications
+- `Ctrl+?` : Afficher l'aide
+
+### ⭐ Système de Favoris
+- **Marquage de pages favorites** en un clic
+- **Sidebar dédiée** avec accès rapide
+- **Persistance** dans le localStorage
+- **Gestion facile** (ajout/suppression)
+
+### 🎛️ Dashboard Personnalisable
+- **5 widgets configurables** : Statistiques, Actions rapides, Notifications, Événements, Activité récente
+- **Personnalisation complète** : Activation, taille, ordre
+- **Interface intuitive** avec modal de configuration
+- **Persistance** des préférences
+
+### 📄 Export PDF
+- **Génération de rapports** complets en PDF
+- **Mise en page professionnelle** optimisée pour l'impression
+- **Données incluses** : Statistiques, athlètes, clubs, sponsors
+- **Impression directe** via le navigateur
+
+### 🎨 Améliorations UX/UI
+- **Barre d'outils du dashboard** avec personnalisation, export PDF, raccourcis
+- **Recherche globale** dans la topbar
+- **Favoris** dans la sidebar
+- **Documentation complète** dans [IMPROVEMENTS.md](./IMPROVEMENTS.md)
+
 ## 🏆 Fonctionnalités Multi-Compétitions
 
 ### Gestion des Compétitions

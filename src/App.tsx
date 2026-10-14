@@ -4,6 +4,7 @@ import { ToastProvider } from "./components/ui";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
+import DashboardEnhanced from "./pages/DashboardEnhanced";
 import Athletes from "./pages/Athletes";
 import WeighIn from "./pages/WeighIn";
 import Brackets from "./pages/Brackets";
@@ -52,7 +53,7 @@ export default function App() {
               element={
                 <Layout>
                   <Routes>
-                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/" element={<DashboardEnhanced />} />
                     <Route path="/competitions" element={<Competitions />} />
                     <Route path="/organizers" element={<Organizers />} />
                     <Route path="/clubs" element={<Clubs />} />

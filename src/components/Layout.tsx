@@ -3,6 +3,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useApp } from "../lib/store";
 import { readyMatches } from "../lib/data";
 import { useToast } from "./ui";
+import GlobalSearch from "./GlobalSearch";
+import FavoritesSidebar from "./FavoritesSidebar";
+import { useGlobalShortcuts } from "../hooks/useKeyboardShortcuts";
 import {
   LogoMark,
   IconGrid,
@@ -26,6 +29,7 @@ import {
   IconFile,
   IconHandshake,
   IconTrendUp,
+  IconSearch,
 } from "./Icons";
 
 const NAV = [
@@ -72,9 +76,15 @@ export default function Layout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const liveCount = readyMatches(state).length;
 
+  // Activer les raccourcis clavier globaux
+  useGlobalShortcuts();
+
   return (
     <div className="mud-bg flex min-h-screen">
       <div className="noise-layer" aria-hidden="true" />
+      
+      {/* Recherche globale */}
+      <GlobalSearch />
 
       {/* ————— Sidebar ————— */}
       <aside className="fixed inset-y-0 left-0 z-[100] hidden w-[248px] flex-col border-r border-husk bg-coal lg:flex">
@@ -143,6 +153,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             );
           })}
 
+          {/* Favoris */}
+          <FavoritesSidebar />
+
           <p className="mt-6 px-5 font-mono text-[9px] uppercase tracking-[0.24em] text-dune/70">
             Modules à venir
           </p>
@@ -192,6 +205,22 @@ export default function Layout({ children }: { children: ReactNode }) {
               Régie ouverte — {state.event.arenas} aires de combat
             </p>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => {
+                  // Déclencher l'ouverture de la recherche globale
+                  const event = new KeyboardEvent('keydown', {
+                    key: 'k',
+                    ctrlKey: true,
+                  });
+                  window.dispatchEvent(event);
+                }}
+                className="flex items-center gap-2 border border-husk px-3 py-1.5 text-sm text-dune hover:border-gold hover:text-bone transition-colors"
+                title="Rechercher (Ctrl+K)"
+              >
+                <IconSearch className="h-4 w-4" />
+                <span className="hidden sm:inline">Rechercher...</span>
+                <kbd className="hidden md:inline px-1.5 py-0.5 bg-bark border border-husk rounded text-xs">Ctrl+K</kbd>
+              </button>
               <span className="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-gold sm:inline">
                 {state.event.name}
               </span>
