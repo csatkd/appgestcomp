@@ -42,6 +42,7 @@ import AccessibilityPanel from "./components/AccessibilityPanel";
 import SocialProfiles from "./components/SocialProfiles";
 import TrainingModule from "./components/TrainingModule";
 import Poomsae from "./pages/Poomsae";
+import EfficientManagement from "./components/EfficientManagement";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
 function LiveMatchPage() {
@@ -101,6 +102,7 @@ export default function App() {
                     <Route path="/profiles" element={<SocialProfiles />} />
                     <Route path="/training" element={<TrainingModule />} />
                     <Route path="/poomsae" element={<Poomsae />} />
+                    <Route path="/management" element={<EfficientManagement />} />
                     <Route path="/admin" element={<AdminPanel />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
