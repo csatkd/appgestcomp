@@ -43,6 +43,7 @@ import SocialProfiles from "./components/SocialProfiles";
 import TrainingModule from "./components/TrainingModule";
 import Poomsae from "./pages/Poomsae";
 import Casse from "./pages/Casse";
+import Grades from "./pages/Grades";
 import EfficientManagement from "./components/EfficientManagement";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
@@ -104,6 +105,7 @@ export default function App() {
                     <Route path="/training" element={<TrainingModule />} />
                     <Route path="/poomsae" element={<Poomsae />} />
                     <Route path="/casse" element={<Casse />} />
+                    <Route path="/grades" element={<Grades />} />
                     <Route path="/management" element={<EfficientManagement />} />
                     <Route path="/admin" element={<AdminPanel />} />
                     <Route path="*" element={<Navigate to="/" replace />} />

@@ -70,6 +70,7 @@ const NAV = [
   { to: "/training", label: "Formation", icon: IconBook },
   { to: "/poomsae", label: "Poomsae", icon: IconTrophy },
   { to: "/casse", label: "Casse (Breaking)", icon: IconTrophy },
+  { to: "/grades", label: "Passages de Grades", icon: IconAward },
   { to: "/management", label: "Gestion Efficace", icon: IconTrendUp },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
