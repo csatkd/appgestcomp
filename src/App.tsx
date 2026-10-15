@@ -59,6 +59,9 @@ export default function App() {
       <ToastProvider>
         <HashRouter>
           <Routes>
+            {/* Page d'accueil - redirige vers la démo */}
+            <Route path="/" element={<Navigate to="/demo" replace />} />
+            
             {/* Landing page sans layout */}
             <Route path="/landing" element={<Landing />} />
             <Route path="/demo" element={<DemoShowcase />} />
@@ -67,54 +70,47 @@ export default function App() {
             <Route path="/parents/login" element={<ParentsLogin />} />
             <Route path="/parents/dashboard" element={<ParentsDashboard />} />
             
-            {/* Application avec layout */}
-            <Route
-              path="/*"
-              element={
-                <Layout>
-                  <Routes>
-                    <Route path="/" element={<DashboardWithDragDrop />} />
-                    <Route path="/competitions" element={<Competitions />} />
-                    <Route path="/organizers" element={<Organizers />} />
-                    <Route path="/clubs" element={<Clubs />} />
-                    <Route path="/referees" element={<Referees />} />
-                    <Route path="/athletes" element={<Athletes />} />
-                    <Route path="/pesee" element={<WeighIn />} />
-                    <Route path="/tirages" element={<Brackets />} />
-                    <Route path="/live" element={<LiveIndex />} />
-                    <Route path="/live/:matchId" element={<LiveMatchPage />} />
-                    <Route path="/resultats" element={<Results />} />
-                    <Route path="/reclamations" element={<Claims />} />
-                    <Route path="/tv" element={<TvMode />} />
-                    <Route path="/qr" element={<QrPresence />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route path="/reports" element={<Reports />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/export" element={<ExportImport />} />
-                    <Route path="/sponsors" element={<Sponsors />} />
-                    <Route path="/sponsors/report" element={<SponsorsReport />} />
-                    <Route path="/ceremony-sponsors" element={<CeremonySponsorsPage />} />
-                    <Route path="/workflow" element={<CompetitionWorkflow />} />
-                    <Route path="/arenas" element={<ArenasManager />} />
-                    <Route path="/schedule" element={<MatchSchedule />} />
-                    <Route path="/call" element={<CallSystem />} />
-                    <Route path="/certificates" element={<Certificates />} />
-                    <Route path="/report" element={<CompetitionReport />} />
-                    <Route path="/analytics" element={<AdvancedAnalytics />} />
-                    <Route path="/ranking" element={<AthleteRanking />} />
-                    <Route path="/gamification" element={<GamificationPanel userId="current-user" />} />
-                    <Route path="/profiles" element={<SocialProfiles />} />
-                    <Route path="/training" element={<TrainingModule />} />
-                    <Route path="/poomsae" element={<Poomsae />} />
-                    <Route path="/casse" element={<Casse />} />
-                    <Route path="/grades" element={<Grades />} />
-                    <Route path="/management" element={<EfficientManagement />} />
-                    <Route path="/admin" element={<AdminPanel />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </Layout>
-              }
-            />
+            {/* Application avec layout - toutes les routes au même niveau */}
+            <Route path="/app" element={<Layout><DashboardWithDragDrop /></Layout>} />
+            <Route path="/competitions" element={<Layout><Competitions /></Layout>} />
+            <Route path="/organizers" element={<Layout><Organizers /></Layout>} />
+            <Route path="/clubs" element={<Layout><Clubs /></Layout>} />
+            <Route path="/referees" element={<Layout><Referees /></Layout>} />
+            <Route path="/athletes" element={<Layout><Athletes /></Layout>} />
+            <Route path="/pesee" element={<Layout><WeighIn /></Layout>} />
+            <Route path="/tirages" element={<Layout><Brackets /></Layout>} />
+            <Route path="/live" element={<Layout><LiveIndex /></Layout>} />
+            <Route path="/live/:matchId" element={<Layout><LiveMatchPage /></Layout>} />
+            <Route path="/resultats" element={<Layout><Results /></Layout>} />
+            <Route path="/reclamations" element={<Layout><Claims /></Layout>} />
+            <Route path="/tv" element={<Layout><TvMode /></Layout>} />
+            <Route path="/qr" element={<Layout><QrPresence /></Layout>} />
+            <Route path="/calendar" element={<Layout><Calendar /></Layout>} />
+            <Route path="/reports" element={<Layout><Reports /></Layout>} />
+            <Route path="/notifications" element={<Layout><Notifications /></Layout>} />
+            <Route path="/export" element={<Layout><ExportImport /></Layout>} />
+            <Route path="/sponsors" element={<Layout><Sponsors /></Layout>} />
+            <Route path="/sponsors/report" element={<Layout><SponsorsReport /></Layout>} />
+            <Route path="/ceremony-sponsors" element={<Layout><CeremonySponsorsPage /></Layout>} />
+            <Route path="/workflow" element={<Layout><CompetitionWorkflow /></Layout>} />
+            <Route path="/arenas" element={<Layout><ArenasManager /></Layout>} />
+            <Route path="/schedule" element={<Layout><MatchSchedule /></Layout>} />
+            <Route path="/call" element={<Layout><CallSystem /></Layout>} />
+            <Route path="/certificates" element={<Layout><Certificates /></Layout>} />
+            <Route path="/report" element={<Layout><CompetitionReport /></Layout>} />
+            <Route path="/analytics" element={<Layout><AdvancedAnalytics /></Layout>} />
+            <Route path="/ranking" element={<Layout><AthleteRanking /></Layout>} />
+            <Route path="/gamification" element={<Layout><GamificationPanel userId="current-user" /></Layout>} />
+            <Route path="/profiles" element={<Layout><SocialProfiles /></Layout>} />
+            <Route path="/training" element={<Layout><TrainingModule /></Layout>} />
+            <Route path="/poomsae" element={<Layout><Poomsae /></Layout>} />
+            <Route path="/casse" element={<Layout><Casse /></Layout>} />
+            <Route path="/grades" element={<Layout><Grades /></Layout>} />
+            <Route path="/management" element={<Layout><EfficientManagement /></Layout>} />
+            <Route path="/admin" element={<Layout><AdminPanel /></Layout>} />
+            
+            {/* Redirection par défaut */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </HashRouter>
       </ToastProvider>
