@@ -112,7 +112,8 @@ export function useGradesStore() {
           };
         })
       );
-    }
+    },
+    []
   );
 
   const removeRegistration = useCallback((examId: string, registrationId: string) => {
@@ -237,7 +238,8 @@ export function useGradesStore() {
           };
         })
       );
-    }
+    },
+    []
   );
 
   // ============================================

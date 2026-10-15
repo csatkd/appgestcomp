@@ -152,7 +152,8 @@ export function usePoomsaeStore() {
           };
         })
       );
-    }
+    },
+    []
   );
 
   const addDeduction = useCallback((performanceId: string, points: number, reason: string) => {

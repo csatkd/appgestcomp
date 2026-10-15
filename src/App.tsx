@@ -45,6 +45,7 @@ import Poomsae from "./pages/Poomsae";
 import Casse from "./pages/Casse";
 import Grades from "./pages/Grades";
 import EfficientManagement from "./components/EfficientManagement";
+import DemoShowcase from "./pages/DemoShowcase";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
 function LiveMatchPage() {
@@ -60,6 +61,7 @@ export default function App() {
           <Routes>
             {/* Landing page sans layout */}
             <Route path="/landing" element={<Landing />} />
+            <Route path="/demo" element={<DemoShowcase />} />
             
             {/* Portail Parents (sans layout) */}
             <Route path="/parents/login" element={<ParentsLogin />} />

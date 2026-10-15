@@ -169,7 +169,8 @@ export function useCasseStore() {
             att.id === attemptId ? { ...att, ...updates } : att
           );
           
-          const totalScore = calculateBreakingScore({ ...perf, attempts: newAttempts });
+          const updatedPerf = { ...perf, attempts: newAttempts };
+          const totalScore = calculateBreakingScore(updatedPerf);
           const successfulBreaks = countSuccessfulBreaks(newAttempts);
           
           return {
@@ -181,7 +182,8 @@ export function useCasseStore() {
           };
         })
       );
-    }
+    },
+    []
   );
 
   // ============================================
