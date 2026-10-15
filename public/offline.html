@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hors ligne - DOJANG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #14100a 0%, #1e1710 100%);
+      color: #f4ead9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+    }
+    .icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 48px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      color: #f0a41c;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #b09e82;
+      margin-bottom: 30px;
+    }
+    .button {
+      display: inline-block;
+      padding: 15px 30px;
+      background: #f0a41c;
+      color: #14100a;
+      text-decoration: none;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background: #f4ead9;
+      transform: translateY(-2px);
+    }
+    .kente {
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        #f0a41c 0 22px,
+        #14100a 22px 25px,
+        #e2472e 25px 47px,
+        #14100a 47px 50px,
+        #23a06a 50px 72px,
+        #14100a 72px 75px,
+        #f4ead9 75px 83px,
+        #14100a 83px 86px
+      );
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📡</div>
+    <h1>Hors Ligne</h1>
+    <p>
+      Vous n'êtes pas connecté à Internet.<br>
+      Certaines fonctionnalités peuvent être indisponibles.<br>
+      Les données en cache restent accessibles.
+    </p>
+    <a href="/" class="button">Réessayer</a>
+    <div class="kente"></div>
+  </div>
+  <script>
+    // Vérifier la connexion et recharger si en ligne
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>
