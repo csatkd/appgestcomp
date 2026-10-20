@@ -3,6 +3,7 @@ import { StoreProvider } from "./lib/store";
 import { ToastProvider } from "./components/ui";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
+import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import DashboardEnhanced from "./pages/DashboardEnhanced";
 import DashboardWithDragDrop from "./pages/DashboardWithDragDrop";
@@ -59,8 +60,8 @@ export default function App() {
       <ToastProvider>
         <HashRouter>
           <Routes>
-            {/* Page d'accueil - redirige vers la démo */}
-            <Route path="/" element={<Navigate to="/demo" replace />} />
+            {/* Page d'accueil */}
+            <Route path="/" element={<Home />} />
             
             {/* Landing page sans layout */}
             <Route path="/landing" element={<Landing />} />
