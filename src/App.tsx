@@ -47,6 +47,12 @@ import Casse from "./pages/Casse";
 import Grades from "./pages/Grades";
 import EfficientManagement from "./components/EfficientManagement";
 import DemoShowcase from "./pages/DemoShowcase";
+import AdvancedBrackets from "./components/AdvancedBrackets";
+import PaymentSystem from "./components/PaymentSystem";
+import CheckInSystem from "./components/CheckInSystem";
+import TeamRanking from "./components/TeamRanking";
+import StreamingMode from "./components/StreamingMode";
+import PublicResults from "./pages/PublicResults";
 
 /** Remonte l'écran de combat à chaque changement d'adversaires. */
 function LiveMatchPage() {
@@ -109,6 +115,14 @@ export default function App() {
             <Route path="/grades" element={<Layout><Grades /></Layout>} />
             <Route path="/management" element={<Layout><EfficientManagement /></Layout>} />
             <Route path="/admin" element={<Layout><AdminPanel /></Layout>} />
+            <Route path="/advanced-brackets" element={<Layout><AdvancedBrackets /></Layout>} />
+            <Route path="/payments" element={<Layout><PaymentSystem /></Layout>} />
+            <Route path="/checkin" element={<Layout><CheckInSystem /></Layout>} />
+            <Route path="/team-ranking" element={<Layout><TeamRanking /></Layout>} />
+            <Route path="/streaming" element={<Layout><StreamingMode /></Layout>} />
+            
+            {/* Page publique sans layout */}
+            <Route path="/public-results" element={<PublicResults />} />
             
             {/* Redirection par défaut */}
             <Route path="*" element={<Navigate to="/" replace />} />
