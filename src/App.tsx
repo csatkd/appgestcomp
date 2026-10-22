@@ -47,6 +47,8 @@ import Casse from "./pages/Casse";
 import Grades from "./pages/Grades";
 import EfficientManagement from "./components/EfficientManagement";
 import DemoShowcase from "./pages/DemoShowcase";
+import KyorugiValidation from "./components/KyorugiValidation";
+import QuickStart from "./components/QuickStart";
 import AdvancedBrackets from "./components/AdvancedBrackets";
 import PaymentSystem from "./components/PaymentSystem";
 import CheckInSystem from "./components/CheckInSystem";
@@ -123,6 +125,12 @@ export default function App() {
             
             {/* Page publique sans layout */}
             <Route path="/public-results" element={<PublicResults />} />
+            
+            {/* Validation Kyorugi */}
+            <Route path="/kyorugi-validation" element={<Layout><KyorugiValidation /></Layout>} />
+            
+            {/* Démarrage rapide */}
+            <Route path="/quick-start" element={<Layout><QuickStart /></Layout>} />
             
             {/* Redirection par défaut */}
             <Route path="*" element={<Navigate to="/" replace />} />

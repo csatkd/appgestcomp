@@ -78,6 +78,8 @@ const NAV = [
   { to: "/team-ranking", label: "Classement Clubs", icon: IconTrophy },
   { to: "/streaming", label: "Mode Streaming", icon: IconTv },
   { to: "/public-results", label: "Résultats Publics", icon: IconTrophy },
+  { to: "/kyorugi-validation", label: "Validation Kyorugi", icon: IconCheck },
+  { to: "/quick-start", label: "Démarrage Rapide", icon: IconCalendar },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 
