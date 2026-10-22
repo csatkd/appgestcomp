@@ -2,48 +2,43 @@ import { useState, useEffect } from 'react';
 
 export interface Favorite {
   id: string;
+  type: 'athlete' | 'club' | 'competition' | 'sponsor' | 'page';
+  name: string;
   path: string;
-  label: string;
-  icon: string;
-  addedAt: string;
+  icon?: string;
+  addedAt: number;
 }
-
-const STORAGE_KEY = 'dojang_favorites';
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<Favorite[]>(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
+    const stored = localStorage.getItem('dojang_favorites');
+    return stored ? JSON.parse(stored) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    localStorage.setItem('dojang_favorites', JSON.stringify(favorites));
   }, [favorites]);
 
   const addFavorite = (favorite: Omit<Favorite, 'id' | 'addedAt'>) => {
     const newFavorite: Favorite = {
       ...favorite,
-      id: `fav_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      addedAt: new Date().toISOString(),
+      id: `fav-${Date.now()}`,
+      addedAt: Date.now()
     };
-    setFavorites((prev) => [...prev, newFavorite]);
+    setFavorites(prev => [newFavorite, ...prev]);
   };
 
   const removeFavorite = (id: string) => {
-    setFavorites((prev) => prev.filter((f) => f.id !== id));
+    setFavorites(prev => prev.filter(f => f.id !== id));
   };
 
   const isFavorite = (path: string) => {
-    return favorites.some((f) => f.path === path);
+    return favorites.some(f => f.path === path);
   };
 
   const toggleFavorite = (favorite: Omit<Favorite, 'id' | 'addedAt'>) => {
     if (isFavorite(favorite.path)) {
-      const fav = favorites.find((f) => f.path === favorite.path);
+      const fav = favorites.find(f => f.path === favorite.path);
       if (fav) removeFavorite(fav.id);
     } else {
       addFavorite(favorite);
@@ -55,6 +50,6 @@ export function useFavorites() {
     addFavorite,
     removeFavorite,
     isFavorite,
-    toggleFavorite,
+    toggleFavorite
   };
 }

@@ -72,6 +72,14 @@ const NAV = [
   { to: "/casse", label: "Casse (Breaking)", icon: IconTrophy },
   { to: "/grades", label: "Passages de Grades", icon: IconAward },
   { to: "/management", label: "Gestion Efficace", icon: IconTrendUp },
+  { to: "/advanced-brackets", label: "Bracket Avancé", icon: IconBracket },
+  { to: "/payments", label: "Paiements & Inscriptions", icon: IconDownload },
+  { to: "/checkin", label: "Check-in QR", icon: IconQr },
+  { to: "/team-ranking", label: "Classement Clubs", icon: IconTrophy },
+  { to: "/streaming", label: "Mode Streaming", icon: IconTv },
+  { to: "/public-results", label: "Résultats Publics", icon: IconTrophy },
+  { to: "/kyorugi-validation", label: "Validation Kyorugi", icon: IconCheck },
+  { to: "/quick-start", label: "Démarrage Rapide", icon: IconCalendar },
   { to: "/admin", label: "Administration", icon: IconGear },
 ];
 

@@ -15,7 +15,7 @@ export default function FavoriteButton({ path, label, icon = 'star' }: FavoriteB
   const isFav = isFavorite(path);
 
   const handleClick = () => {
-    toggleFavorite({ path, label, icon });
+    toggleFavorite({ path, name: label, type: 'page', icon });
     toast(
       isFav ? `${label} retiré des favoris` : `${label} ajouté aux favoris`,
       isFav ? 'info' : 'success'

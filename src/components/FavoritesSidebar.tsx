@@ -26,7 +26,7 @@ export default function FavoritesSidebar() {
             onClick={() => navigate(fav.path)}
           >
             <span className="flex-1 text-sm text-bone truncate">
-              {fav.label}
+              {fav.name}
             </span>
             <button
               onClick={(e) => {

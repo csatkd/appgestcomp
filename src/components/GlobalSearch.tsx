@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../lib/store';
-import { IconSearch, IconX, IconUsers, IconAward, IconHandshake, IconShield } from './Icons';
+import { IconSearch, IconX, IconUsers, IconAward, IconCalendar, IconHandshake } from './Icons';
 
 interface SearchResult {
   id: string;
-  type: 'athlete' | 'club' | 'sponsor' | 'referee';
+  type: 'athlete' | 'club' | 'competition' | 'sponsor';
   title: string;
   subtitle: string;
   path: string;
@@ -84,6 +84,20 @@ export default function GlobalSearch() {
       }
     });
 
+    // Rechercher dans les compétitions
+    state.competitions.forEach((comp) => {
+      if (comp.name.toLowerCase().includes(q) || comp.venue.toLowerCase().includes(q)) {
+        searchResults.push({
+          id: comp.id,
+          type: 'competition',
+          title: comp.name,
+          subtitle: `${comp.venue} • ${comp.type}`,
+          path: '/competitions',
+          icon: IconCalendar,
+        });
+      }
+    });
+
     // Rechercher dans les sponsors
     state.sponsors.forEach((sponsor) => {
       if (sponsor.name.toLowerCase().includes(q) || sponsor.contact.toLowerCase().includes(q)) {
@@ -94,21 +108,6 @@ export default function GlobalSearch() {
           subtitle: `${sponsor.type} • ${sponsor.level}`,
           path: '/sponsors',
           icon: IconHandshake,
-        });
-      }
-    });
-
-    // Rechercher dans les arbitres
-    state.referees.forEach((referee) => {
-      const fullName = `${referee.firstName} ${referee.lastName}`.toLowerCase();
-      if (fullName.includes(q) || referee.license.toLowerCase().includes(q)) {
-        searchResults.push({
-          id: referee.id,
-          type: 'referee',
-          title: `${referee.firstName} ${referee.lastName}`,
-          subtitle: `${referee.grade} • ${referee.city}`,
-          path: '/referees',
-          icon: IconShield,
         });
       }
     });
@@ -158,7 +157,7 @@ export default function GlobalSearch() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Rechercher des athlètes, clubs, sponsors, arbitres..."
+              placeholder="Rechercher des athlètes, clubs, sponsors, compétitions..."
               className="flex-1 bg-transparent text-bone placeholder:text-dune/50 focus:outline-none"
             />
             <button
@@ -215,8 +214,8 @@ export default function GlobalSearch() {
                       <span className="text-xs text-dune uppercase">
                         {result.type === 'athlete' && 'Athlète'}
                         {result.type === 'club' && 'Club'}
+                        {result.type === 'competition' && 'Compétition'}
                         {result.type === 'sponsor' && 'Sponsor'}
-                        {result.type === 'referee' && 'Arbitre'}
                       </span>
                     </li>
                   );
@@ -229,16 +228,13 @@ export default function GlobalSearch() {
           <div className="border-t border-husk px-4 py-2 flex items-center justify-between text-xs text-dune">
             <div className="flex items-center gap-4">
               <span>
-                <kbd className="px-1.5 py-0.5 bg-bark border border-husk rounded">↑↓</kbd>{' '}
-                Naviguer
+                <kbd className="px-1.5 py-0.5 bg-bark border border-husk rounded">↑↓</kbd> Naviguer
               </span>
               <span>
-                <kbd className="px-1.5 py-0.5 bg-bark border border-husk rounded">↵</kbd>{' '}
-                Sélectionner
+                <kbd className="px-1.5 py-0.5 bg-bark border border-husk rounded">↵</kbd> Sélectionner
               </span>
               <span>
-                <kbd className="px-1.5 py-0.5 bg-bark border border-husk rounded">Esc</kbd>{' '}
-                Fermer
+                <kbd className="px-1.5 py-0.5 bg-bark border border-husk rounded">Esc</kbd> Fermer
               </span>
             </div>
             <span>Ctrl+K pour ouvrir</span>
